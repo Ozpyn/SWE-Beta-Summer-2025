@@ -12,8 +12,8 @@ class Deck {
 
     // Optional Jokers
     if (includeJokers) {
-      this.cards.push(new Card('Joker', 'Black'));
-      this.cards.push(new Card('Joker', 'Red'));
+      this.cards.push(new Card('Black', 'Joker'));
+      this.cards.push(new Card('Red', 'Joker'));
     }
 
     this.shuffle();
