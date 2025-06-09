@@ -1,6 +1,7 @@
 class Deck {
-  constructor(includeJokers = false) {
+  constructor(includeJokers = false, facesVisible = false) {
     this.cards = [];
+    this.faceUp = facesVisible;
     const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
     const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
@@ -25,5 +26,15 @@ class Deck {
 
   drawCard() {
     return this.cards.pop();
+  }
+
+  getTop() {
+    // return a copy of the card that is on the top of the pile.
+    // Do not remove the card from the pile.
+  }
+
+  flipDeck() {
+    this.faceUp = !this.faceUp;
+    // Should we reverse the order of the deck?
   }
 }
