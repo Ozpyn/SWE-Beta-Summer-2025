@@ -25,16 +25,26 @@ class Deck {
   }
 
   drawCard() {
-    return this.cards.pop();
+    if (!this.cards || this.cards.length === 0) {
+      console.log("The Deck appears to be empty!");
+      return -1;
+    }
+  
+    const drawnCard = this.cards.pop();
+    return drawnCard || -1;
   }
 
   getTop() {
-    // return a copy of the card that is on the top of the pile.
-    // Do not remove the card from the pile.
+    if (!this.cards || this.cards.length === 0) {
+      console.log("The Deck appears to be empty!");
+      return -1;
+    }
+    const topCard = this.cards[this.cards.length - 1];
+    return new Card(topCard.suit, topCard.rank);
   }
 
   flipDeck() {
     this.faceUp = !this.faceUp;
-    // Should we reverse the order of the deck?
+    this.cards.reverse();
   }
 }
