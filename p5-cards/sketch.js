@@ -57,6 +57,6 @@ function startGame() {
 
 function drawACard(selectedDeck) {
   drawnCard = selectedDeck.drawCard();
-  console.log(drawnCard.rank + "of" + drawnCard.suit);
+  alert(drawnCard.rank + " of " + drawnCard.suit);
   return;
 }
