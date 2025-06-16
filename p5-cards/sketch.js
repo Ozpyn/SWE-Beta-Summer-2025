@@ -79,7 +79,7 @@ function drawACard(selectedDeck) {
   if (card) {
     let newCard = new Card(card.suit, card.rank);
     drawPile.addCard(newCard);
-    alert(card.rank + " of " + card.suit);
+    // alert(card.rank + " of " + card.suit);
   }
   return;
 }

@@ -1,5 +1,5 @@
 const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+const ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
 
 class Deck {
   constructor(includeJokers = false, facesVisible = false, id = "", empty = false) {
@@ -31,7 +31,6 @@ class Deck {
     }
   }
   
-
   drawCard() {
     if (!this.cards || this.cards.length === 0) {
       console.log("The Deck appears to be empty!");
@@ -44,7 +43,7 @@ class Deck {
 
   addCard(newCard) {
     this.cards.push(newCard);
-    console.log(`Added ${this.rank} of ${this.suit} to the deck / pile`)
+    console.log(`Added ${newCard.rank} of ${newCard.suit} to the deck / pile`)
   }
 
   getTop() {
