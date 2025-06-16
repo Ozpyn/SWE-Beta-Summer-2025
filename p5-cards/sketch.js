@@ -106,7 +106,7 @@ function setup() {
 
 function draw() {
   background(0, 200, 100);
-  
+
   // Draw all cards in the drawnCards array
   for (let i = 0; i < drawnCards.length; i++) {
     let card = drawnCards[i];
