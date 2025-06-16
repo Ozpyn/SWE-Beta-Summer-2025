@@ -91,6 +91,17 @@ function setup() {
   drawCardBtn.position(270, 20);
   drawCardBtn.mousePressed(() => drawACard(defaultDeck));
 
+  // Trigger Win
+  winBtn = createButton('Simulate Win');
+  winBtn.style('font-family', 'Concert One')
+  winBtn.position(400, 20);
+  winBtn.mousePressed(triggerWin);
+
+  // Trigger Lose
+  loseBtn = createButton('Simulate Lose');
+  loseBtn.style('font-family', 'Concert One')
+  loseBtn.position(400, 50);
+  loseBtn.mousePressed(triggerLose);
 }
 
 function draw() {
@@ -103,6 +114,10 @@ function draw() {
     card.y = 100;
     card.draw();
   }
+
+  // These should always appear on top, so they must always be last to be drawn
+  drawWinOverlay();
+  drawLoseOverlay();
 }
 
 function startGame() {
