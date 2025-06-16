@@ -4,7 +4,6 @@ let startButton;
 let engine = null;
 let selectedGame = null;
 let cardImages = {};
-let drawnCards = [];
 
 function setup() {
   createCanvas(800, 600);
@@ -24,8 +23,9 @@ function setup() {
   startButton.position(160, 20);
   startButton.mousePressed(startGame);
   
-  // Make a default deck
-  defaultDeck = new Deck();
+  // Make a default deck & empty pile
+  defaultDeck = new Deck(id = "Deck");
+  drawPile = new Deck(includeJokers = false, facesVisible = true, id = "DrawPile", empty = true);
 
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
@@ -48,18 +48,8 @@ function setup() {
 
 function draw() {
   background(0, 200, 100);
-
-  // Draw all cards in the drawnCards array
-  // for (let i = 0; i < drawnCards.length; i++) {
   
-  // // This might get moved to the deck object, on how to display a face up deck
-
-  let pileSize = drawnCards.length - 1;
-    if (drawnCards[pileSize]) {
-      let card = drawnCards[pileSize];
-      card.draw(50, 100);
-    }
-  // }
+  drawPile.draw(50, 100)
 
   // These should always appear on top, so they must always be last to be drawn
   drawWinOverlay();
@@ -88,7 +78,7 @@ function drawACard(selectedDeck) {
   let card = selectedDeck.drawCard();
   if (card) {
     let newCard = new Card(card.suit, card.rank);
-    drawnCards.push(newCard);
+    drawPile.addCard(newCard);
     alert(card.rank + " of " + card.suit);
   }
   return;
