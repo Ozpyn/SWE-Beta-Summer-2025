@@ -62,11 +62,12 @@ class Deck {
 
       // Shadow to show deck size
       let shadowOffset = pileSize / 10;
-      let shadowColor = color(0, 0, 0, (pileSize * 4));
+      let shadowColor = color(0, 0, 0);
       push();
       fill(shadowColor);
       noStroke();
       rect(x + shadowOffset, y + shadowOffset, topCard.width, topCard.height, 5);
+      rect(x + (shadowOffset / 2), y + (shadowOffset / 2), topCard.width, topCard.height, 5);
       pop();
       if (this.faceUp) {
         topCard.drawFront(x, y);
@@ -77,7 +78,7 @@ class Deck {
       // Pile outline (to show where the pile would be)
       push();
       noFill();
-      stroke(100);
+      stroke(color('#505C45'));
       strokeWeight(2);
       rect(x + 10, y + 10, 40, 70, 5);
       pop();
