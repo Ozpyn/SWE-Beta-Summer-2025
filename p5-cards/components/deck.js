@@ -10,6 +10,10 @@ class Deck {
       this.populate(includeJokers);
     }
     this.shuffle();
+
+    this.width = 60;
+    this.height = 90;
+    this.canBeDrawnFrom = false;
   }
 
   populate(includeJokers) {
@@ -56,6 +60,9 @@ class Deck {
   }
 
   draw(x, y) {
+    this.x = x;
+    this.y = y;
+
     let pileSize = this.cards.length - 1
     if (this.cards[pileSize]) {
       let topCard = this.getTop();
@@ -84,6 +91,11 @@ class Deck {
       pop();
     }
     
+  }
+
+  isMouseOver(mx, my) {
+    return mx > this.x && mx < this.x + this.width &&
+           my > this.y && my < this.y + this.height;
   }
 
   flipDeck() {

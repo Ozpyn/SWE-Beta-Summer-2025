@@ -4,6 +4,7 @@ let startButton;
 let engine = null;
 let selectedGame = null;
 let draggableCards = [];
+let allDecks = [];
 let draggingCard = null;
 
 function setup() {
@@ -26,10 +27,11 @@ function setup() {
   
   // Make a default deck & empty pile
   defaultDeck = new Deck(id = "Deck");
+  defaultDeck.canBeDrawnFrom = true;
   discard = new Deck(includeJokers = false, facesVisible = true, id = "discard", empty = true);
 
-  // Make a card to drag
-  draggableCards.push(new Card('Spades', 'Ace', 200, 200));
+  allDecks.push(defaultDeck);
+  allDecks.push(discard);
 
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
@@ -63,7 +65,7 @@ function draw() {
 
   // Draw all cards (bottom to top)
   for (let card of draggableCards) {
-    card.drawFront();
+    card.draw();
   }
 
 
@@ -74,22 +76,53 @@ function draw() {
 
 // Card Dragging Helper functions
 function mousePressed() {
-  for (let i = draggableCards.length - 1; i >= 0; i--) {
-    if (draggableCards[i].isMouseOver()) {
-      draggingCard = draggableCards[i];
-      draggingCard.startDrag();
-      draggableCards.push(draggableCards.splice(i, 1)[0]);
-      break;
+  if (!showWin && !showLose) {
+    // Check if mouse is over any draw-enabled deck
+    for (let deck of allDecks) {
+      if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
+        const card = deck.drawCard();
+        if (card !== -1) {
+          card.x = mouseX - card.width / 2;
+          card.y = mouseY - card.height / 2;
+          draggingCard = card;
+          draggingCard.startDrag();
+          draggableCards.push(draggingCard);
+          return;
+        }
+      }
+    }
+
+    // Otherwise check for a dragged card
+    for (let i = draggableCards.length - 1; i >= 0; i--) {
+      if (draggableCards[i].isMouseOver()) {
+        draggingCard = draggableCards[i];
+        draggingCard.startDrag();
+        draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
+        break;
+      }
     }
   }
 }
 
+
+
 function mouseReleased() {
   if (draggingCard) {
+    for (let deck of allDecks) {
+      if (deck.isMouseOver(mouseX, mouseY)) {
+        deck.addCard(draggingCard);
+        const index = draggableCards.indexOf(draggingCard);
+        if (index !== -1) draggableCards.splice(index, 1);
+        break;
+      }
+    }
+
     draggingCard.stopDrag();
     draggingCard = null;
   }
 }
+
+
 
 function startGame() {
   selectedGame = gameSelect.value();

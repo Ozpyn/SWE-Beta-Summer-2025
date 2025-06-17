@@ -6,6 +6,7 @@ class Card {
     this.height = 90;
     this.x = x;
     this.y = y;
+    this.faceUp = false;
 
     // Dragging support
     this.isDragging = false;
@@ -15,12 +16,11 @@ class Card {
 
   // Original draw method (you can modify this one to pick what to show)
   draw(x = this.x, y = this.y) {
-    // fill(255);
-    // stroke(0);
-    // rect(x, y, this.width, this.height, 5);
-    // fill(0);
-    // textSize(16);
-    // text(`${this.rank} of ${this.suit}`, x + 5, y + 25);
+    if (this.faceUp) {
+      this.drawFront()
+    } else {
+      this.drawBack()
+    }
   }
 
   drawBack(x = this.x, y = this.y) {
