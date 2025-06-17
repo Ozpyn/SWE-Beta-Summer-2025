@@ -56,17 +56,33 @@ class Deck {
   }
 
   draw(x, y) {
-    if (this.cards[this.cards.length - 1]) {
+    let pileSize = this.cards.length - 1
+    if (this.cards[pileSize]) {
+      let topCard = this.getTop();
+
+      // Shadow to show deck size
+      let shadowOffset = pileSize / 10;
+      let shadowColor = color(0, 0, 0, (pileSize * 4));
+      push();
+      fill(shadowColor);
+      noStroke();
+      rect(x + shadowOffset, y + shadowOffset, topCard.width, topCard.height, 5);
+      pop();
       if (this.faceUp) {
-        // Put drop-shadow here
-        let topCard = this.getTop();
-        topCard.draw(x, y);
+        topCard.drawFront(x, y);
       } else {
-        // Draw the card back art. Use the dimensions of the card as a mask, to cut off excess
+        topCard.drawBack(x,y);
       }
     } else {
       // Pile outline (to show where the pile would be)
+      push();
+      noFill();
+      stroke(100);
+      strokeWeight(2);
+      rect(x + 10, y + 10, 40, 70, 5);
+      pop();
     }
+    
   }
 
   flipDeck() {

@@ -25,7 +25,7 @@ function setup() {
   
   // Make a default deck & empty pile
   defaultDeck = new Deck(id = "Deck");
-  drawPile = new Deck(includeJokers = false, facesVisible = true, id = "DrawPile", empty = true);
+  discard = new Deck(includeJokers = false, facesVisible = true, id = "discard", empty = true);
 
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
@@ -49,7 +49,9 @@ function setup() {
 function draw() {
   background(0, 200, 100);
   
-  drawPile.draw(50, 100)
+  discard.draw(50, 100)
+  defaultDeck.draw(150, 100)
+
 
   // These should always appear on top, so they must always be last to be drawn
   drawWinOverlay();
@@ -76,9 +78,8 @@ function startGame() {
 
 function drawACard(selectedDeck) {
   let card = selectedDeck.drawCard();
-  if (card) {
-    let newCard = new Card(card.suit, card.rank);
-    drawPile.addCard(newCard);
+  if (card && (card != -1)) {
+    discard.addCard(card);
     // alert(card.rank + " of " + card.suit);
   }
   return;
