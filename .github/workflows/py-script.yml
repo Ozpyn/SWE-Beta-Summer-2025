@@ -1,0 +1,41 @@
+name: P5 Cards Firefox Test
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 'latest'
+
+    - name: Install system dependencies (including Firefox)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          firefox \
+          xdg-utils \
+          wget \
+          python3 \
+          python3-pip
+
+    - name: Install Python dependencies
+      run: |
+        pip install selenium webdriver-manager requests
+
+    - name: Set up Display
+      run: echo "DISPLAY=:99" >> $GITHUB_ENV
+
+    - name: Run Firefox Tests using Python
+      run: |
+        cd p5-cards/tests
+        python firefox.py
