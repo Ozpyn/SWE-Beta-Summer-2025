@@ -3,7 +3,9 @@ let gameSelect;
 let startButton;
 let engine = null;
 let selectedGame = null;
-let cardImages = {};
+let draggableCards = [];
+let allDecks = [];
+let draggingCard = null;
 
 function setup() {
   createCanvas(800, 600);
@@ -25,7 +27,11 @@ function setup() {
   
   // Make a default deck & empty pile
   defaultDeck = new Deck(id = "Deck");
-  drawPile = new Deck(includeJokers = false, facesVisible = true, id = "DrawPile", empty = true);
+  defaultDeck.canBeDrawnFrom = true;
+  discard = new Deck(includeJokers = false, facesVisible = true, id = "discard", empty = true);
+
+  allDecks.push(defaultDeck);
+  allDecks.push(discard);
 
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
@@ -49,12 +55,74 @@ function setup() {
 function draw() {
   background(0, 200, 100);
   
-  drawPile.draw(50, 100)
+  discard.draw(50, 100)
+  defaultDeck.draw(150, 100)
+
+  // Update dragging card position
+  if (draggingCard) {
+    draggingCard.updateDrag();
+  }
+
+  // Draw all cards (bottom to top)
+  for (let card of draggableCards) {
+    card.draw();
+  }
+
 
   // These should always appear on top, so they must always be last to be drawn
   drawWinOverlay();
   drawLoseOverlay();
 }
+
+// Card Dragging Helper functions
+function mousePressed() {
+  if (!showWin && !showLose) {
+    // Check if mouse is over any draw-enabled deck
+    for (let deck of allDecks) {
+      if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
+        const card = deck.drawCard();
+        if (card !== -1) {
+          card.x = mouseX - card.width / 2;
+          card.y = mouseY - card.height / 2;
+          draggingCard = card;
+          draggingCard.startDrag();
+          draggableCards.push(draggingCard);
+          return;
+        }
+      }
+    }
+
+    // Otherwise check for a dragged card
+    for (let i = draggableCards.length - 1; i >= 0; i--) {
+      if (draggableCards[i].isMouseOver()) {
+        draggingCard = draggableCards[i];
+        draggingCard.startDrag();
+        draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
+        break;
+      }
+    }
+  }
+}
+
+
+
+function mouseReleased() {
+  if (draggingCard) {
+    for (let deck of allDecks) {
+      if (deck.isMouseOver(mouseX, mouseY)) {
+        deck.addCard(draggingCard);
+        const index = draggableCards.indexOf(draggingCard);
+        if (index !== -1) draggableCards.splice(index, 1);
+        break;
+      }
+    }
+
+    draggingCard.stopDrag();
+    draggingCard = null;
+  }
+}
+
+
 
 function startGame() {
   selectedGame = gameSelect.value();
@@ -76,9 +144,8 @@ function startGame() {
 
 function drawACard(selectedDeck) {
   let card = selectedDeck.drawCard();
-  if (card) {
-    let newCard = new Card(card.suit, card.rank);
-    drawPile.addCard(newCard);
+  if (card && (card != -1)) {
+    discard.addCard(card);
     // alert(card.rank + " of " + card.suit);
   }
   return;
