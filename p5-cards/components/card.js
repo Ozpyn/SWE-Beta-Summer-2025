@@ -14,36 +14,59 @@ class Card {
     this.offsetY = 0;
 
     // Image loading
-    this.suitImage = null;
-    this.rankImage = null;
+    this.suitImage;
+    this.rankImage;
     this.imagesLoaded = false;
-    this.loadImages();
+    this.setImages();
+
+
   }
 
-  loadImages() {
-    // Load suit image
-    let suitFileName = this.suit.toLowerCase();
-    if (suitFileName === 'hearts') suitFileName = 'heart';
-    if (suitFileName === 'diamonds') suitFileName = 'diamond';
-    if (suitFileName === 'clubs') suitFileName = 'club';
-    if (suitFileName === 'spades') suitFileName = 'spade';
-    
-    // Load suit image
-    this.suitImage = loadImage(`assets/suits/${suitFileName}.png`, 
-      () => { this.imagesLoaded = true; },
-      () => { console.log(`Failed to load suit image: ${suitFileName}`); }
-    );
-
-    // Load rank image (only for face cards)
-    let rankFileName = this.rank.toLowerCase();
-    if (rankFileName === 'jack' || rankFileName === 'queen' || 
-        rankFileName === 'king' || rankFileName === 'joker') {
-      this.rankImage = loadImage(`assets/rank/${rankFileName}.png`,
-        () => { this.imagesLoaded = true; },
-        () => { console.log(`Failed to load rank image: ${rankFileName}`); }
-      );
-    }
+  async setImages() {
+      // Load rank image if it's a face card
+      switch (this.rank.toLowerCase()) {
+        case 'jack': this.rankImage = jack;
+          break;
+        case 'joker': this.rankImage = joker;
+          break;
+        case 'queen': this.rankImage = queen;
+          break;
+        case 'king': this.rankImage = king;
+          break;
+        default:
+          break;
+      }
+      if (!['joker', 'ace'].includes(this.rank.toLowerCase())) {
+        switch (this.suit.toLowerCase()) {
+          case 'club': this.suitImage = club;
+            break;
+          case 'heart': this.suitImage = heart;
+            break;
+          case 'diamond': this.suitImage = diamond;
+            break;
+          case 'spade': this.suitImage = spade;
+            break;
+          default:
+            break;
+        }
+      } else if (['ace'].includes(this.rank.toLowerCase())){
+        switch (this.suit.toLowerCase()) {
+          case 'club': this.suitImage = d_club;
+            break;
+          case 'heart': this.suitImage = d_heart;
+            break;
+          case 'diamond': this.suitImage = d_diamond;
+            break;
+          case 'spade': this.suitImage = d_spade;
+            break;
+          default:
+            break;
+        }
+      } else {
+        
+      }
   }
+  
 
   // Original draw method (you can modify this one to pick what to show)
   draw(x = this.x, y = this.y) {
@@ -71,7 +94,7 @@ class Card {
     
     // Determine suit color
     let suitColor;
-    if (this.suit === 'Hearts' || this.suit === 'Diamonds') {
+    if (this.suit === 'Heart' || this.suit === 'Diamond') {
       suitColor = color(255, 0, 0); // Red
     } else {
       suitColor = color(0, 0, 0); // Black
@@ -82,28 +105,19 @@ class Card {
     textSize(10);
     textAlign(LEFT, TOP);
     
-    if (this.rankImage && this.imagesLoaded) {
+    if (this.rankImage) {
       // For face cards, use the rank image
       imageMode(CORNER);
-      image(this.rankImage, x + 2, y + 2, 12, 12);
+      image(this.rankImage, x + 2, y + 2, 20, 20);
     } else {
       // For numeric cards and when images aren't loaded, use text
       text(this.rank, x + 2, y + 2);
     }
     
-    // Draw suit symbol in top left (next to rank)
-    if (this.suitImage && this.imagesLoaded) {
-      imageMode(CORNER);
-      image(this.suitImage, x + 15, y + 2, 8, 8);
-    } else {
-      // Fallback suit symbol
-      text(this.getSuitSymbol(), x + 15, y + 2);
-    }
-    
     // Draw large suit symbol in center
-    if (this.suitImage && this.imagesLoaded) {
+    if (this.suitImage) {
       imageMode(CENTER);
-      image(this.suitImage, x + this.width/2, y + this.height/2, 50, 50);
+      image(this.suitImage, x + this.width/2, y + this.height/2, 25, 25);
     } else {
       // Fallback large suit symbol
       textSize(20);
@@ -118,13 +132,12 @@ class Card {
     translate(x + this.width - 2, y + this.height - 2);
     rotate(PI);
     
-    if (this.rankImage && this.imagesLoaded) {
+    if (this.rankImage) {
       imageMode(CORNER);
-      image(this.rankImage, 0, 0, 12, 12);
-      image(this.suitImage, 15, 0, 8, 8);
+      image(this.rankImage, 0, 0, 20, 20);
     } else {
       text(this.rank, 0, 0);
-      text(this.getSuitSymbol(), 15, 0);
+      // text(this.getSuitSymbol(), 15, 0);
     }
     pop();
     
@@ -134,10 +147,10 @@ class Card {
 
   getSuitSymbol() {
     switch(this.suit.toLowerCase()) {
-      case 'hearts': return '♥';
-      case 'diamonds': return '♦';
-      case 'clubs': return '♣';
-      case 'spades': return '♠';
+      case 'heart': return '♥';
+      case 'diamond': return '♦';
+      case 'club': return '♣';
+      case 'spade': return '♠';
       default: return '?';
     }
   }

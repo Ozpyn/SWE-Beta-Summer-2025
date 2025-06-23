@@ -1,4 +1,4 @@
-const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+const suits = ['Heart', 'Diamond', 'Club', 'Spade'];
 const ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
 
 class Deck {
