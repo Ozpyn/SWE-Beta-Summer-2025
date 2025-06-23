@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scalable Card Game</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #004400;
+    }
+
+    #game-container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .player {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 0.5em 1em;
+      border-radius: 8px;
+      font-size: 1.2vw;
+    }
+
+    #player-top    { top: 2%; left: 50%; transform: translateX(-50%); }
+    #player-bottom { bottom: 2%; left: 50%; transform: translateX(-50%); }
+    #player-left   { left: 2%; top: 50%; transform: translateY(-50%); }
+    #player-right  { right: 2%; top: 50%; transform: translateY(-50%); }
+
+    #card-area {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 1vw;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card svg {
+      width: 10vw;
+      height: 15vw;
+      max-width: 100px;
+      max-height: 150px;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      font-size: 0.8em;
+      text-align: center;
+      color: white;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.3em 0;
+    }
+
+    footer a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div class="player" id="player-top">Player 1</div>
+    <div class="player" id="player-left">Player 2</div>
+    <div id="card-area"></div>
+    <div class="player" id="player-right">Player 3</div>
+    <div class="player" id="player-bottom">Player 4</div>
+
+    <footer>
+      Thanks to 
+      <a href="https://iamvector.com/all-icons/card-game-rules" target="_blank">I Am Vector</a>, 
+      <a href="https://www.freepik.com/vectors/playing-card-suits-free-svg" target="_blank">FreePik</a>, and 
+      <a href="https://icons8.com/icons/set/deck" target="_blank">ICONS8</a>
+    </footer>
+  </div>
+
+  <script>
+    const cardArea = document.getElementById('card-area');
+
+    function createCard(rank, suit) {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="100" height="150" rx="10" ry="10" fill="white" stroke="black"/>
+          <text x="10" y="25" font-size="18" fill="black">${rank}</text>
+          <text x="80" y="140" font-size="18" fill="black">${suit}</text>
+        </svg>
+      `;
+      return div;
+    }
+
+    const sampleDeck = [
+      { rank: 'A', suit: '♠' },
+      { rank: 'K', suit: '♥' },
+      { rank: 'Q', suit: '♦' },
+      { rank: 'J', suit: '♣' }
+    ];
+
+    sampleDeck.forEach(card => {
+      cardArea.appendChild(createCard(card.rank, card.suit));
+    });
+  </script>
+</body>
+</html>

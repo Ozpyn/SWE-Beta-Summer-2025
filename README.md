@@ -1,6 +1,29 @@
 # SWE-Beta-Summer-2025
 Software Engineering: Graduate (CS 6/73901)
 
+## Asset Showcase:
+Ranks:
+
+<img src="p5-cards/assets/rank/jack.png" alt="Jack" width="80"/>
+<img src="p5-cards/assets/rank/joker.png" alt="Joker" width="80"/>
+<img src="p5-cards/assets/rank/king.png" alt="King" width="80"/>
+<img src="p5-cards/assets/rank/queen.png" alt="Queen" width="80"/>
+
+Low LOD Suits:
+
+<img src="p5-cards/assets/suits/club.png" alt="Club" width="80"/>
+<img src="p5-cards/assets/suits/diamond.png" alt="Diamond" width="80"/>
+<img src="p5-cards/assets/suits/heart.png" alt="Heart" width="80"/>
+<img src="p5-cards/assets/suits/spade.png" alt="Spade" width="80"/>
+
+High LOD Suits:
+
+<img src="p5-cards/assets/suits/club_detail.png" alt="Detailed Club" width="80"/>
+<img src="p5-cards/assets/suits/diamond_detail.png" alt="Detailed Diamond" width="80"/>
+<img src="p5-cards/assets/suits/heart_detail.png" alt="Detailed Heart" width="80"/>
+<img src="p5-cards/assets/suits/spade_detail.png" alt="Detailed Spade" width="80"/>
+
+
 
 ## Attributions
 Thanks I Am Vector for the SVG simple suits: here[https://iamvector.com/all-icons/card-game-rules]
