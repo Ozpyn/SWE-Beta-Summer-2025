@@ -1,4 +1,4 @@
-name: P5 Cards Firefox Test
+name: P5 Cards Browser Tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test-firefox:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 'latest'
+        python-version: '3.13'
 
     - name: Install system dependencies (including Firefox)
       run: |
@@ -39,3 +39,44 @@ jobs:
       run: |
         cd p5-cards/tests
         python firefox.py
+
+  test-chrome:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install system dependencies (including Chrome)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          xdg-utils \
+          wget \
+          gnupg \
+          unzip \
+          python3 \
+          python3-pip
+
+        # Add Google's signing key and install Chrome
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | \
+          sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    - name: Install Python dependencies
+      run: |
+        pip install selenium webdriver-manager requests
+
+    - name: Set up Display
+      run: echo "DISPLAY=:99" >> $GITHUB_ENV
+
+    - name: Run Chrome Tests using Python
+      run: |
+        cd p5-cards/tests
+        python chrome.py
