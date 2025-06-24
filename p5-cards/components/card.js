@@ -78,13 +78,48 @@ class Card {
   }
 
   drawBack(x = this.x, y = this.y) {
-    fill(255);
+    push();
+    fill(250, 200, 0);
     stroke(0);
     rect(x, y, this.width, this.height, 5);
     fill(0);
     textSize(16);
-    text(`BackArt`, x + 5, y + 25);
+  
+    if (spade && heart && diamond && club) {
+      imageMode(CENTER);
+  
+      // No rotation - spade
+      image(spade, x + this.width / 2, y + this.height / 3, 15, 15);
+  
+      // 180° rotation - heart
+      push();
+      translate(x + this.width / 2, y + (this.height * 2) / 3);
+      rotate(PI); // 180 degrees in radians
+      image(heart, 0, 0, 15, 15);
+      pop();
+  
+      // 90° rotation left (counter-clockwise) - diamond
+      push();
+      translate(x + this.width / 3, y + this.height / 2);
+      rotate(-HALF_PI); // -90 degrees
+      image(diamond, 0, 0, 15, 18);
+      pop();
+  
+      // 90° rotation right (clockwise) - club
+      push();
+      translate(x + (this.width * 2) / 3, y + this.height / 2);
+      rotate(HALF_PI); // 90 degrees
+      image(club, 0, 0, 15, 18);
+      pop();
+  
+    } else {
+      // Fallback filler text
+      text(`BackArt`, x + 5, y + 25);
+    }
+  
+    pop();
   }
+  
 
   drawFront(x = this.x, y = this.y) {
     // Draw card background
