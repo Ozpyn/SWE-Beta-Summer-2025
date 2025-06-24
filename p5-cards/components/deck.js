@@ -101,6 +101,14 @@ class Deck {
       stroke(color('#505C45'));
       strokeWeight(2);
       rect(x + 10, y + 10, 40, 70, 5);
+      if (this.sizeLimit) {
+        push();
+        strokeWeight(0.5);
+        textAlign(CENTER, CENTER);
+        textSize(10);
+        text(`Max: ${this.sizeLimit}`, x + (this.width / 2), y + (this.height / 2));
+        pop();
+      }
       pop();
     }
   }
