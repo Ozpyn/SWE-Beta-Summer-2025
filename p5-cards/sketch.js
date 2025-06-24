@@ -8,10 +8,11 @@ let allDecks = [];
 let draggingCard = null;
 let joker, jack, queen, king;
 let heart, club, spade, diamond;
+let w = 800, h = 600;
 
 
 async function setup() {
-  createCanvas(800, 600);
+  createCanvas(w, h);
   await loadImages();
 
   gameSelect = createSelect();
@@ -31,7 +32,7 @@ async function setup() {
   
   // Make a default deck & empty pile
   defaultDeck = new Deck({ id: "Deck", canBeDrawnFrom: true, includeJokers: true});
-  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible:true });
+  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible:true});
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
@@ -135,10 +136,11 @@ function mouseReleased() {
   if (draggingCard) {
     for (let deck of allDecks) {
       if (deck.isMouseOver(mouseX, mouseY)) {
-        deck.addCard(draggingCard);
-        const index = draggableCards.indexOf(draggingCard);
-        if (index !== -1) draggableCards.splice(index, 1);
-        break;
+        if (deck.addCard(draggingCard)) {
+          const index = draggableCards.indexOf(draggingCard);
+          if (index !== -1) draggableCards.splice(index, 1);
+          break;
+        }
       }
     }
 
@@ -170,7 +172,9 @@ function startGame() {
 function drawACard(selectedDeck) {
   let card = selectedDeck.drawCard();
   if (card && (card != -1)) {
-    discard.addCard(card);
+    if (!discard.addCard(card)) {
+      selectedDeck.addCard(card);
+    }
     // alert(card.rank + " of " + card.suit);
   }
   return;

@@ -20,5 +20,5 @@ pip install selenium webdriver-manager requests --break-system-packages
 
 Run the testing script:
 ```
-python p5-cards/tests/pytest.py
+python p5-cards/tests/firefox.py
 ```

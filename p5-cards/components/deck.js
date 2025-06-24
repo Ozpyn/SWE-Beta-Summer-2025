@@ -2,21 +2,22 @@ const suits = ['Heart', 'Diamond', 'Club', 'Spade'];
 const ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
 
 class Deck {
-  constructor({ includeJokers = false, facesVisible = false, id = "", startEmpty = false, canBeDrawnFrom = false } = {}) {
+  constructor({ includeJokers = false, facesVisible = false, id = "", startEmpty = false, canBeDrawnFrom = false, sizeLimit = null } = {}) {
     this.name = id;
     this.cards = [];
     this.faceUp = facesVisible;
+    this.sizeLimit = sizeLimit;
     if (!startEmpty) {
-      this.populate(includeJokers);
+      this.#populate(includeJokers);
+      this.shuffle();
     }
-    this.shuffle();
-
     this.width = 60;
     this.height = 90;
     this.canBeDrawnFrom = canBeDrawnFrom;
   }
 
-  populate(includeJokers) {
+  // # makes the function private
+  #populate(includeJokers) {
     for (let suit of suits) {
       for (let rank of ranks) {
         this.cards.push(new Card(suit, rank));
@@ -51,9 +52,16 @@ class Deck {
   }
 
   addCard(newCard) {
+    if (this.sizeLimit !== null && this.cards.length >= this.sizeLimit) {
+      console.log(`Cannot add ${newCard.rank} of ${newCard.suit}: deck has reached its size limit (${this.sizeLimit})`);
+      return false;
+    }
+  
     this.cards.push(newCard);
-    console.log(`Added ${newCard.rank} of ${newCard.suit} to the deck / pile`)
+    console.log(`Added ${newCard.rank} of ${newCard.suit} to the deck / pile`);
+    return true;
   }
+  
 
   getTop() {
     if (!this.cards || this.cards.length === 0) {
@@ -95,7 +103,6 @@ class Deck {
       rect(x + 10, y + 10, 40, 70, 5);
       pop();
     }
-    
   }
 
   isMouseOver(mx, my) {
