@@ -1,4 +1,4 @@
-const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+const suits = ['Heart', 'Diamond', 'Club', 'Spade'];
 const ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
 
 class Deck {
@@ -42,6 +42,11 @@ class Deck {
     }
   
     const drawnCard = this.cards.pop();
+    if (this.faceUp) {
+      drawnCard.faceUp = true;
+    } else {
+      drawnCard.faceUp = false;
+    }
     return drawnCard || -1;
   }
 

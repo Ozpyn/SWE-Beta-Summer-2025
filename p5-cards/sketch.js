@@ -6,9 +6,13 @@ let selectedGame = null;
 let draggableCards = [];
 let allDecks = [];
 let draggingCard = null;
+let joker, jack, queen, king;
+let heart, club, spade, diamond;
 
-function setup() {
+
+async function setup() {
   createCanvas(800, 600);
+  await loadImages();
 
   gameSelect = createSelect();
   gameSelect.position(20, 20);
@@ -29,6 +33,7 @@ function setup() {
   defaultDeck = new Deck(id = "Deck");
   defaultDeck.canBeDrawnFrom = true;
   discard = new Deck(includeJokers = false, facesVisible = true, id = "discard", empty = true);
+  discard.canBeDrawnFrom = true;
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
@@ -52,7 +57,29 @@ function setup() {
   loseBtn.mousePressed(triggerLose);
 }
 
-function draw() {
+async function loadImages() {
+  try {
+    joker = await loadImage('assets/rank/joker.png');
+    jack = await loadImage('assets/rank/jack.png');
+    queen = await loadImage('assets/rank/queen.png');
+    king = await loadImage('assets/rank/king.png');
+
+    club = await loadImage('assets/suits/club.png');
+    diamond = await loadImage('assets/suits/diamond.png');
+    heart = await loadImage('assets/suits/heart.png');
+    spade = await loadImage('assets/suits/spade.png');
+
+    d_club = await loadImage('assets/suits/club_detail.png');
+    d_diamond = await loadImage('assets/suits/diamond_detail.png');
+    d_heart = await loadImage('assets/suits/heart_detail.png');
+    d_spade = await loadImage('assets/suits/spade_detail.png');
+
+  } catch (error) {
+    console.error("Image loading error:", error);
+  }
+}
+
+async function draw() {
   background(0, 200, 100);
   
   discard.draw(50, 100)
