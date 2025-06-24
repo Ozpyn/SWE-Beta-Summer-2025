@@ -120,9 +120,11 @@ class Card {
       }
     } else {
       // Fallback large suit symbol
+      push();
       textSize(20);
       textAlign(CENTER, CENTER);
-      text(this.getSuitSymbol(), x + this.width/2, y + this.height/2);
+      text(this.getSuitSymbol(), x + this.width / 2, y + this.height / 2);
+      pop();
     }
     
     // Draw rank and suit in bottom right (rotated)
