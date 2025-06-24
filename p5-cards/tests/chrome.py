@@ -13,7 +13,7 @@ import http.server
 import socketserver
 from webdriver_manager.chrome import ChromeDriverManager
 
-PORT = 8001
+PORT = 0  # Let system assign a free port
 HTML_FILE = "index.html"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DIRECTORY = os.path.join(os.path.dirname(SCRIPT_DIR))
@@ -26,14 +26,16 @@ def start_server(port, directory):
     server_thread = threading.Thread(target=httpd.serve_forever)
     server_thread.daemon = True
     server_thread.start()
-    print(f"Server started at http://localhost:{port}")
-    return httpd
 
-def wait_for_server(timeout=45):
+    actual_port = httpd.server_address[1]
+    print(f"Server started at http://localhost:{actual_port}")
+    return httpd, actual_port
+
+def wait_for_server(port, timeout=45):
     start_time = time.time()
     while time.time() - start_time < timeout:
         try:
-            response = requests.get(f'http://localhost:{PORT}/{HTML_FILE}')
+            response = requests.get(f'http://localhost:{port}/{HTML_FILE}')
             if response.status_code == 200:
                 return True
         except requests.ConnectionError:
@@ -51,18 +53,18 @@ service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 try:
-    # Start the HTTP server
-    server_process = start_server(PORT, DIRECTORY)
+    # Start server and get assigned port
+    server_process, actual_port = start_server(PORT, DIRECTORY)
 
-    # Wait for the server to be up and serving the HTML file
-    if not wait_for_server():
+    # Wait for server to start
+    if not wait_for_server(actual_port):
         print("Server did not start in time.")
         exit(1)
 
-    # Navigate to the page
-    driver.get(f'http://localhost:{PORT}/{HTML_FILE}')
+    # Open page
+    driver.get(f'http://localhost:{actual_port}/{HTML_FILE}')
 
-    # Inject JavaScript to override console methods
+    # Inject console override
     driver.execute_script("""
         window._consoleLogs = [];
         ['log', 'error', 'warn', 'info'].forEach(function(level) {
@@ -74,20 +76,16 @@ try:
         });
     """)
 
-    # OPTIONAL: run tests (if not auto-run)
+    # Run tests if needed
     driver.execute_script("runTests();")
-
-    # Give time for tests to run
     time.sleep(2)
 
-    # Get logs from browser
+    # Collect logs
     logs = driver.execute_script("return window._consoleLogs;")
-    has_errors = False
+    has_errors = any("❌" in line for line in logs)
 
     for line in logs:
         print(line)
-        if "❌" in line:
-            has_errors = True
 
     if has_errors:
         print("One or more tests failed.")
@@ -98,3 +96,4 @@ try:
 
 finally:
     driver.quit()
+    server_process.shutdown();

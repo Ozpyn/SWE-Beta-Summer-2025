@@ -49,3 +49,81 @@ addTest('Make A Card', async () => {
         error("Card does not match what it was initialized to.")
     }
 });
+
+addTest('Standard Deck has 52 cards', async () => {
+    let testDeck = new Deck();
+    testDeck.canBeDrawnFrom = true;
+    drawnCards = 0;
+    let heart = 0, spade = 0, diamond = 0, club = 0, no_suit = 0;
+
+    while (true) {
+        let testCard = testDeck.drawCard();
+        if ((testCard == -1) || (!testCard)) break;
+
+        switch (testCard.suit) {
+            case 'Heart': heart++; break;
+            case 'Diamond': diamond++; break;
+            case 'Club': club++; break;
+            case 'Spade': spade++; break;
+            default:
+                no_suit++;
+                break;
+        }
+        drawnCards++;
+    }
+    if (drawnCards !== 52) {
+        error(`There are ${drawnCards} cards in the default deck! \n Diamonds: ${diamond}, Hearts: ${heart}, Clubs: ${club}, Spades: ${spade}, and No-Suit: ${no_suit}`);
+    }
+});
+
+addTest('Deck with Jokers has 54 cards', async () => {
+    let testDeck = new Deck({ includeJokers: true });
+    testDeck.canBeDrawnFrom = true;
+    drawnCards = 0;
+    let heart = 0, spade = 0, diamond = 0, club = 0, no_suit = 0;
+
+    while (true) {
+        let testCard = testDeck.drawCard();
+        if ((testCard == -1) || (!testCard)) break;
+
+        switch (testCard.suit) {
+            case 'Heart': heart++; break;
+            case 'Diamond': diamond++; break;
+            case 'Club': club++; break;
+            case 'Spade': spade++; break;
+            default:
+                no_suit++;
+                break;
+        }
+        drawnCards++;
+    }
+    if (drawnCards !== 54) {
+        error(`There are ${drawnCards} cards in the default deck! \n Diamonds: ${diamond}, Hearts: ${heart}, Clubs: ${club}, Spades: ${spade}, and No-Suit: ${no_suit}`);
+    }
+});
+
+addTest('Empty Deck is Empty', async () => {
+    let testDeck = new Deck({startEmpty: true});
+    testDeck.canBeDrawnFrom = true;
+    drawnCards = 0;
+    let heart = 0, spade = 0, diamond = 0, club = 0, no_suit = 0;
+
+    while (true) {
+        let testCard = testDeck.drawCard();
+        if ((testCard == -1) || (!testCard)) break;
+
+        switch (testCard.suit) {
+            case 'Heart': heart++; break;
+            case 'Diamond': diamond++; break;
+            case 'Club': club++; break;
+            case 'Spade': spade++; break;
+            default:
+                no_suit++;
+                break;
+        }
+        drawnCards++;
+    }
+    if (drawnCards !== 0) {
+        error(`There are ${drawnCards} cards in the default deck! \n Diamonds: ${diamond}, Hearts: ${heart}, Clubs: ${club}, Spades: ${spade}, and No-Suit: ${no_suit}`);
+    }
+});

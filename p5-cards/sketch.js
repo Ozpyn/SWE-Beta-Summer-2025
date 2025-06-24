@@ -30,10 +30,8 @@ async function setup() {
   startButton.mousePressed(startGame);
   
   // Make a default deck & empty pile
-  defaultDeck = new Deck(id = "Deck");
-  defaultDeck.canBeDrawnFrom = true;
-  discard = new Deck(includeJokers = false, facesVisible = true, id = "discard", empty = true);
-  discard.canBeDrawnFrom = true;
+  defaultDeck = new Deck({ id: "Deck", canBeDrawnFrom: true, includeJokers: true});
+  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible:true });
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);

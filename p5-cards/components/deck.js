@@ -2,18 +2,18 @@ const suits = ['Heart', 'Diamond', 'Club', 'Spade'];
 const ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
 
 class Deck {
-  constructor(includeJokers = false, facesVisible = false, id = "", empty = false) {
+  constructor({ includeJokers = false, facesVisible = false, id = "", startEmpty = false, canBeDrawnFrom = false } = {}) {
     this.name = id;
     this.cards = [];
     this.faceUp = facesVisible;
-    if (!empty) {
+    if (!startEmpty) {
       this.populate(includeJokers);
     }
     this.shuffle();
 
     this.width = 60;
     this.height = 90;
-    this.canBeDrawnFrom = false;
+    this.canBeDrawnFrom = canBeDrawnFrom;
   }
 
   populate(includeJokers) {
