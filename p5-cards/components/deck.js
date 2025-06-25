@@ -42,6 +42,11 @@ class Deck {
     }
   
     const drawnCard = this.cards.pop();
+    if (this.faceUp) {
+      drawnCard.faceUp = true;
+    } else {
+      drawnCard.faceUp = false;
+    }
     return drawnCard || -1;
   }
 

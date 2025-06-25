@@ -12,7 +12,7 @@ let heart, club, spade, diamond;
 
 async function setup() {
   createCanvas(800, 600);
-  loadImages();
+  await loadImages();
 
   gameSelect = createSelect();
   gameSelect.position(20, 20);
@@ -33,6 +33,7 @@ async function setup() {
   defaultDeck = new Deck(id = "Deck");
   defaultDeck.canBeDrawnFrom = true;
   discard = new Deck(includeJokers = false, facesVisible = true, id = "discard", empty = true);
+  discard.canBeDrawnFrom = true;
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
