@@ -78,6 +78,12 @@ class Hand {
     });
   }
 
+  hide() {
+    this.cards.forEach(tCard => {
+      tCard.faceUp = false;
+    });
+  }
+
   isMouseOver(mx, my) {
     return (
       mx >= this.x && mx <= this.x + this.maxWidth &&

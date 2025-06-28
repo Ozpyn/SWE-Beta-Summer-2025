@@ -5,7 +5,7 @@ let resultText = "";
 
 function setupBlackjack() {
     createBlackjackButtons();
-    blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false });
+    blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: true });
     blackjackDeck.shuffle();
 
     playerHand = new Hand("Player");
@@ -16,11 +16,13 @@ function setupBlackjack() {
 
     for (let i = 0; i < 2; i++) {
         playerHand.addCard(blackjackDeck.drawCard());
-        dealerHand.addCard(blackjackDeck.drawCard());
+        let tempCard = blackjackDeck.drawCard();
+        tempCard.faceUp = false;
+        dealerHand.addCard(tempCard);
     }
 
     gameState = 'playerTurn';
-    resultText = "";
+    console.log("It is the players turn")
 }
 
 function blackjackDraw() {
@@ -35,14 +37,6 @@ function blackjackDraw() {
 
     text("Player", 100, 260);
     playerHand.draw(100, 280);
-
-    if (gameState === 'gameOver') {
-        fill(255, 255, 0);
-        textSize(28);
-        text(resultText, width / 2 - 100, height - 60);
-        textSize(16);
-        text("Click anywhere to restart", width / 2 - 80, height - 30);
-    }
     pop();
 }
 
@@ -52,21 +46,27 @@ function blackjackMousePressed() {
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // Dealer automatically plays after player stands
-function dealerPlay() {
+async function dealerPlay() {
+    dealerHand.reveal();
     while (getHandValue(dealerHand) < 17) {
         dealerHand.addCard(blackjackDeck.drawCard());
+        await sleep(1000)
     }
 
     let dealerVal = getHandValue(dealerHand);
     let playerVal = getHandValue(playerHand);
 
     if (dealerVal > 21 || playerVal > dealerVal) {
-        resultText = "You win!";
+        console.log("You win!")
     } else if (dealerVal === playerVal) {
-        resultText = "Push.";
+        console.log("Push.")
     } else {
-        resultText = "Dealer wins.";
+        console.log("Dealer wins.")
     }
 
     gameState = 'gameOver';
