@@ -11,8 +11,8 @@ class Deck {
       this.#populate(includeJokers);
       this.shuffle();
     }
-    this.width = 60;
-    this.height = 90;
+    this.width = defaultCardWidth;
+    this.height = defaultCardHeight;
     this.canBeDrawnFrom = canBeDrawnFrom;
   }
 
