@@ -15,18 +15,18 @@ class Hand {
     this.y = y;
     const cards = this.getCards();
     const count = cards.length;
-  
+
     let spacing = this.cardWidth;
     if (count > 1) {
       spacing = Math.min(this.cardWidth, (this.maxWidth - this.cardWidth) / (count - 1));
     }
-  
+
     const handWidth = count > 1
       ? spacing * (count - 1) + this.cardWidth
       : this.cardWidth;
-  
+
     const startX = x + (this.maxWidth - handWidth) / 2;
-  
+
     stroke(180);
     noFill();
     rect(x, y, this.maxWidth, this.cardHeight, 10);
@@ -47,7 +47,7 @@ class Hand {
     }
     pop();
   }
-  
+
 
   addCard(card) {
     this.cards.push(card);
@@ -72,11 +72,17 @@ class Hand {
     return this.cards.length;
   }
 
+  reveal() {
+    this.cards.forEach(tCard => {
+      tCard.faceUp = true;
+    });
+  }
+
   isMouseOver(mx, my) {
     return (
       mx >= this.x && mx <= this.x + this.maxWidth &&
       my >= this.y && my <= this.y + this.cardHeight
     );
   }
-  
+
 }
