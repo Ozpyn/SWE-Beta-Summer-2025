@@ -1,0 +1,129 @@
+const tests = [];
+
+function addTest(name, testFunction) {
+    tests.push({ name, testFunction });
+}
+
+function error(errorContent) {
+    throw new Error(errorContent);
+}
+
+async function runTests() {
+    let allPassed = true;
+    for (const test of tests) {
+        setupTestEnvironment();
+
+        try {
+            await test.testFunction();
+            console.log(`✔️ ${test.name} passed`);
+        } catch (error) {
+            console.error(`❌ ${test.name} failed: ${error.message}`);
+            allPassed = false;
+        }
+    }
+    if (allPassed) {
+        console.log('All tests passed!');
+        return allPassed;
+    } else {
+        console.log('Some tests failed. Check above for details.');
+        return allPassed;
+    }
+}
+
+function setupTestEnvironment() {
+    // logic to have the game in a testable state
+};
+
+
+// Example Tests
+addTest('Testing Framework Test', async () => {
+    let i = 1;
+    if (i != 1) {
+        error("i does not equal 1")
+    }
+});
+
+addTest('Make A Card', async () => {
+    let testCard = new Card('Clubs', 'King');
+    if ((testCard.rank !== 'King') || (testCard.suit !== 'Clubs')) {
+        error("Card does not match what it was initialized to.")
+    }
+});
+
+addTest('Standard Deck has 52 cards', async () => {
+    let testDeck = new Deck();
+    testDeck.canBeDrawnFrom = true;
+    drawnCards = 0;
+    let heart = 0, spade = 0, diamond = 0, club = 0, no_suit = 0;
+
+    while (true) {
+        let testCard = testDeck.drawCard();
+        if ((testCard == -1) || (!testCard)) break;
+
+        switch (testCard.suit) {
+            case 'Heart': heart++; break;
+            case 'Diamond': diamond++; break;
+            case 'Club': club++; break;
+            case 'Spade': spade++; break;
+            default:
+                no_suit++;
+                break;
+        }
+        drawnCards++;
+    }
+    if (drawnCards !== 52) {
+        error(`There are ${drawnCards} cards in the default deck! \n Diamonds: ${diamond}, Hearts: ${heart}, Clubs: ${club}, Spades: ${spade}, and No-Suit: ${no_suit}`);
+    }
+});
+
+addTest('Deck with Jokers has 54 cards', async () => {
+    let testDeck = new Deck({ includeJokers: true });
+    testDeck.canBeDrawnFrom = true;
+    drawnCards = 0;
+    let heart = 0, spade = 0, diamond = 0, club = 0, no_suit = 0;
+
+    while (true) {
+        let testCard = testDeck.drawCard();
+        if ((testCard == -1) || (!testCard)) break;
+
+        switch (testCard.suit) {
+            case 'Heart': heart++; break;
+            case 'Diamond': diamond++; break;
+            case 'Club': club++; break;
+            case 'Spade': spade++; break;
+            default:
+                no_suit++;
+                break;
+        }
+        drawnCards++;
+    }
+    if (drawnCards !== 54) {
+        error(`There are ${drawnCards} cards in the default deck! \n Diamonds: ${diamond}, Hearts: ${heart}, Clubs: ${club}, Spades: ${spade}, and No-Suit: ${no_suit}`);
+    }
+});
+
+addTest('Empty Deck is Empty', async () => {
+    let testDeck = new Deck({startEmpty: true});
+    testDeck.canBeDrawnFrom = true;
+    drawnCards = 0;
+    let heart = 0, spade = 0, diamond = 0, club = 0, no_suit = 0;
+
+    while (true) {
+        let testCard = testDeck.drawCard();
+        if ((testCard == -1) || (!testCard)) break;
+
+        switch (testCard.suit) {
+            case 'Heart': heart++; break;
+            case 'Diamond': diamond++; break;
+            case 'Club': club++; break;
+            case 'Spade': spade++; break;
+            default:
+                no_suit++;
+                break;
+        }
+        drawnCards++;
+    }
+    if (drawnCards !== 0) {
+        error(`There are ${drawnCards} cards in the default deck! \n Diamonds: ${diamond}, Hearts: ${heart}, Clubs: ${club}, Spades: ${spade}, and No-Suit: ${no_suit}`);
+    }
+});
