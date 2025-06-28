@@ -152,15 +152,26 @@ function mousePressed() {
 
 function mouseReleased() {
   if (draggingCard) {
-    // Try dropping card into a hand
     for (let hand of allHands) {
       if (hand.isMouseOver(mouseX, mouseY)) {
-        hand.addCard(draggingCard);
-        const index = draggableCards.indexOf(draggingCard);
-        if (index !== -1) draggableCards.splice(index, 1);
-        break;
+        const handCards = hand.cards;
+        let insertIndex = handCards.length;
+        for (let i = 0; i < handCards.length; i++) {
+          const currentCard = handCards[i];
+          if (draggingCard.x < currentCard.x + currentCard.width / 2) {
+            insertIndex = i;
+            break;
+          }
+        }
+        handCards.splice(insertIndex, 0, draggingCard);
+        const i = draggableCards.indexOf(draggingCard);
+        if (i !== -1) draggableCards.splice(i, 1);
+        draggingCard.stopDrag();
+        draggingCard = null;
+        return;
       }
     }
+
 
     for (let deck of allDecks) {
       if (deck.isMouseOver(mouseX, mouseY)) {
