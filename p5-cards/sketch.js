@@ -4,7 +4,7 @@ let startButton;
 let engine = null;
 let selectedGame = null;
 let draggableCards = [];
-let allDecks = [];
+let allDecks = [], allHands = [];
 let draggingCard = null;
 let joker, jack, queen, king;
 let heart, club, spade, diamond;
@@ -37,6 +37,9 @@ async function setup() {
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
+
+  testHand = new Hand("test");
+  allHands.push(testHand);
 
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
@@ -84,6 +87,7 @@ async function draw() {
   
   discard.draw(50, 100)
   defaultDeck.draw(150, 100)
+  testHand.draw(150, 300);
 
   // Update dragging card position
   if (draggingCard) {
@@ -118,6 +122,21 @@ function mousePressed() {
         }
       }
     }
+    
+    // Check if mouse is over a card in a hand
+    for (let hand of allHands) {
+      const cards = hand.getCards();
+      for (let i = cards.length - 1; i >= 0; i--) {
+        const card = cards[i];
+        if (card.isMouseOver()) {
+          hand.removeCard(card);
+          card.startDrag();
+          draggingCard = card;
+          draggableCards.push(card);
+          return;
+        }
+      }
+    }
 
     // Otherwise check for a dragged card
     for (let i = draggableCards.length - 1; i >= 0; i--) {
@@ -131,10 +150,29 @@ function mousePressed() {
   }
 }
 
-
-
 function mouseReleased() {
   if (draggingCard) {
+    for (let hand of allHands) {
+      if (hand.isMouseOver(mouseX, mouseY)) {
+        const handCards = hand.cards;
+        let insertIndex = handCards.length;
+        for (let i = 0; i < handCards.length; i++) {
+          const currentCard = handCards[i];
+          if (draggingCard.x < currentCard.x + currentCard.width / 2) {
+            insertIndex = i;
+            break;
+          }
+        }
+        handCards.splice(insertIndex, 0, draggingCard);
+        const i = draggableCards.indexOf(draggingCard);
+        if (i !== -1) draggableCards.splice(i, 1);
+        draggingCard.stopDrag();
+        draggingCard = null;
+        return;
+      }
+    }
+
+
     for (let deck of allDecks) {
       if (deck.isMouseOver(mouseX, mouseY)) {
         deck.addCard(draggingCard);
