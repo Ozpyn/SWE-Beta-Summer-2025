@@ -2,21 +2,22 @@ const suits = ['Heart', 'Diamond', 'Club', 'Spade'];
 const ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
 
 class Deck {
-  constructor(includeJokers = false, facesVisible = false, id = "", empty = false) {
+  constructor({ includeJokers = false, facesVisible = false, id = "", startEmpty = false, canBeDrawnFrom = false, sizeLimit = null } = {}) {
     this.name = id;
     this.cards = [];
     this.faceUp = facesVisible;
-    if (!empty) {
-      this.populate(includeJokers);
+    this.sizeLimit = sizeLimit;
+    if (!startEmpty) {
+      this.#populate(includeJokers);
+      this.shuffle();
     }
-    this.shuffle();
-
-    this.width = 60;
-    this.height = 90;
-    this.canBeDrawnFrom = false;
+    this.width = defaultCardWidth;
+    this.height = defaultCardHeight;
+    this.canBeDrawnFrom = canBeDrawnFrom;
   }
 
-  populate(includeJokers) {
+  // # makes the function private
+  #populate(includeJokers) {
     for (let suit of suits) {
       for (let rank of ranks) {
         this.cards.push(new Card(suit, rank));
@@ -51,9 +52,16 @@ class Deck {
   }
 
   addCard(newCard) {
+    if (this.sizeLimit !== null && this.cards.length >= this.sizeLimit) {
+      console.log(`Cannot add ${newCard.rank} of ${newCard.suit}: deck has reached its size limit (${this.sizeLimit})`);
+      return false;
+    }
+  
     this.cards.push(newCard);
-    console.log(`Added ${newCard.rank} of ${newCard.suit} to the deck / pile`)
+    console.log(`Added ${newCard.rank} of ${newCard.suit} to the deck / pile`);
+    return true;
   }
+  
 
   getTop() {
     if (!this.cards || this.cards.length === 0) {
@@ -93,9 +101,16 @@ class Deck {
       stroke(color('#505C45'));
       strokeWeight(2);
       rect(x + 10, y + 10, 40, 70, 5);
+      if (this.sizeLimit) {
+        push();
+        strokeWeight(0.5);
+        textAlign(CENTER, CENTER);
+        textSize(10);
+        text(`Max: ${this.sizeLimit}`, x + (this.width / 2), y + (this.height / 2));
+        pop();
+      }
       pop();
     }
-    
   }
 
   isMouseOver(mx, my) {

@@ -1,9 +1,12 @@
+const defaultCardWidth = 60;
+const defaultCardHeight = 90;
+
 class Card {
   constructor(suit, rank, x, y) {
     this.suit = suit;
     this.rank = rank;
-    this.width = 60;
-    this.height = 90;
+    this.width = defaultCardWidth;
+    this.height = defaultCardHeight;
     this.x = x;
     this.y = y;
     this.faceUp = false;
