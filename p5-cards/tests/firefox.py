@@ -46,8 +46,6 @@ def wait_for_server(port, timeout=45):
 # Set up Firefox options
 firefox_options = Options()
 firefox_options.add_argument("--headless")
-firefox_options.add_argument("--no-sandbox")
-firefox_options.add_argument("--disable-dev-shm-usage")
 
 # Initialize driver
 service = Service(GeckoDriverManager().install())
