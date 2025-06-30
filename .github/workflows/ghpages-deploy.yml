@@ -1,9 +1,10 @@
-name: Deploy p5-cards to GitHub Pages
+name: Deploy cardfrenzy to GitHub Pages
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
