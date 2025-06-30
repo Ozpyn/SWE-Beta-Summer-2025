@@ -5,6 +5,7 @@ let engine = null;
 let selectedGame = null;
 let draggableCards = [];
 let allDecks = [], allHands = [];
+let menuButtons = [];
 let draggingCard = null;
 let joker, jack, queen, king;
 let heart, club, spade, diamond;
@@ -29,10 +30,10 @@ async function setup() {
   startButton.style('font-family', 'Concert One')
   startButton.position(160, 20);
   startButton.mousePressed(startGame);
-  
+
   // Make a default deck & empty pile
-  defaultDeck = new Deck({ id: "Deck", canBeDrawnFrom: true, includeJokers: true});
-  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible:true});
+  defaultDeck = new Deck({ id: "Deck", canBeDrawnFrom: true, includeJokers: true });
+  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible: true });
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
@@ -57,6 +58,12 @@ async function setup() {
   loseBtn.style('font-family', 'Concert One')
   loseBtn.position(400, 50);
   loseBtn.mousePressed(triggerLose);
+
+  menuButtons.push(gameSelect);
+  menuButtons.push(startButton);
+  menuButtons.push(drawCardBtn);
+  menuButtons.push(winBtn);
+  menuButtons.push(loseBtn);
 }
 
 async function loadImages() {
@@ -83,10 +90,17 @@ async function loadImages() {
 
 async function draw() {
   background(0, 200, 100);
-  
-  discard.draw(50, 100)
-  defaultDeck.draw(150, 100)
-  testHand.draw(150, 300);
+
+  switch (selectedGame) {
+    case "Blackjack":
+      blackjackDraw();
+      break;
+    default:
+      discard.draw(50, 100)
+      defaultDeck.draw(150, 100)
+      testHand.draw(150, 300);
+      break;
+  }
 
   // Update dragging card position
   if (draggingCard) {
@@ -98,7 +112,6 @@ async function draw() {
     card.draw();
   }
 
-
   // These should always appear on top, so they must always be last to be drawn
   drawWinOverlay();
   drawLoseOverlay();
@@ -106,46 +119,53 @@ async function draw() {
 
 // Card Dragging Helper functions
 function mousePressed() {
-  if (!showWin && !showLose) {
-    // Check if mouse is over any draw-enabled deck
-    for (let deck of allDecks) {
-      if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
-        const card = deck.drawCard();
-        if (card !== -1) {
-          card.x = mouseX - card.width / 2;
-          card.y = mouseY - card.height / 2;
-          draggingCard = card;
-          draggingCard.startDrag();
-          draggableCards.push(draggingCard);
-          return;
+  switch (selectedGame) {
+    case "Blackjack":
+      blackjackMousePressed();
+      break;
+    default:
+      if (!showWin && !showLose) {
+        // Check if mouse is over any draw-enabled deck
+        for (let deck of allDecks) {
+          if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
+            const card = deck.drawCard();
+            if (card !== -1) {
+              card.x = mouseX - card.width / 2;
+              card.y = mouseY - card.height / 2;
+              draggingCard = card;
+              draggingCard.startDrag();
+              draggableCards.push(draggingCard);
+              return;
+            }
+          }
         }
-      }
-    }
-    
-    // Check if mouse is over a card in a hand
-    for (let hand of allHands) {
-      const cards = hand.getCards();
-      for (let i = cards.length - 1; i >= 0; i--) {
-        const card = cards[i];
-        if (card.isMouseOver()) {
-          hand.removeCard(card);
-          card.startDrag();
-          draggingCard = card;
-          draggableCards.push(card);
-          return;
-        }
-      }
-    }
 
-    // Otherwise check for a dragged card
-    for (let i = draggableCards.length - 1; i >= 0; i--) {
-      if (draggableCards[i].isMouseOver()) {
-        draggingCard = draggableCards[i];
-        draggingCard.startDrag();
-        draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
-        break;
+        // Check if mouse is over a card in a hand
+        for (let hand of allHands) {
+          const cards = hand.getCards();
+          for (let i = cards.length - 1; i >= 0; i--) {
+            const card = cards[i];
+            if (card.isMouseOver()) {
+              hand.removeCard(card);
+              card.startDrag();
+              draggingCard = card;
+              draggableCards.push(card);
+              return;
+            }
+          }
+        }
+
+        // Otherwise check for a dragged card
+        for (let i = draggableCards.length - 1; i >= 0; i--) {
+          if (draggableCards[i].isMouseOver()) {
+            draggingCard = draggableCards[i];
+            draggingCard.startDrag();
+            draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
+            break;
+          }
+        }
       }
-    }
+      break;
   }
 }
 
@@ -187,24 +207,21 @@ function mouseReleased() {
   }
 }
 
-
-
 function startGame() {
   selectedGame = gameSelect.value();
   if (selectedGame === 'Choose a game') {
     alert('Please select a game mode.');
     return;
   }
-
-  let gameFile = `games/${selectedGame.toLowerCase()}.json`;
-
-  // Load the game config and initialize engine
-  loadJSON(gameFile, config => {
-    engine = new GameEngine(config);
-    engine.setup();
-  }, () => {
-    alert(`Could not load config for ${selectedGame}`);
-  });
+  switch (selectedGame) {
+    case "Blackjack":
+      hideMenuButtons();
+      setupBlackjack();
+      break;
+    default:
+      showMenuButtons();
+      break;
+  }
 }
 
 function drawACard(selectedDeck) {
@@ -216,4 +233,16 @@ function drawACard(selectedDeck) {
     // alert(card.rank + " of " + card.suit);
   }
   return;
+}
+
+function hideMenuButtons() {
+  for (let btn of menuButtons) {
+    btn.hide();
+  }
+}
+
+function showMenuButtons() {
+  for (let btn of menuButtons) {
+    btn.show();
+  }
 }
