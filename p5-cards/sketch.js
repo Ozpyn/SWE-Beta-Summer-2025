@@ -4,11 +4,16 @@ let startButton;
 let engine = null;
 let selectedGame = null;
 let draggableCards = [];
-let allDecks = [];
+let allDecks = [], allHands = [];
 let draggingCard = null;
+let joker, jack, queen, king;
+let heart, club, spade, diamond;
+let w = 800, h = 600;
 
-function setup() {
-  createCanvas(800, 600);
+
+async function setup() {
+  createCanvas(w, h);
+  await loadImages();
 
   gameSelect = createSelect();
   gameSelect.position(20, 20);
@@ -26,12 +31,14 @@ function setup() {
   startButton.mousePressed(startGame);
   
   // Make a default deck & empty pile
-  defaultDeck = new Deck(id = "Deck");
-  defaultDeck.canBeDrawnFrom = true;
-  discard = new Deck(includeJokers = false, facesVisible = true, id = "discard", empty = true);
+  defaultDeck = new Deck({ id: "Deck", canBeDrawnFrom: true, includeJokers: true});
+  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible:true});
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
+
+  testHand = new Hand("test");
+  allHands.push(testHand);
 
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
@@ -52,11 +59,34 @@ function setup() {
   loseBtn.mousePressed(triggerLose);
 }
 
-function draw() {
+async function loadImages() {
+  try {
+    joker = await loadImage('assets/rank/joker.png');
+    jack = await loadImage('assets/rank/jack.png');
+    queen = await loadImage('assets/rank/queen.png');
+    king = await loadImage('assets/rank/king.png');
+
+    club = await loadImage('assets/suits/club.png');
+    diamond = await loadImage('assets/suits/diamond.png');
+    heart = await loadImage('assets/suits/heart.png');
+    spade = await loadImage('assets/suits/spade.png');
+
+    d_club = await loadImage('assets/suits/club_detail.png');
+    d_diamond = await loadImage('assets/suits/diamond_detail.png');
+    d_heart = await loadImage('assets/suits/heart_detail.png');
+    d_spade = await loadImage('assets/suits/spade_detail.png');
+
+  } catch (error) {
+    console.error("Image loading error:", error);
+  }
+}
+
+async function draw() {
   background(0, 200, 100);
   
   discard.draw(50, 100)
   defaultDeck.draw(150, 100)
+  testHand.draw(150, 300);
 
   // Update dragging card position
   if (draggingCard) {
@@ -91,6 +121,21 @@ function mousePressed() {
         }
       }
     }
+    
+    // Check if mouse is over a card in a hand
+    for (let hand of allHands) {
+      const cards = hand.getCards();
+      for (let i = cards.length - 1; i >= 0; i--) {
+        const card = cards[i];
+        if (card.isMouseOver()) {
+          hand.removeCard(card);
+          card.startDrag();
+          draggingCard = card;
+          draggableCards.push(card);
+          return;
+        }
+      }
+    }
 
     // Otherwise check for a dragged card
     for (let i = draggableCards.length - 1; i >= 0; i--) {
@@ -104,16 +149,36 @@ function mousePressed() {
   }
 }
 
-
-
 function mouseReleased() {
   if (draggingCard) {
+    for (let hand of allHands) {
+      if (hand.isMouseOver(mouseX, mouseY)) {
+        const handCards = hand.cards;
+        let insertIndex = handCards.length;
+        for (let i = 0; i < handCards.length; i++) {
+          const currentCard = handCards[i];
+          if (draggingCard.x < currentCard.x + currentCard.width / 2) {
+            insertIndex = i;
+            break;
+          }
+        }
+        handCards.splice(insertIndex, 0, draggingCard);
+        const i = draggableCards.indexOf(draggingCard);
+        if (i !== -1) draggableCards.splice(i, 1);
+        draggingCard.stopDrag();
+        draggingCard = null;
+        return;
+      }
+    }
+
+
     for (let deck of allDecks) {
       if (deck.isMouseOver(mouseX, mouseY)) {
-        deck.addCard(draggingCard);
-        const index = draggableCards.indexOf(draggingCard);
-        if (index !== -1) draggableCards.splice(index, 1);
-        break;
+        if (deck.addCard(draggingCard)) {
+          const index = draggableCards.indexOf(draggingCard);
+          if (index !== -1) draggableCards.splice(index, 1);
+          break;
+        }
       }
     }
 
@@ -145,7 +210,9 @@ function startGame() {
 function drawACard(selectedDeck) {
   let card = selectedDeck.drawCard();
   if (card && (card != -1)) {
-    discard.addCard(card);
+    if (!discard.addCard(card)) {
+      selectedDeck.addCard(card);
+    }
     // alert(card.rank + " of " + card.suit);
   }
   return;
