@@ -25,8 +25,11 @@ jobs:
         sudo apt-get install -y openssh-client
 
         ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_SERVER_IP }} << 'EOF'
-          ls -al
+          cd SWE-Beta-Summer-2025/p5-cards
 
+          pid=$(lsof -t -i:9333) && if [ ! -z "$pid" ]; then kill -9 $pid; fi
+
+          nohup python -m http.server 9333 --directory ~/SWE-Beta-Summer-2025/p5-cards > /dev/null 2>&1 &
         EOF
 
     - name: Clean up SSH private key
