@@ -3,7 +3,7 @@ name: P5 Cards Browser Tests
 on:
   push:
     branches:
-      - main  # Trigger deployment on push to the main branch
+      - main  # Trigger on push to main branch
   workflow_dispatch:
 
 jobs:
@@ -16,24 +16,46 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13'
+        python-version: '3.12'  # Use stable version
 
-    - name: Install system dependencies (including Firefox)
+    - name: Install dependencies and Firefox (non-snap)
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          firefox \
           xdg-utils \
           wget \
-          python3 \
-          python3-pip
+          tar \
+          xvfb \
+          libdbus-glib-1-2 \
+          libgtk-3-0 \
+          libasound2 \
+          libx11-xcb1 \
+          libxcomposite1 \
+          libxdamage1 \
+          libxrandr2 \
+          libnss3 \
+          libxss1 \
+          libxtst6 \
+          fonts-liberation \
+          libappindicator3-1 \
+          libatk-bridge2.0-0 \
+          libdrm2 \
+          libxext6 \
+          libgbm1
+
+        # Download and extract latest Firefox from Mozilla
+        wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US"
+        tar -xjf firefox.tar.bz2
+        sudo mv firefox /opt/firefox
+        sudo ln -sf /opt/firefox/firefox /usr/local/bin/firefox
 
     - name: Install Python dependencies
-      run: |
-        pip install selenium webdriver-manager requests
+      run: pip install selenium webdriver-manager requests
 
-    - name: Set up Display
-      run: echo "DISPLAY=:99" >> $GITHUB_ENV
+    - name: Set up virtual display
+      run: |
+        Xvfb :99 -screen 0 1920x1080x24 &
+        echo "DISPLAY=:99" >> $GITHUB_ENV
 
     - name: Run Firefox Tests using Python
       run: |
@@ -49,9 +71,9 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13'
+        python-version: '3.12'
 
-    - name: Install system dependencies (including Chrome)
+    - name: Install Chrome and dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -59,7 +81,7 @@ jobs:
           wget \
           gnupg \
           unzip \
-          python3 \
+          xvfb \
           python3-pip
 
         # Add Google's signing key and install Chrome
@@ -70,11 +92,12 @@ jobs:
         sudo apt-get install -y google-chrome-stable
 
     - name: Install Python dependencies
-      run: |
-        pip install selenium webdriver-manager requests
+      run: pip install selenium webdriver-manager requests
 
-    - name: Set up Display
-      run: echo "DISPLAY=:99" >> $GITHUB_ENV
+    - name: Set up virtual display
+      run: |
+        Xvfb :99 -screen 0 1920x1080x24 &
+        echo "DISPLAY=:99" >> $GITHUB_ENV
 
     - name: Run Chrome Tests using Python
       run: |
