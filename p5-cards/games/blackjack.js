@@ -5,57 +5,44 @@ let resultText = "";
 
 class BlackJack extends Game {
     setup() {
-        setupBlackjack();
+        createBlackjackButtons();
+        blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: true });
+        blackjackDeck.shuffle();
+
+        playerHand = new Hand("Player");
+        dealerHand = new Hand("Dealer");
+
+        allDecks = [blackjackDeck];
+        allHands = [playerHand, dealerHand];
+
+        for (let i = 0; i < 2; i++) {
+            playerHand.addCard(blackjackDeck.drawCard());
+            let tempCard = blackjackDeck.drawCard();
+            tempCard.faceUp = false;
+            dealerHand.addCard(tempCard);
+        }
+
+        gameState = 'playerTurn';
+        console.log("It is the players turn")
     }
     draw() {
-        blackjackDraw();
+        push();
+        fill(255);
+        textSize(24);
+        text("Blackjack", width / 2 - 60, 40);
+
+        textSize(16);
+        text("Dealer", 100, 60);
+        dealerHand.draw(100, 80);
+
+        text("Player", 100, 260);
+        playerHand.draw(100, 280);
+        pop();
     }
     mousePressed() {
-        blackjackMousePressed();
-    }
-}
-
-
-function setupBlackjack() {
-    createBlackjackButtons();
-    blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: true });
-    blackjackDeck.shuffle();
-
-    playerHand = new Hand("Player");
-    dealerHand = new Hand("Dealer");
-
-    allDecks = [blackjackDeck];
-    allHands = [playerHand, dealerHand];
-
-    for (let i = 0; i < 2; i++) {
-        playerHand.addCard(blackjackDeck.drawCard());
-        let tempCard = blackjackDeck.drawCard();
-        tempCard.faceUp = false;
-        dealerHand.addCard(tempCard);
-    }
-
-    gameState = 'playerTurn';
-    console.log("It is the players turn")
-}
-
-function blackjackDraw() {
-    push();
-    fill(255);
-    textSize(24);
-    text("Blackjack", width / 2 - 60, 40);
-
-    textSize(16);
-    text("Dealer", 100, 60);
-    dealerHand.draw(100, 80);
-
-    text("Player", 100, 260);
-    playerHand.draw(100, 280);
-    pop();
-}
-
-function blackjackMousePressed() {
-    if (gameState === 'gameOver') {
-        setupBlackjack();
+        if (gameState === 'gameOver') {
+            this.setup();
+        }
     }
 }
 
@@ -66,6 +53,7 @@ function sleep(ms) {
 // Dealer automatically plays after player stands
 async function dealerPlay() {
     dealerHand.reveal();
+    await sleep(1000)
     while (getHandValue(dealerHand) < 17) {
         dealerHand.addCard(blackjackDeck.drawCard());
         await sleep(1000)
@@ -117,7 +105,7 @@ function createBlackjackButtons() {
         if (gameState === 'playerTurn') {
             playerHand.addCard(blackjackDeck.drawCard());
             if (getHandValue(playerHand) > 21) {
-                resultText = "Bust! You lose.";
+                console.log("Bust! You lose.");
                 gameState = 'gameOver';
             }
         }
@@ -132,14 +120,4 @@ function createBlackjackButtons() {
             dealerPlay();
         }
     });
-}
-
-function toggleBlackjackButtons(show) {
-    // if (show) {
-    //     hitButton.show();
-    //     standButton.show();
-    // } else {
-    //     hitButton.hide();
-    //     standButton.hide();
-    // }
 }
