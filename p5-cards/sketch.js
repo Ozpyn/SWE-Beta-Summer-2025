@@ -1,4 +1,4 @@
-let gameOptions = ["Blackjack"];
+let gameOptions = ["Blackjack", "War"];
 let gameSelect;
 let startButton;
 let engine = null;
@@ -32,7 +32,7 @@ async function setup() {
 
   // Make a default deck & empty pile
   defaultDeck = new Deck({ id: "Deck", canBeDrawnFrom: true, includeJokers: true });
-  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible: true });
+  discard = new Deck({ id: "Discard", startEmpty: true, canBeDrawnFrom: true, facesVisible: true });
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
@@ -212,6 +212,10 @@ function startGame() {
   switch (gameName) {
     case "Blackjack":
       engine = new BlackJack();
+      engine.setup();
+      break;
+    case "War":
+      engine = new War();
       engine.setup();
       break;
     default:
