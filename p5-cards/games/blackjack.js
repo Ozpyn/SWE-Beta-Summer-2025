@@ -3,6 +3,19 @@ let playerHand, dealerHand;
 let gameState = 'start';
 let resultText = "";
 
+class BlackJack extends Game {
+    setup() {
+        setupBlackjack();
+    }
+    draw() {
+        blackjackDraw();
+    }
+    mousePressed() {
+        blackjackMousePressed();
+    }
+}
+
+
 function setupBlackjack() {
     createBlackjackButtons();
     blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: true });
