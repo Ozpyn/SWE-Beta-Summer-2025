@@ -4,6 +4,7 @@ let warGameState = 'start';
 let resultText = "";
 let playerCard, computerCard;
 let autoPlay = false;
+let inWar = false;
 
 let warPlayerHand, warComputerHand;
 
@@ -105,7 +106,7 @@ async function resolveRound() {
     }
 
     // Clean up hands after short delay
-    await sleep(1000);
+    await sleep(500);
     warPlayerHand.clear();
     warComputerHand.clear();
 
@@ -115,7 +116,6 @@ async function resolveRound() {
 function collectCards(winnerPile) {
     // Winner gets all cards from both hands in random order
     const collected = [...warPlayerHand.cards, ...warComputerHand.cards];
-    shuffleArray(collected);
     for (const card of collected) {
         if (card.facesVisible) {
             card.flip();
@@ -125,8 +125,9 @@ function collectCards(winnerPile) {
 }
 
 async function handleWar() {
+    inWar = true;
     for (let i = 0; i < 3; i++) {
-        await sleep(1000)
+        await sleep(500)
         if (warPlayerPile.size() > 0) warPlayerHand.addCard(warPlayerPile.drawCard()); // face-down
         if (warComputerPile.size() > 0) warComputerHand.addCard(warComputerPile.drawCard()); // face-down
     }
@@ -138,8 +139,10 @@ async function handleWar() {
         warComputerHand.addCard(warComputerPile.drawCard().flip()); // face-up
     }
 
-    await sleep(1000);
+    await sleep(500);
     resolveRound(); // Recursively resolve the next top card
+    await sleep(500);
+    inWar = false;
 }
 
 function checkForGameOver() {
@@ -151,10 +154,10 @@ function checkForGameOver() {
         resultText = "You win the game!";
     } else {
         warGameState = 'playerTurn';
-        if (autoPlay) {
+        if (autoPlay && !inWar) {
             setTimeout(() => {
                 autoPlayStep();
-            }, 1000);
+            }, 600);
         }
     }
 }
@@ -170,15 +173,6 @@ async function autoPlayStep() {
         }
     }
 }
-
-// Fisher-Yates shuffle
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
 
 function getCardValue(card) {
     const rank = card.rank;
