@@ -4,6 +4,7 @@ let blackjackGameState = 'start';
 
 class BlackJack extends Game {
     setup() {
+        super.setup();
         createBlackjackButtons();
         blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: true });
         blackjackDeck.shuffle();
@@ -119,4 +120,5 @@ function createBlackjackButtons() {
             dealerPlay();
         }
     });
+    gameBtns.push(hitButton, standButton)
 }

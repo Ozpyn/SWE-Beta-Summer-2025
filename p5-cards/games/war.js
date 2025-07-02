@@ -10,6 +10,7 @@ let warPlayerHand, warComputerHand;
 
 class War extends Game {
     setup() {
+        super.setup();
         createWarButtons();
         warDeck = new Deck({ id: "warDeck" });
         warDeck.shuffle();
@@ -84,6 +85,7 @@ function createWarButtons() {
             autoPlayStep(); // Kick it off
         }
     });
+    gameBtns.push(drawButton, autoButton);
 
 }
 
