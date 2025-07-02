@@ -1,8 +1,7 @@
-let gameOptions = ["Blackjack"];
+let gameOptions = ["Blackjack", "War"];
 let gameSelect;
 let startButton;
 let engine = null;
-let selectedGame = null;
 let draggableCards = [];
 let allDecks = [], allHands = [];
 let menuButtons = [];
@@ -33,7 +32,7 @@ async function setup() {
 
   // Make a default deck & empty pile
   defaultDeck = new Deck({ id: "Deck", canBeDrawnFrom: true, includeJokers: true });
-  discard = new Deck({ startEmpty: true, canBeDrawnFrom: true, facesVisible: true });
+  discard = new Deck({ id: "Discard", startEmpty: true, canBeDrawnFrom: true, facesVisible: true });
 
   allDecks.push(defaultDeck);
   allDecks.push(discard);
@@ -91,15 +90,12 @@ async function loadImages() {
 async function draw() {
   background(0, 200, 100);
 
-  switch (selectedGame) {
-    case "Blackjack":
-      blackjackDraw();
-      break;
-    default:
-      discard.draw(50, 100)
-      defaultDeck.draw(150, 100)
-      testHand.draw(150, 300);
-      break;
+  if (engine) {
+    engine.draw();
+  } else {
+    discard.draw(50, 100)
+    defaultDeck.draw(150, 100)
+    testHand.draw(150, 300);
   }
 
   // Update dragging card position
@@ -119,53 +115,50 @@ async function draw() {
 
 // Card Dragging Helper functions
 function mousePressed() {
-  switch (selectedGame) {
-    case "Blackjack":
-      blackjackMousePressed();
-      break;
-    default:
-      if (!showWin && !showLose) {
-        // Check if mouse is over any draw-enabled deck
-        for (let deck of allDecks) {
-          if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
-            const card = deck.drawCard();
-            if (card !== -1) {
-              card.x = mouseX - card.width / 2;
-              card.y = mouseY - card.height / 2;
-              draggingCard = card;
-              draggingCard.startDrag();
-              draggableCards.push(draggingCard);
-              return;
-            }
-          }
-        }
-
-        // Check if mouse is over a card in a hand
-        for (let hand of allHands) {
-          const cards = hand.getCards();
-          for (let i = cards.length - 1; i >= 0; i--) {
-            const card = cards[i];
-            if (card.isMouseOver()) {
-              hand.removeCard(card);
-              card.startDrag();
-              draggingCard = card;
-              draggableCards.push(card);
-              return;
-            }
-          }
-        }
-
-        // Otherwise check for a dragged card
-        for (let i = draggableCards.length - 1; i >= 0; i--) {
-          if (draggableCards[i].isMouseOver()) {
-            draggingCard = draggableCards[i];
+  if (engine) {
+    engine.mousePressed();
+  } else {
+    if (!showWin && !showLose) {
+      // Check if mouse is over any draw-enabled deck
+      for (let deck of allDecks) {
+        if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
+          const card = deck.drawCard();
+          if (card !== -1) {
+            card.x = mouseX - card.width / 2;
+            card.y = mouseY - card.height / 2;
+            draggingCard = card;
             draggingCard.startDrag();
-            draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
-            break;
+            draggableCards.push(draggingCard);
+            return;
           }
         }
       }
-      break;
+
+      // Check if mouse is over a card in a hand
+      for (let hand of allHands) {
+        const cards = hand.getCards();
+        for (let i = cards.length - 1; i >= 0; i--) {
+          const card = cards[i];
+          if (card.isMouseOver()) {
+            hand.removeCard(card);
+            card.startDrag();
+            draggingCard = card;
+            draggableCards.push(card);
+            return;
+          }
+        }
+      }
+
+      // Otherwise check for a dragged card
+      for (let i = draggableCards.length - 1; i >= 0; i--) {
+        if (draggableCards[i].isMouseOver()) {
+          draggingCard = draggableCards[i];
+          draggingCard.startDrag();
+          draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
+          break;
+        }
+      }
+    }
   }
 }
 
@@ -208,21 +201,30 @@ function mouseReleased() {
 }
 
 function startGame() {
-  selectedGame = gameSelect.value();
-  if (selectedGame === 'Choose a game') {
+  const gameName = gameSelect.value();
+  if (gameName === 'Choose a game') {
     alert('Please select a game mode.');
     return;
   }
-  switch (selectedGame) {
+
+  hideMenuButtons();
+
+  switch (gameName) {
     case "Blackjack":
-      hideMenuButtons();
-      setupBlackjack();
+      engine = new BlackJack();
+      engine.setup();
+      break;
+    case "War":
+      engine = new War();
+      engine.setup();
       break;
     default:
+      engine = null;
       showMenuButtons();
       break;
   }
 }
+
 
 function drawACard(selectedDeck) {
   let card = selectedDeck.drawCard();

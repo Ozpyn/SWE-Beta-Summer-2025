@@ -30,18 +30,22 @@ class Deck {
   }
 
   shuffle() {
-    for (let i = this.cards.length - 1; i > 0; i--) {
+    for (let i = this.size() - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
     }
   }
-  
+
+  size() {
+    return this.cards.length;
+  }
+
   drawCard() {
     if (!this.cards || this.cards.length === 0) {
       console.log("The Deck appears to be empty!");
       return -1;
     }
-  
+
     const drawnCard = this.cards.pop();
     if (this.faceUp) {
       drawnCard.faceUp = true;
@@ -56,16 +60,27 @@ class Deck {
       console.log(`Cannot add ${newCard.rank} of ${newCard.suit}: deck has reached its size limit (${this.sizeLimit})`);
       return false;
     }
-  
+
     this.cards.push(newCard);
-    console.log(`Added ${newCard.rank} of ${newCard.suit} to the deck / pile`);
+    console.log(`Added ${newCard.rank} of ${newCard.suit} to the ${this.name}`);
     return true;
   }
-  
+
+  addBack(newCard) {
+    if (this.sizeLimit !== null && this.cards.length >= this.sizeLimit) {
+      console.log(`Cannot add ${newCard.rank} of ${newCard.suit}: deck has reached its size limit (${this.sizeLimit})`);
+      return false;
+    }
+
+    this.cards.unshift(newCard); // Adds to the beginning of the array
+    console.log(`Added ${newCard.rank} of ${newCard.suit} to the bottom of the ${this.name}`);
+    return true;
+  }
+
 
   getTop() {
     if (!this.cards || this.cards.length === 0) {
-      console.log("The Deck appears to be empty!");
+      console.log(`${this.name} appears to be empty!`);
       return -1;
     }
     const topCard = this.cards[this.cards.length - 1];
@@ -92,7 +107,7 @@ class Deck {
       if (this.faceUp) {
         topCard.drawFront(x, y);
       } else {
-        topCard.drawBack(x,y);
+        topCard.drawBack(x, y);
       }
     } else {
       // Pile outline (to show where the pile would be)
@@ -115,7 +130,7 @@ class Deck {
 
   isMouseOver(mx, my) {
     return mx > this.x && mx < this.x + this.width &&
-           my > this.y && my < this.y + this.height;
+      my > this.y && my < this.y + this.height;
   }
 
   flipDeck() {

@@ -23,50 +23,50 @@ class Card {
   }
 
   async setImages() {
-      // Load rank image if it's a face card
-      switch (this.rank.toLowerCase()) {
-        case 'jack': this.rankImage = jack;
+    // Load rank image if it's a face card
+    switch (this.rank.toLowerCase()) {
+      case 'jack': this.rankImage = jack;
+        break;
+      case 'joker': this.rankImage = joker;
+        break;
+      case 'queen': this.rankImage = queen;
+        break;
+      case 'king': this.rankImage = king;
+        break;
+      default:
+        break;
+    }
+    if (!(this.rank === 'Joker' || this.rank === 'Ace')) {
+      switch (this.suit.toLowerCase()) {
+        case 'club': this.suitImage = club;
           break;
-        case 'joker': this.rankImage = joker;
+        case 'heart': this.suitImage = heart;
           break;
-        case 'queen': this.rankImage = queen;
+        case 'diamond': this.suitImage = diamond;
           break;
-        case 'king': this.rankImage = king;
+        case 'spade': this.suitImage = spade;
           break;
         default:
           break;
       }
-      if (!(this.rank === 'Joker' || this.rank === 'Ace')) {
-        switch (this.suit.toLowerCase()) {
-          case 'club': this.suitImage = club;
-            break;
-          case 'heart': this.suitImage = heart;
-            break;
-          case 'diamond': this.suitImage = diamond;
-            break;
-          case 'spade': this.suitImage = spade;
-            break;
-          default:
-            break;
-        }
-      } else if (this.rank === 'Ace'){
-        switch (this.suit.toLowerCase()) {
-          case 'club': this.suitImage = d_club;
-            break;
-          case 'heart': this.suitImage = d_heart;
-            break;
-          case 'diamond': this.suitImage = d_diamond;
-            break;
-          case 'spade': this.suitImage = d_spade;
-            break;
-          default:
-            break;
-        }
-      } else {
-        
+    } else if (this.rank === 'Ace') {
+      switch (this.suit.toLowerCase()) {
+        case 'club': this.suitImage = d_club;
+          break;
+        case 'heart': this.suitImage = d_heart;
+          break;
+        case 'diamond': this.suitImage = d_diamond;
+          break;
+        case 'spade': this.suitImage = d_spade;
+          break;
+        default:
+          break;
       }
+    } else {
+
+    }
   }
-  
+
   draw(x = this.x, y = this.y) {
     if (this.faceUp) {
       this.drawFront()
@@ -82,42 +82,46 @@ class Card {
     rect(x, y, this.width, this.height, 5);
     fill(0);
     textSize(16);
-  
+
     if (spade && heart && diamond && club) {
       imageMode(CENTER);
-  
+
       // No rotation - spade
       image(spade, x + this.width / 2, y + this.height / 3, 15, 15);
-  
+
       // 180° rotation - heart
       push();
       translate(x + this.width / 2, y + (this.height * 2) / 3);
       rotate(PI); // 180 degrees in radians
       image(heart, 0, 0, 15, 15);
       pop();
-  
+
       // 90° rotation left (counter-clockwise) - diamond
       push();
       translate(x + this.width / 3, y + this.height / 2);
       rotate(-HALF_PI); // -90 degrees
       image(diamond, 0, 0, 15, 18);
       pop();
-  
+
       // 90° rotation right (clockwise) - club
       push();
       translate(x + (this.width * 2) / 3, y + this.height / 2);
       rotate(HALF_PI); // 90 degrees
       image(club, 0, 0, 15, 18);
       pop();
-  
+
     } else {
       // Fallback filler text
       text(`BackArt`, x + 5, y + 25);
     }
-  
+
     pop();
   }
-  
+
+  flip() {
+    this.faceUp = !this.faceUp;
+    return this;
+  }
 
   drawFront(x = this.x, y = this.y) {
     push();
@@ -125,7 +129,7 @@ class Card {
     fill(255);
     stroke(0);
     rect(x, y, this.width, this.height, 5);
-    
+
     // Determine suit color
     let suitColor;
     if (this.suit === 'Heart' || this.suit === 'Diamond') {
@@ -133,12 +137,12 @@ class Card {
     } else {
       suitColor = color(0, 0, 0); // Black
     }
-    
+
     // Draw rank and suit in top left
     fill(suitColor);
     textSize(12);
     textAlign(LEFT, TOP);
-    
+
     if (this.rankImage) {
       // For face cards, use the rank image
       imageMode(CORNER);
@@ -147,7 +151,7 @@ class Card {
       // For numeric cards and when images aren't loaded, use text
       text(this.rank, x + 2, y + 2);
     }
-    
+
     // Draw large suit symbol in center, larger for aces who have details
     if (this.suitImage) {
       imageMode(CENTER);
@@ -164,7 +168,7 @@ class Card {
       text(this.getSuitSymbol(), x + this.width / 2, y + this.height / 2);
       pop();
     }
-    
+
     // Draw rank and suit in bottom right (rotated)
     textAlign(LEFT, TOP); // Because after rotation, (0,0) is effectively top-left of the rotated object
 
@@ -181,7 +185,7 @@ class Card {
   }
 
   getSuitSymbol() {
-    switch(this.suit.toLowerCase()) {
+    switch (this.suit.toLowerCase()) {
       case 'heart': return '♥';
       case 'diamond': return '♦';
       case 'club': return '♣';
@@ -201,7 +205,7 @@ class Card {
   // Drag logic
   isMouseOver() {
     return mouseX > this.x && mouseX < this.x + this.width &&
-           mouseY > this.y && mouseY < this.y + this.height;
+      mouseY > this.y && mouseY < this.y + this.height;
   }
 
   startDrag() {
