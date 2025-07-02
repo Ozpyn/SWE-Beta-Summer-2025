@@ -25,7 +25,9 @@ jobs:
         sudo apt-get install -y openssh-client
 
         ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_SERVER_IP }} << 'EOF'
+          ls
           cd SWE-Beta-Summer-2025/p5-cards
+          ls
 
           pid=$(lsof -t -i:9333) && if [ ! -z "$pid" ]; then kill -9 $pid; fi
 
