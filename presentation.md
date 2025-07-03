@@ -42,7 +42,7 @@ p5-cards/
 - **Component-Based Design**  
   - Each card, deck, and hand is an independent object.
   - New games can be added by extending the `Game` class and using the core components.
-- **Separation of Concerns**  
+- **Separation of Duties**  
   - Game rules and UI logic are kept separate.
   - Assets, styles, and scripts are organized by function.
 
@@ -76,8 +76,37 @@ p5-cards/
   - Scripts for running tests in Chrome and Firefox using Selenium.
 
 ---
+## Asset Showcase:
+**Ranks:**
+
+<p align="left">
+  <img src="p5-cards/assets/rank/jack.png" alt="Jack" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/rank/joker.png" alt="Joker" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/rank/king.png" alt="King" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/rank/queen.png" alt="Queen" width="80" height="80" style="margin-right: 8px;" />
+</p>
+
+**Low LOD Suits:**
+
+<p align="left">
+  <img src="p5-cards/assets/suits/club.png" alt="Club" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/diamond.png" alt="Diamond" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/heart.png" alt="Heart" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/spade.png" alt="Spade" width="80" height="80" style="margin-right: 8px;" />
+</p>
+
+**High LOD Suits:**
+
+<p align="left">
+  <img src="p5-cards/assets/suits/club_detail.png" alt="Detailed Club" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/diamond_detail.png" alt="Detailed Diamond" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/heart_detail.png" alt="Detailed Heart" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/spade_detail.png" alt="Detailed Spade" width="80" height="80" style="margin-right: 8px;" />
+</p>
+
+---
 
 ## Summary
 
-SWE-Beta-Summer-2025 is a robust, modular platform for building and playing card games in the browser.  
+CardFrenzy is a robust, modular platform for building and playing card games in the browser.  
 Its architecture makes it easy to add new games, customize assets, and ensure code quality through automated testing.
