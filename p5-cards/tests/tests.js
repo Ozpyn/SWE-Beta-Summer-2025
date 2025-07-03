@@ -103,7 +103,7 @@ addTest('Deck with Jokers has 54 cards', async () => {
 });
 
 addTest('Empty Deck is Empty', async () => {
-    let testDeck = new Deck({startEmpty: true});
+    let testDeck = new Deck({ startEmpty: true });
     testDeck.canBeDrawnFrom = true;
     drawnCards = 0;
     let heart = 0, spade = 0, diamond = 0, club = 0, no_suit = 0;
@@ -125,5 +125,18 @@ addTest('Empty Deck is Empty', async () => {
     }
     if (drawnCards !== 0) {
         error(`There are ${drawnCards} cards in the default deck! \n Diamonds: ${diamond}, Hearts: ${heart}, Clubs: ${club}, Spades: ${spade}, and No-Suit: ${no_suit}`);
+    }
+});
+
+addTest('BlackJack: 2 Aces and a 9 should equal 21', async () => {
+    let testHand = new Hand("Test");
+    testHand.addCard(new Card('Heart', 'Ace'));
+    testHand.addCard(new Card('Spade', 'Ace'));
+    testHand.addCard(new Card('Diamond', '9'));
+
+    let value = getBlackJackValue(testHand);
+
+    if (value !== 21) {
+        error(`The hand value is ${value}, however 9 + Ace (11) + Ace (1) should equal 21.`);
     }
 });

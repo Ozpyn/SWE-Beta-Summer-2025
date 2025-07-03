@@ -120,8 +120,8 @@ async function resolveRound() {
     const playerCard = warPlayerHand.cards[warPlayerHand.cards.length - 1];
     const computerCard = warComputerHand.cards[warComputerHand.cards.length - 1];
 
-    const playerValue = getCardValue(playerCard);
-    const computerValue = getCardValue(computerCard);
+    const playerValue = getWarValue(playerCard);
+    const computerValue = getWarValue(computerCard);
 
     if (playerValue > computerValue) {
         resultText = "You win the round!";
@@ -205,7 +205,7 @@ async function autoPlayStep() {
     }
 }
 
-function getCardValue(card) {
+function getWarValue(card) {
     const rank = card.rank;
     if (rank === "Joker") return 15;
     if (rank === "Ace") return 14;

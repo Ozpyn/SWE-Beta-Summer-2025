@@ -70,13 +70,13 @@ function sleep(ms) {
 async function dealerPlay() {
     blackjackDealerHand.reveal();
     await sleep(1000)
-    while (getHandValue(blackjackDealerHand) < 17) {
+    while (getBlackJackValue(blackjackDealerHand) < 17) {
         blackjackDealerHand.addCard(blackjackDeck.drawCard());
         await sleep(1000)
     }
 
-    let dealerVal = getHandValue(blackjackDealerHand);
-    let playerVal = getHandValue(blackjackPlayerHand);
+    let dealerVal = getBlackJackValue(blackjackDealerHand);
+    let playerVal = getBlackJackValue(blackjackPlayerHand);
 
     if (dealerVal > 21 || playerVal > dealerVal) {
         console.log("You win!")
@@ -89,7 +89,7 @@ async function dealerPlay() {
     blackjackGameState = 'gameOver';
 }
 
-function getHandValue(hand) {
+function getBlackJackValue(hand) {
     let total = 0;
     let aces = 0;
 
@@ -120,7 +120,7 @@ function createBlackjackButtons() {
     hitButton.mousePressed(() => {
         if (blackjackGameState === 'playerTurn') {
             blackjackPlayerHand.addCard(blackjackDeck.drawCard());
-            if (getHandValue(blackjackPlayerHand) > 21) {
+            if (getBlackJackValue(blackjackPlayerHand) > 21) {
                 console.log("Bust! You lose.");
                 blackjackGameState = 'gameOver';
             }
