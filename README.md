@@ -2,28 +2,48 @@
 Software Engineering: Graduate (CS 6/73901)
 
 ## Asset Showcase:
-Ranks:
+**Ranks:**
 
-<img src="p5-cards/assets/rank/jack.png" alt="Jack" width="80"/>
-<img src="p5-cards/assets/rank/joker.png" alt="Joker" width="80"/>
-<img src="p5-cards/assets/rank/king.png" alt="King" width="80"/>
-<img src="p5-cards/assets/rank/queen.png" alt="Queen" width="80"/>
+<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 16px;">
+    <img src="p5-cards/assets/rank/jack.png" alt="Jack" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/rank/joker.png" alt="Joker" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/rank/king.png" alt="King" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/rank/queen.png" alt="Queen" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+</div>
 
-Low LOD Suits:
+**Low LOD Suits:**
 
-<img src="p5-cards/assets/suits/club.png" alt="Club" width="80"/>
-<img src="p5-cards/assets/suits/diamond.png" alt="Diamond" width="80"/>
-<img src="p5-cards/assets/suits/heart.png" alt="Heart" width="80"/>
-<img src="p5-cards/assets/suits/spade.png" alt="Spade" width="80"/>
+<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 16px;">
+    <img src="p5-cards/assets/suits/club.png" alt="Club" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/suits/diamond.png" alt="Diamond" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/suits/heart.png" alt="Heart" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/suits/spade.png" alt="Spade" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+</div>
 
-High LOD Suits:
+**High LOD Suits:**
 
-<img src="p5-cards/assets/suits/club_detail.png" alt="Detailed Club" width="80"/>
-<img src="p5-cards/assets/suits/diamond_detail.png" alt="Detailed Diamond" width="80"/>
-<img src="p5-cards/assets/suits/heart_detail.png" alt="Detailed Heart" width="80"/>
-<img src="p5-cards/assets/suits/spade_detail.png" alt="Detailed Spade" width="80"/>
+<div style="display: flex; flex-direction: row; align-items: center;">
+    <img src="p5-cards/assets/suits/club_detail.png" alt="Detailed Club" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/suits/diamond_detail.png" alt="Detailed Diamond" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/suits/heart_detail.png" alt="Detailed Heart" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+    <img src="p5-cards/assets/suits/spade_detail.png" alt="Detailed Spade" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
+</div>
 
+## Project Deliverables:
 
+### Presentation
+
+The project presentation is available in [presentation.md](presentation.md). It covers:
+
+- Project overview and objectives
+- Asset design process
+- Implementation details
+- Key challenges and solutions
+- Future improvements
+
+Please refer to [presentation.md](presentation.md) for the full presentation content.
+
+### Development Artifacts
 
 ## Attributions
 Thanks I Am Vector for the SVG simple suits: here[https://iamvector.com/all-icons/card-game-rules]
