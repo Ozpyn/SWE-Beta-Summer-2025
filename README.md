@@ -4,30 +4,30 @@ Software Engineering: Graduate (CS 6/73901)
 ## Asset Showcase:
 **Ranks:**
 
-<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 16px;">
-    <img src="p5-cards/assets/rank/jack.png" alt="Jack" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/rank/joker.png" alt="Joker" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/rank/king.png" alt="King" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/rank/queen.png" alt="Queen" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-</div>
+<p align="left">
+  <img src="p5-cards/assets/rank/jack.png" alt="Jack" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/rank/joker.png" alt="Joker" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/rank/king.png" alt="King" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/rank/queen.png" alt="Queen" width="80" height="80" style="margin-right: 8px;" />
+</p>
 
 **Low LOD Suits:**
 
-<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 16px;">
-    <img src="p5-cards/assets/suits/club.png" alt="Club" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/suits/diamond.png" alt="Diamond" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/suits/heart.png" alt="Heart" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/suits/spade.png" alt="Spade" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-</div>
+<p align="left">
+  <img src="p5-cards/assets/suits/club.png" alt="Club" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/diamond.png" alt="Diamond" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/heart.png" alt="Heart" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/spade.png" alt="Spade" width="80" height="80" style="margin-right: 8px;" />
+</p>
 
 **High LOD Suits:**
 
-<div style="display: flex; flex-direction: row; align-items: center;">
-    <img src="p5-cards/assets/suits/club_detail.png" alt="Detailed Club" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/suits/diamond_detail.png" alt="Detailed Diamond" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/suits/heart_detail.png" alt="Detailed Heart" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-    <img src="p5-cards/assets/suits/spade_detail.png" alt="Detailed Spade" style="max-width: 80px; max-height: 80px; margin-right: 8px;" />
-</div>
+<p align="left">
+  <img src="p5-cards/assets/suits/club_detail.png" alt="Detailed Club" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/diamond_detail.png" alt="Detailed Diamond" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/heart_detail.png" alt="Detailed Heart" width="80" height="80" style="margin-right: 8px;" />
+  <img src="p5-cards/assets/suits/spade_detail.png" alt="Detailed Spade" width="80" height="80" style="margin-right: 8px;" />
+</p>
 
 ## Project Deliverables:
 
