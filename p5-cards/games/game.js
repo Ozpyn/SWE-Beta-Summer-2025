@@ -1,9 +1,11 @@
 let gameBtns = [];
+let stopRequested = false;
 
 class Game {
     setup() { createReturnButton(); }
-    draw() { }
+    draw() { if (stopRequested) return; }
     mousePressed() { }
+    stop() { stopRequested = true; }
 }
 
 function createReturnButton() {
@@ -11,11 +13,12 @@ function createReturnButton() {
     rtnBtn.position(10, 10);
     rtnBtn.style('font-family', 'Concert One');
     rtnBtn.mousePressed(() => {
+        engine.stop();
         engine = null;
         showMenuButtons();
         gameBtns.push(rtnBtn);
         for (let btn of gameBtns) {
-            btn.hide();
+            btn.remove();
         }
     });
 }

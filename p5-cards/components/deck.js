@@ -55,6 +55,10 @@ class Deck {
     return drawnCard || -1;
   }
 
+  clear() {
+    this.cards = [];
+  }
+
   addCard(newCard) {
     if (this.sizeLimit !== null && this.cards.length >= this.sizeLimit) {
       console.log(`Cannot add ${newCard.rank} of ${newCard.suit}: deck has reached its size limit (${this.sizeLimit})`);

@@ -26,6 +26,7 @@ class BlackJack extends Game {
         console.log("It is the players turn")
     }
     draw() {
+        super.draw();
         push();
         fill(255);
         textSize(24);
@@ -43,6 +44,21 @@ class BlackJack extends Game {
         if (blackjackGameState === 'gameOver') {
             this.setup();
         }
+    }
+    stop() {
+        super.stop();
+        blackjackGameState = 'stopped';
+
+        if (blackjackDeck) blackjackDeck.clear();
+        if (blackjackPlayerHand) blackjackPlayerHand.clear();
+        if (blackjackDealerHand) blackjackDealerHand.clear();
+
+        blackjackDeck = null;
+        blackjackPlayerHand = null;
+        blackjackDealerHand = null;
+
+        console.log("Blackjack game stopped and variables cleared.");
+        stopRequested = false;
     }
 }
 

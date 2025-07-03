@@ -36,6 +36,7 @@ class War extends Game {
     }
 
     draw() {
+        super.draw();
         push();
         fill(255);
         textSize(24);
@@ -60,6 +61,30 @@ class War extends Game {
         if (warGameState === 'gameOver') {
             this.setup();
         }
+    }
+
+    stop() {
+        super.stop();
+        autoPlay = false;
+        inWar = false;
+        warGameState = 'stopped';
+        resultText = "Game stopped.";
+
+        if (warDeck) warDeck.clear();
+        if (warPlayerPile) warPlayerPile.clear();
+        if (warComputerPile) warComputerPile.clear();
+        if (warPlayerHand) warPlayerHand.clear();
+        if (warComputerHand) warComputerHand.clear();
+
+        // Clear all global references
+        warDeck = null;
+        warPlayerPile = null;
+        warComputerPile = null;
+        warPlayerHand = null;
+        warComputerHand = null;
+
+        console.log("Game stopped and all variables cleared.");
+        stopRequested = false;
     }
 }
 
@@ -90,6 +115,8 @@ function createWarButtons() {
 }
 
 async function resolveRound() {
+    if (stopRequested) return;
+
     const playerCard = warPlayerHand.cards[warPlayerHand.cards.length - 1];
     const computerCard = warComputerHand.cards[warComputerHand.cards.length - 1];
 
@@ -107,13 +134,15 @@ async function resolveRound() {
         await handleWar();
     }
 
-    // Clean up hands after short delay
     await sleep(500);
+    if (stopRequested) return;
+
     warPlayerHand.clear();
     warComputerHand.clear();
 
     checkForGameOver();
 }
+
 
 function collectCards(winnerPile) {
     // Winner gets all cards from both hands in random order
