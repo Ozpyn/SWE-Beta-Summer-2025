@@ -8,6 +8,11 @@ class Game {
     stop() { stopRequested = true; }
 }
 
+function notify(message) {
+    console.log(message);
+    alert(message);
+}
+
 function createReturnButton() {
     rtnBtn = createButton('Return');
     rtnBtn.position(10, 10);
