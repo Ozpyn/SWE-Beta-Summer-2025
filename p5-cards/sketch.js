@@ -12,7 +12,7 @@ let w = 800, h = 600;
 
 
 async function setup() {
-  createCanvas(w, h);
+  createCanvas(visualViewport.width, visualViewport.height);
   await loadImages();
 
   gameSelect = createSelect();
