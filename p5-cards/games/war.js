@@ -87,6 +87,15 @@ class War extends Game {
         console.log("Game stopped and all variables cleared.");
         stopRequested = false;
     }
+    resized() {
+        super.resized();
+        if (drawButton) {
+            drawButton.position((width) * (1 / 4), (height) * (9 / 32));
+        }
+        if (autoButton) {
+            autoButton.position((width) * (2 / 4), (height) * (9 / 32));
+        }
+    }
 }
 
 function createWarButtons() {

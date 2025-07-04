@@ -6,11 +6,16 @@ class Game {
     draw() { if (stopRequested) return; }
     mousePressed() { }
     stop() { stopRequested = true; }
+    resized() {
+        if (rtnBtn) {
+            rtnBtn.position(width / 32, height / 32);
+        }
+    }
 }
 
 function createReturnButton() {
     rtnBtn = createButton('Return');
-    rtnBtn.position(10, 10);
+    rtnBtn.position(width / 32, height / 32);
     rtnBtn.style('font-family', 'Concert One');
     rtnBtn.mousePressed(() => {
         engine.stop();

@@ -12,7 +12,7 @@ let w = 800, h = 600;
 
 
 async function setup() {
-  createCanvas(visualViewport.width, visualViewport.height);
+  createCanvas(windowWidth, windowHeight);
   await loadImages();
 
   gameSelect = createSelect();
@@ -63,6 +63,18 @@ async function setup() {
   menuButtons.push(drawCardBtn);
   menuButtons.push(winBtn);
   menuButtons.push(loseBtn);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+
+  // Reposition UI elements based on new width/height
+  gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
+  startButton.position((width) * (5 / 16), (height) * (1 / 32));
+  drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
+  winBtn.position((width) * (6 / 8), (height) * (1 / 32));
+  loseBtn.position((width) * (6 / 8), (height) * (2 / 32));
+  engine.resized()
 }
 
 async function loadImages() {
