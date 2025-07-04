@@ -71,10 +71,6 @@ class BlackJack extends Game {
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 // Dealer automatically plays after player stands
 async function dealerPlay() {
     blackjackDealerHand.reveal();

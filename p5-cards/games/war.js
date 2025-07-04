@@ -226,7 +226,3 @@ function getWarValue(card) {
     if (rank === "Jack") return 11;
     return parseInt(rank);
 }
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
