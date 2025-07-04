@@ -5,6 +5,7 @@ let resultText = "";
 let playerCard, computerCard;
 let autoPlay = false;
 let inWar = false;
+let resolvingRound = false;
 
 let warPlayerHand, warComputerHand;
 
@@ -93,7 +94,7 @@ function createWarButtons() {
     drawButton.position((width) * (1 / 4), (height) * (9 / 32));
     drawButton.style('font-family', 'Concert One');
     drawButton.mousePressed(() => {
-        if (warGameState === 'playerTurn') {
+        if (warGameState === 'playerTurn' && !resolvingRound && !stopRequested && !autoPlay) {
             // Both players draw a card and reveal it
             warPlayerHand.addCard(warPlayerPile.drawCard().flip());
             warComputerHand.addCard(warComputerPile.drawCard().flip());
@@ -116,6 +117,7 @@ function createWarButtons() {
 
 async function resolveRound() {
     if (stopRequested) return;
+    resolvingRound = true;
 
     const playerCard = warPlayerHand.cards[warPlayerHand.cards.length - 1];
     const computerCard = warComputerHand.cards[warComputerHand.cards.length - 1];
@@ -141,6 +143,7 @@ async function resolveRound() {
     warComputerHand.clear();
 
     checkForGameOver();
+    resolvingRound = false;
 }
 
 
