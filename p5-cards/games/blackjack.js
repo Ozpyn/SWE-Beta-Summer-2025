@@ -30,14 +30,14 @@ class BlackJack extends Game {
         push();
         fill(255);
         textSize(24);
-        text("Blackjack", width / 2 - 60, 40);
+        text("Blackjack", (width) / 2, (height) * (1 / 32));
 
         textSize(16);
-        text("Dealer", 100, 60);
-        blackjackDealerHand.draw(100, 80);
+        text("Dealer", width / 3, 60);
+        blackjackDealerHand.draw(width / 3, 80);
 
-        text("Player", 100, 260);
-        blackjackPlayerHand.draw(100, 280);
+        text("Player", width / 3, 260);
+        blackjackPlayerHand.draw(width / 3, 280);
         pop();
     }
     mousePressed() {
@@ -115,7 +115,7 @@ function getBlackJackValue(hand) {
 // Create and toggle Hit/Stand buttons (call once in setup)
 function createBlackjackButtons() {
     hitButton = createButton('Hit');
-    hitButton.position(150, 200);
+    hitButton.position(width / 3, 200);
     hitButton.style('font-family', 'Concert One');
     hitButton.mousePressed(() => {
         if (blackjackGameState === 'playerTurn') {
@@ -128,7 +128,7 @@ function createBlackjackButtons() {
     });
 
     standButton = createButton('Stand');
-    standButton.position(200, 200);
+    standButton.position(width * 4 / 9, 200);
     standButton.style('font-family', 'Concert One');
     standButton.mousePressed(() => {
         if (blackjackGameState === 'playerTurn') {
