@@ -105,7 +105,30 @@ p5-cards/
 </p>
 
 ---
+## Reflection
+---
 
+**Engineering Process:**  
+- Followed modular design principles for maintainability and extensibility.
+- Used JavaScript and p5.js for interactive graphics and logic.
+- Iterative development: started with core components (Card, Deck, Hand), then added sample games and UI features.
+- Used GitHub as version control, development tracking, and to run automated testing.
+
+---
+
+**Reasonable Project:**  
+- Scope limited to a static, client-side web app—no backend or server dependencies.
+- Focused on reusability, clear structure, and browser compatibility.
+- Achievable within a semester by a small team.
+
+---
+
+**Is it Completed?**  
+- Core engine and two sample games (Blackjack, War) are fully functional.
+- Modular architecture allows for easy extension.
+- Future work could includs more games, improved notifications, theming, and mobile support.
+
+---
 ## Summary
 
 CardFrenzy is a robust, modular platform for building and playing card games in the browser.  
