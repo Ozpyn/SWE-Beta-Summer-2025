@@ -79,11 +79,14 @@ async function dealerPlay() {
     let playerVal = getBlackJackValue(blackjackPlayerHand);
 
     if (dealerVal > 21 || playerVal > dealerVal) {
-        console.log("You win!")
+        console.log("You win! The Dealer had " + dealerVal + " and you had " + playerVal + ".");
+        alert("You win! The Dealer had " + dealerVal + " and you had " + playerVal + ".");
     } else if (dealerVal === playerVal) {
-        console.log("Push.")
+        console.log("Push. You tied with the dealer with " + dealerVal + ".");
+        alert("Push. You tied with the dealer with " + dealerVal + ".");
     } else {
-        console.log("Dealer wins.")
+        console.log("Dealer wins. The Dealer had " + dealerVal + " and you had " + playerVal + ".");
+        alert("Dealer wins. The Dealer had " + dealerVal + " and you had " + playerVal + ".");
     }
 
     blackjackGameState = 'gameOver';
@@ -120,8 +123,10 @@ function createBlackjackButtons() {
     hitButton.mousePressed(() => {
         if (blackjackGameState === 'playerTurn') {
             blackjackPlayerHand.addCard(blackjackDeck.drawCard());
-            if (getBlackJackValue(blackjackPlayerHand) > 21) {
-                console.log("Bust! You lose.");
+            let tempVal = getBlackJackValue(blackjackPlayerHand);
+            if (tempVal > 21) {
+                console.log("Bust! You lose. Your total was " + tempVal + ".");
+                alert("Bust! You lose. Your total was " + tempVal + ".");
                 blackjackGameState = 'gameOver';
             }
         }
