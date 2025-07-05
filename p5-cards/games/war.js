@@ -5,6 +5,7 @@ let resultText = "";
 let playerCard, computerCard;
 let autoPlay = false;
 let inWar = false;
+let resolvingRound = false;
 
 let warPlayerHand, warComputerHand;
 
@@ -40,16 +41,16 @@ class War extends Game {
         push();
         fill(255);
         textSize(24);
-        text("WAR!", width / 2 - 60, 40);
+        text("WAR!", (width) / 2, (height) * (1 / 32));
 
         textSize(16);
-        text("Computer's Hand", 100, 60);
-        warComputerPile.draw(100, 80);
-        warComputerHand.draw(200, 80);
+        text("Computer's Hand", (width) * (1 / 4), (height) * (1 / 8));
+        warComputerPile.draw((width) * (1 / 8), (height) * (5 / 32));
+        warComputerHand.draw((width) * (1 / 4), (height) * (5 / 32));
 
-        text("Player's Hand", 100, 260);
-        warPlayerPile.draw(100, 280);
-        warPlayerHand.draw(200, 280);
+        text("Player's Hand", (width) * (1 / 4), (height) * (3 / 8));
+        warPlayerPile.draw((width) * (1 / 8), (height) * (13 / 32));
+        warPlayerHand.draw((width) * (1 / 4), (height) * (13 / 32));
 
         textSize(18);
         text(resultText, width / 2 - 100, height - 40);
@@ -86,14 +87,23 @@ class War extends Game {
         console.log("Game stopped and all variables cleared.");
         stopRequested = false;
     }
+    resized() {
+        super.resized();
+        if (drawButton) {
+            drawButton.position((width) * (1 / 4), (height) * (9 / 32));
+        }
+        if (autoButton) {
+            autoButton.position((width) * (2 / 4), (height) * (9 / 32));
+        }
+    }
 }
 
 function createWarButtons() {
     drawButton = createButton('Draw');
-    drawButton.position(150, 200);
+    drawButton.position((width) * (1 / 4), (height) * (9 / 32));
     drawButton.style('font-family', 'Concert One');
     drawButton.mousePressed(() => {
-        if (warGameState === 'playerTurn') {
+        if (warGameState === 'playerTurn' && !resolvingRound && !stopRequested && !autoPlay) {
             // Both players draw a card and reveal it
             warPlayerHand.addCard(warPlayerPile.drawCard().flip());
             warComputerHand.addCard(warComputerPile.drawCard().flip());
@@ -102,7 +112,7 @@ function createWarButtons() {
     });
 
     const autoButton = createButton('Auto Play');
-    autoButton.position(230, 200);
+    autoButton.position((width) * (2 / 4), (height) * (9 / 32));
     autoButton.style('font-family', 'Concert One');
     autoButton.mousePressed(() => {
         if (!autoPlay && warGameState !== 'gameOver') {
@@ -116,6 +126,7 @@ function createWarButtons() {
 
 async function resolveRound() {
     if (stopRequested) return;
+    resolvingRound = true;
 
     const playerCard = warPlayerHand.cards[warPlayerHand.cards.length - 1];
     const computerCard = warComputerHand.cards[warComputerHand.cards.length - 1];
@@ -141,6 +152,7 @@ async function resolveRound() {
     warComputerHand.clear();
 
     checkForGameOver();
+    resolvingRound = false;
 }
 
 
@@ -213,8 +225,4 @@ function getWarValue(card) {
     if (rank === "Queen") return 12;
     if (rank === "Jack") return 11;
     return parseInt(rank);
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }

@@ -12,11 +12,11 @@ let w = 800, h = 600;
 
 
 async function setup() {
-  createCanvas(w, h);
+  createCanvas(windowWidth, windowHeight);
   await loadImages();
 
   gameSelect = createSelect();
-  gameSelect.position(20, 20);
+  gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
   gameSelect.option('Choose a game');
   gameSelect.style('font-family', 'Concert One')
 
@@ -27,7 +27,7 @@ async function setup() {
   // Start button
   startButton = createButton('Start Game');
   startButton.style('font-family', 'Concert One')
-  startButton.position(160, 20);
+  startButton.position((width) * (5 / 16), (height) * (1 / 32));
   startButton.mousePressed(startGame);
 
   // Make a default deck & empty pile
@@ -43,19 +43,19 @@ async function setup() {
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
   drawCardBtn.style('font-family', 'Concert One')
-  drawCardBtn.position(270, 20);
+  drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
   drawCardBtn.mousePressed(() => drawACard(defaultDeck));
 
   // Trigger Win
   winBtn = createButton('Simulate Win');
   winBtn.style('font-family', 'Concert One')
-  winBtn.position(400, 20);
+  winBtn.position((width) * (6 / 8), (height) * (1 / 32));
   winBtn.mousePressed(triggerWin);
 
   // Trigger Lose
   loseBtn = createButton('Simulate Lose');
   loseBtn.style('font-family', 'Concert One')
-  loseBtn.position(400, 50);
+  loseBtn.position((width) * (6 / 8), (height) * (2 / 32));
   loseBtn.mousePressed(triggerLose);
 
   menuButtons.push(gameSelect);
@@ -63,6 +63,18 @@ async function setup() {
   menuButtons.push(drawCardBtn);
   menuButtons.push(winBtn);
   menuButtons.push(loseBtn);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+
+  // Reposition UI elements based on new width/height
+  gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
+  startButton.position((width) * (5 / 16), (height) * (1 / 32));
+  drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
+  winBtn.position((width) * (6 / 8), (height) * (1 / 32));
+  loseBtn.position((width) * (6 / 8), (height) * (2 / 32));
+  engine.resized()
 }
 
 async function loadImages() {
@@ -93,9 +105,9 @@ async function draw() {
   if (engine) {
     engine.draw();
   } else {
-    discard.draw(50, 100)
-    defaultDeck.draw(150, 100)
-    testHand.draw(150, 300);
+    discard.draw((width) * (1 / 8), (height) * (1 / 8))
+    defaultDeck.draw((width) * (2 / 8), (height) * (1 / 8))
+    testHand.draw((width) * (1 / 8), (height) * (5 / 16));
   }
 
   // Update dragging card position
@@ -249,7 +261,6 @@ function showMenuButtons() {
   }
 }
 
-
-
-
-
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
