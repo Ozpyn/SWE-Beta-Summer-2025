@@ -32,6 +32,7 @@ p5-cards/
 ├── assets/          # Card images (ranks & suits)
 ├── tests/           # Automated tests & scripts
 ├── index.html       # Main entry point
+├── sketch.js        # Main script
 └── style.css        # Stylesheet
 ```
 
