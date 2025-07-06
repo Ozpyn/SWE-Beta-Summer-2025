@@ -107,9 +107,15 @@ async function draw() {
   if (engine) {
     engine.draw();
   } else {
-    discard.draw((width) * (1 / 8), (height) * (1 / 8))
-    defaultDeck.draw((width) * (2 / 8), (height) * (1 / 8))
-    testHand.draw((width) * (1 / 8), (height) * (5 / 16));
+    discard.draw(
+      width * (1/2) - defaultCardWidth*4/3, (height) * (1 / 8)
+    )
+    defaultDeck.draw(
+      width * (1/2) + defaultCardWidth/3, (height) * (1 / 8)
+    )
+    testHand.draw(
+      width * (1/2) - testHand.maxWidth/2, (height) * (1/3)
+    );
   }
 
   // Update dragging card position
