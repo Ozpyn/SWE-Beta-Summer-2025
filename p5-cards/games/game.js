@@ -21,9 +21,9 @@ function createReturnButton() {
         engine.stop();
         engine = null;
         showMenuButtons();
-        gameBtns.push(rtnBtn);
         for (let btn of gameBtns) {
             btn.remove();
         }
+        rtnBtn.hide();
     });
 }
