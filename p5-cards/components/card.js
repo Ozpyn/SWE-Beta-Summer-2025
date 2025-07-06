@@ -1,5 +1,9 @@
-const defaultCardWidth = 60;
-const defaultCardHeight = 90;
+//----Try to only modify cardScale when changing size----//
+
+const cardScale = 40; // must not be less than 30 for proper rendering
+
+const defaultCardWidth  = 2 * cardScale;
+const defaultCardHeight = 3 * cardScale;
 
 class Card {
   constructor(suit, rank, x, y) {
@@ -81,35 +85,35 @@ class Card {
     stroke(0);
     rect(x, y, this.width, this.height, 5);
     fill(0);
-    textSize(16);
+    textSize(20);
 
     if (spade && heart && diamond && club) {
       imageMode(CENTER);
-
+      tint(0);
       // No rotation - spade
-      image(spade, x + this.width / 2, y + this.height / 3, 15, 15);
+      image(spade, x + this.width / 2, y + this.height / 3, cardScale/2, cardScale/2);
 
       // 180° rotation - heart
       push();
       translate(x + this.width / 2, y + (this.height * 2) / 3);
       rotate(PI); // 180 degrees in radians
-      image(heart, 0, 0, 15, 15);
+      image(heart, 0, 0, cardScale / 2, cardScale / 2);
       pop();
 
       // 90° rotation left (counter-clockwise) - diamond
       push();
       translate(x + this.width / 3, y + this.height / 2);
       rotate(-HALF_PI); // -90 degrees
-      image(diamond, 0, 0, 15, 18);
+      image(diamond, 0, 0, cardScale / 2, (cardScale * 1.2 / 2));
       pop();
 
       // 90° rotation right (clockwise) - club
       push();
       translate(x + (this.width * 2) / 3, y + this.height / 2);
       rotate(HALF_PI); // 90 degrees
-      image(club, 0, 0, 15, 18);
+      image(club, 0, 0, cardScale / 2, cardScale * 1.2 / 2);
       pop();
-
+      noTint();
     } else {
       // Fallback filler text
       text(`BackArt`, x + 5, y + 25);
@@ -124,48 +128,62 @@ class Card {
   }
 
   drawFront(x = this.x, y = this.y) {
+
     push();
     // Draw card background
     fill(255);
     stroke(0);
     rect(x, y, this.width, this.height, 5);
-
     // Determine suit color
-    let suitColor;
-    if (this.suit === 'Heart' || this.suit === 'Diamond') {
-      suitColor = color(255, 0, 0); // Red
-    } else {
-      suitColor = color(0, 0, 0); // Black
-    }
-
+    const suitColor = (this.suit === 'Heart' || this.suit === 'Diamond')
+    ? color(255, 0, 0)    // red
+    : color(0, 0, 0);     // black
+    
     // Draw rank and suit in top left
     fill(suitColor);
-    textSize(12);
+    textFont(BaronNeue); 
+    textSize(defaultCardWidth/4);
+    
     textAlign(LEFT, TOP);
 
     if (this.rankImage) {
       // For face cards, use the rank image
-      imageMode(CORNER);
-      image(this.rankImage, x + 2, y + 2, 20, 20);
-    } else {
-      // For numeric cards and when images aren't loaded, use text
-      text(this.rank, x + 2, y + 2);
-    }
-
-    // Draw large suit symbol in center, larger for aces who have details
-    if (this.suitImage) {
       imageMode(CENTER);
+      tint(suitColor); // Apply suit color to the rank image
+      image(this.rankImage, x + this.width / 2, y + this.height / 2, 40, 40);
+      //noTint();
+      
+      if (this.rank !== 'Joker') {
+        imageMode(CORNER);
+        image(this.suitImage, x + 2, y + 2, 20, 20);
+      }
+      noTint();
+    } else {
+      // For non-face/numeric cards only print first char
+      // unless it's 10 (A, 1, 2, 3, ..., 9)
+      text(
+        (this.rank !== '10') ? this.rank[0] : this.rank,
+        x + 2,
+        y + 2
+      );
+    }
+    
+    // Draw large suit symbol in center, larger for aces who have details
+    if (this.suitImage && !this.rankImage) {
+      imageMode(CENTER);
+      tint(suitColor); // Apply suit color to the suit image
       if (this.rank === 'Ace') {
         image(this.suitImage, x + this.width / 2, y + this.height / 2, 40, 40);
       } else {
         image(this.suitImage, x + this.width / 2, y + this.height / 2, 25, 25);
       }
+      noTint();
     } else {
       // Fallback large suit symbol
       push();
       textSize(20);
       textAlign(CENTER, CENTER);
-      text(this.getSuitSymbol(), x + this.width / 2, y + this.height / 2);
+      text(x + this.width / 2, y + this.height / 2);
       pop();
     }
 
@@ -175,11 +193,17 @@ class Card {
     translate(x + this.width - 2, y + this.height - 2);
     rotate(PI);
 
-    if (this.rankImage) {
-      imageMode(CORNER); // CORNER works fine here with proper alignment
-      image(this.rankImage, 0, 0, 20, 20);
-    } else {
-      text(this.rank, 0, 0);
+    if (this.rank !== 'Joker') {
+      if (this.rankImage) {
+        imageMode(CORNER); // CORNER works fine here with proper alignment
+        tint(suitColor);
+        image(this.suitImage, 0, 0, 20, 20);
+        noTint();
+      } else {
+        text(
+        (this.rank !== '10') ? this.rank[0] : this.rank, 0, 0
+        );
+      }
     }
     pop();
   }

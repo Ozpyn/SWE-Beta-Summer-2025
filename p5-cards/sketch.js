@@ -13,7 +13,7 @@ let w = 800, h = 600;
 
 async function setup() {
   createCanvas(windowWidth, windowHeight);
-  await loadImages();
+  await loadAssets();
 
   gameSelect = createSelect();
   gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
@@ -77,8 +77,10 @@ function windowResized() {
   engine.resized()
 }
 
-async function loadImages() {
+async function loadAssets() {
   try {
+    BaronNeue = await loadFont('assets/fonts/baron-neue.Regular.otf');
+
     joker = await loadImage('assets/rank/joker.png');
     jack = await loadImage('assets/rank/jack.png');
     queen = await loadImage('assets/rank/queen.png');
