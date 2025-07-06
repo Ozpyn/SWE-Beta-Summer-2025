@@ -1,11 +1,26 @@
 let blackjackDeck;
 let blackjackPlayerHand, blackjackDealerHand;
 let blackjackGameState = 'start';
+let resultText = "";
+let hitButton, standButton, playAgainButton;
 
 class BlackJack extends Game {
     setup() {
         super.setup();
-        createBlackjackButtons();
+        this.createButtons();
+        resultText = "";
+
+        // Show and position buttons on game start
+        hitButton.show();
+        hitButton.position(width / 3, height * (5 / 16));
+
+        standButton.show();
+        standButton.position(width * 4 / 9, height * (5 / 16));
+
+        playAgainButton.hide();
+        playAgainButton.position(width / 2 - 50, height * 12 / 16);
+
+        // Create deck and hands
         blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: true });
         blackjackDeck.shuffle();
 
@@ -15,83 +30,153 @@ class BlackJack extends Game {
         allDecks = [blackjackDeck];
         allHands = [blackjackPlayerHand, blackjackDealerHand];
 
+        // Deal cards
         for (let i = 0; i < 2; i++) {
             blackjackPlayerHand.addCard(blackjackDeck.drawCard());
-            let tempCard = blackjackDeck.drawCard();
-            tempCard.faceUp = false;
-            blackjackDealerHand.addCard(tempCard);
+            let dealerCard = blackjackDeck.drawCard();
+            if (i === 0) dealerCard.faceUp = false;
+            blackjackDealerHand.addCard(dealerCard);
         }
 
         blackjackGameState = 'playerTurn';
-        console.log("It is the players turn")
+
+        // Instant blackjack after game start
+        if (getBlackJackValue(blackjackPlayerHand) === 21) {
+            blackjackDealerHand.reveal();
+            blackjackGameState = 'gameOver';
+            resultText = "Blackjack! You win!";
+            this.showPlayAgain();
+        }
     }
+
     draw() {
         super.draw();
         push();
         fill(255);
         textSize(24);
-        text("Blackjack", (width) / 2, (height) * (1 / 32));
+        textAlign(CENTER);
+        text("Blackjack", width / 2, height / 32);
 
         textSize(16);
         text("Dealer", width / 3, height * 2 / 32);
         blackjackDealerHand.draw(width / 3, height * 3 / 32);
 
-        text("Player", width / 3, height * (15 / 32));
+        text("Player", width / 3, height * 15 / 32);
         blackjackPlayerHand.draw(width / 3, height / 2);
+
+        if (blackjackGameState === 'gameOver' && resultText) {
+            textSize(20);
+            fill(255, 255, 0);
+            text(resultText, width / 2, height - 50);
+        }
         pop();
     }
-    mousePressed() {
-        if (blackjackGameState === 'gameOver') {
-            this.setup();
-        }
-    }
+
+    mousePressed() { }
+
     stop() {
         super.stop();
         blackjackGameState = 'stopped';
 
-        if (blackjackDeck) blackjackDeck.clear();
-        if (blackjackPlayerHand) blackjackPlayerHand.clear();
-        if (blackjackDealerHand) blackjackDealerHand.clear();
+        blackjackDeck?.clear();
+        blackjackPlayerHand?.clear();
+        blackjackDealerHand?.clear();
 
         blackjackDeck = null;
         blackjackPlayerHand = null;
         blackjackDealerHand = null;
 
-        console.log("Blackjack game stopped and variables cleared.");
+        resultText = "";
         stopRequested = false;
+
+        hitButton?.remove();
+        standButton?.remove();
+        playAgainButton?.remove();
+
+        hitButton = null;
+        standButton = null;
+        playAgainButton = null;
     }
+
     resized() {
         super.resized();
-        if (hitButton) {
-            hitButton.position(width / 3, height * (5 / 16))
+        if (hitButton) hitButton.position(width / 3, height * (5 / 16));
+        if (standButton) standButton.position(width * 4 / 9, height * (5 / 16));
+        if (playAgainButton) playAgainButton.position(width / 2 - 50, height * 12 / 16);
+    }
+
+    showPlayAgain() {
+        console.log("Showing Play Again button");
+        hitButton.hide();
+        standButton.hide();
+        playAgainButton.show();
+    }
+
+    createButtons() {
+        if (!hitButton) {
+            hitButton = createButton('Hit');
+            hitButton.style('font-family', 'Concert One');
+            hitButton.mousePressed(() => {
+                if (blackjackGameState === 'playerTurn') {
+                    blackjackPlayerHand.addCard(blackjackDeck.drawCard());
+                    if (getBlackJackValue(blackjackPlayerHand) > 21) {
+                        resultText = "Bust! You lose.";
+                        blackjackDealerHand.reveal();
+                        blackjackGameState = 'gameOver';
+                        this.showPlayAgain();
+                    }
+                }
+            });
+            gameBtns.push(hitButton);
         }
-        if (standButton) {
-            standButton.position(width * 4 / 9, height * (5 / 16));
+
+        if (!standButton) {
+            standButton = createButton('Stand');
+            standButton.style('font-family', 'Concert One');
+            standButton.mousePressed(() => {
+                if (blackjackGameState === 'playerTurn') {
+                    blackjackGameState = 'dealerTurn';
+                    dealerPlay();
+                }
+            });
+            gameBtns.push(standButton);
+        }
+
+        if (!playAgainButton) {
+            playAgainButton = createButton('Play Again');
+            playAgainButton.style('font-family', 'Concert One');
+            playAgainButton.mousePressed(() => {
+                this.setup(); // restart the game
+            });
+            gameBtns.push(playAgainButton);
         }
     }
 }
 
-// Dealer automatically plays after player stands
 async function dealerPlay() {
     blackjackDealerHand.reveal();
-    await sleep(1000)
+    await sleep(1000);
+
     while (getBlackJackValue(blackjackDealerHand) < 17) {
         blackjackDealerHand.addCard(blackjackDeck.drawCard());
-        await sleep(1000)
+        await sleep(1000);
     }
 
-    let dealerVal = getBlackJackValue(blackjackDealerHand);
-    let playerVal = getBlackJackValue(blackjackPlayerHand);
+    const dealerVal = getBlackJackValue(blackjackDealerHand);
+    const playerVal = getBlackJackValue(blackjackPlayerHand);
 
     if (dealerVal > 21 || playerVal > dealerVal) {
-        console.log("You win!")
+        resultText = "You win!";
     } else if (dealerVal === playerVal) {
-        console.log("Push.")
+        resultText = "Push (Tie)";
     } else {
-        console.log("Dealer wins.")
+        resultText = "Dealer wins.";
     }
 
     blackjackGameState = 'gameOver';
+
+    // call engine instance’s method safely
+    engine?.showPlayAgain?.();
 }
 
 function getBlackJackValue(hand) {
@@ -114,32 +199,6 @@ function getBlackJackValue(hand) {
         total -= 10;
         aces--;
     }
+
     return total;
-}
-
-// Create and toggle Hit/Stand buttons (call once in setup)
-function createBlackjackButtons() {
-    hitButton = createButton('Hit');
-    hitButton.position(width / 3, height * (5 / 16));
-    hitButton.style('font-family', 'Concert One');
-    hitButton.mousePressed(() => {
-        if (blackjackGameState === 'playerTurn') {
-            blackjackPlayerHand.addCard(blackjackDeck.drawCard());
-            if (getBlackJackValue(blackjackPlayerHand) > 21) {
-                console.log("Bust! You lose.");
-                blackjackGameState = 'gameOver';
-            }
-        }
-    });
-
-    standButton = createButton('Stand');
-    standButton.position(width * 4 / 9, height * (5 / 16));
-    standButton.style('font-family', 'Concert One');
-    standButton.mousePressed(() => {
-        if (blackjackGameState === 'playerTurn') {
-            blackjackGameState = 'dealerTurn';
-            dealerPlay();
-        }
-    });
-    gameBtns.push(hitButton, standButton)
 }
