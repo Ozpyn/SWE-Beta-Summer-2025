@@ -10,6 +10,12 @@ let joker, jack, queen, king;
 let heart, club, spade, diamond;
 let w = 800, h = 600;
 
+// load sounds from blackjack.js
+// function preload() {
+//   if (typeof engine?.preload === 'function') {
+//     engine.preload(); 
+//   }
+// }
 
 async function setup() {
   createCanvas(windowWidth, windowHeight);
