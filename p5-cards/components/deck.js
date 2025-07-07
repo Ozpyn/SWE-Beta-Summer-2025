@@ -120,7 +120,7 @@ class Deck {
       noFill();
       stroke(color('#505C45'));
       strokeWeight(defaultCardWidth / 40);
-      rect(x + 10, y + 10, defaultCardWidth * 0.8, defaultCardHeight * 0.8, defaultCornerRadius);
+      rect(x + defaultCornerIndent, y + defaultCornerIndent, defaultCardWidth - (2 * defaultCornerIndent), defaultCardHeight - (2 * defaultCornerIndent), defaultCornerRadius);
       if (this.sizeLimit) {
         push();
         strokeWeight(0.5);
