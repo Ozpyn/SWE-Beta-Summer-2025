@@ -8,7 +8,7 @@ _class: invert
 # CardFrenzy  
 ### A Modular Browser-Based Card Game Engine
 
-**Gabriel Mingle** • **Avi Rathod** • **Sivaji Alla** • **Imtiaz Shaik**
+**Avi Rathod** • **Gabriel Mingle** • **Sivaji Alla** • **Imtiaz Shaik**
 
 ---
 <!-- footer: CardFrenzy -->
@@ -147,10 +147,19 @@ Its architecture makes it easy to add new games, customize assets, and ensure co
 
 ---
 ## Attributions
+Special Thanks to: 
+- I Am Vector: low level of detail suits [https://iamvector.com/all-icons/card-game-rules]
 
-Thanks I Am Vector for the low level of detail suits: here[https://iamvector.com/all-icons/card-game-rules]
+- amid999: high level of detail suits [https://www.freepik.com/author/amid999]
 
-Thanks amid999 for the high level of detail suits: here[https://www.freepik.com/author/amid999]
+- ICONS8: the Ranks 
+  - License[https://icons8.com/license]
+  - images[https://icons8.com/icons/set/deck]
 
-Thanks ICONS8 for the Ranks: License[https://icons8.com/license]
-images[https://icons8.com/icons/set/deck]
+---
+## Demonstration
+- **Live Testing and Deployment**
+  - GitHub Workflows
+- **Live App Demo**
+  - [http://cardfrenzy.webtoys.dev/]
+  - [https://ozpyn.github.io/SWE-Beta-Summer-2025/]
