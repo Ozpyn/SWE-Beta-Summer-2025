@@ -27,11 +27,11 @@ p5-cards/
 ├── components/
 │   ├── card.js      # Card rendering & logic
 │   ├── deck.js      # Deck management
-│   ├── hand.js      # Hand management
-│   └── winLose.js   # Win/Lose overlays
+│   └── hand.js      # Hand management
 ├── games/
 │   ├── blackjack.js # Blackjack game logic
-│   └── war.js       # War game logic
+│   ├── war.js       # War game logic
+│   └── game.js      # Game Engine Base Class
 ├── assets/          # Card images (ranks & suits)
 ├── tests/           # Automated tests & scripts
 ├── index.html       # Main entry point
