@@ -137,7 +137,7 @@ img.color-adjust {
 **Reflection: Is it Completed?**  
 - Core engine and two sample games (Blackjack, War) are fully functional.
 - Modular architecture allows for easy extension.
-- Future work could includs more games, improved notifications, theming, and mobile support.
+- Future work could include more games, improved notifications, theming, and mobile support.
 
 ---
 ## Summary
