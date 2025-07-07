@@ -28,6 +28,7 @@ class Hand {
     const startX = x + (this.maxWidth - handWidth) / 2;
 
     stroke(180);
+    stroke(color('#505C45'));
     noFill();
     rect(x, y, this.maxWidth, this.cardHeight, 10);
 

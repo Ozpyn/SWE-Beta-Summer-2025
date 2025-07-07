@@ -8,6 +8,8 @@ let menuButtons = [];
 let draggingCard = null;
 let joker, jack, queen, king;
 let heart, club, spade, diamond;
+let d_club, d_diamond, d_heart, d_spade;
+let BaronNeue;
 let w = 800, h = 600;
 
 // load sounds from blackjack.js
@@ -21,7 +23,7 @@ let w = 800, h = 600;
 
 async function setup() {
   createCanvas(windowWidth, windowHeight);
-  await loadImages();
+  await loadAssets();
 
   gameSelect = createSelect();
   gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
@@ -117,7 +119,7 @@ function windowResized() {
   engine.resized()
 }
 
-async function loadImages() {
+async function loadAssets() {
   try {
     joker = await loadImage('assets/rank/joker.png');
     jack = await loadImage('assets/rank/jack.png');
@@ -134,8 +136,10 @@ async function loadImages() {
     d_heart = await loadImage('assets/suits/heart_detail.png');
     d_spade = await loadImage('assets/suits/spade_detail.png');
 
+    BaronNeue = await loadFont('assets/fonts/baron-neue.regular.otf');
+
   } catch (error) {
-    console.error("Image loading error:", error);
+    console.error("Asset loading error:", error);
   }
 }
 

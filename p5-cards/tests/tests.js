@@ -140,3 +140,41 @@ addTest('BlackJack: 2 Aces and a 9 should equal 21', async () => {
         error(`The hand value is ${value}, however 9 + Ace (11) + Ace (1) should equal 21.`);
     }
 });
+
+addTest('Assets: All rank and suit images load', async () => {
+    const imagePaths = [
+        'assets/rank/joker.png',
+        'assets/rank/jack.png',
+        'assets/rank/queen.png',
+        'assets/rank/king.png',
+        'assets/suits/club.png',
+        'assets/suits/diamond.png',
+        'assets/suits/heart.png',
+        'assets/suits/spade.png',
+        'assets/suits/club_detail.png',
+        'assets/suits/diamond_detail.png',
+        'assets/suits/heart_detail.png',
+        'assets/suits/spade_detail.png'
+    ];
+    for (let path of imagePaths) {
+        try {
+            let img = await loadImage(path);
+            if (!img || img.width === 0 || img.height === 0) {
+                error(`Image failed to load or is empty: ${path}`);
+            }
+        } catch (e) {
+            error(`Image failed to load: ${path}`);
+        }
+    }
+});
+
+addTest('Assets: BaronNeue font loads', async () => {
+    try {
+        let font = await loadFont('assets/fonts/baron-neue.regular.otf');
+        if (!font) {
+            error('BaronNeue font did not load.');
+        }
+    } catch (e) {
+        error('BaronNeue font did not load.');
+    }
+});
