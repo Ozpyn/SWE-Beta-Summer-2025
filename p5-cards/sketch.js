@@ -19,6 +19,8 @@ let w = 800, h = 600;
 //   }
 // }
 
+
+
 async function setup() {
   createCanvas(windowWidth, windowHeight);
   await loadAssets();
@@ -26,6 +28,13 @@ async function setup() {
   gameSelect = createSelect();
   gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
   gameSelect.option('Choose a game');
+  // startButton.position((width) * (5 / 16), (height) * (1 / 32));
+  gameSelect.style('background-color', '#ffffff');
+  gameSelect.style('color', 'black');
+  gameSelect.style('padding', '10px 20px');
+  gameSelect.style('font-size', '16px');
+  gameSelect.style('border-radius', '8px');
+  gameSelect.style('border', 'none');
   gameSelect.style('font-family', 'Concert One')
 
   for (let option of gameOptions) {
@@ -35,7 +44,13 @@ async function setup() {
   // Start button
   startButton = createButton('Start Game');
   startButton.style('font-family', 'Concert One')
-  startButton.position((width) * (5 / 16), (height) * (1 / 32));
+  startButton.position((width) * (3 / 16), (height) * (1 / 32));
+  startButton.style('background-color', '#000000');
+  startButton.style('color', 'white');
+  startButton.style('padding', '10px 20px');
+  startButton.style('font-size', '16px');
+  startButton.style('border-radius', '8px');
+  startButton.style('border', 'none');
   startButton.mousePressed(startGame);
 
   // Make a default deck & empty pile
@@ -52,18 +67,36 @@ async function setup() {
   drawCardBtn = createButton('Draw a Card');
   drawCardBtn.style('font-family', 'Concert One')
   drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
+  drawCardBtn.style('background-color', '#ffffff');
+  drawCardBtn.style('color', 'black');
+  drawCardBtn.style('padding', '10px 20px');
+  drawCardBtn.style('font-size', '16px');
+  drawCardBtn.style('border-radius', '8px');
+  drawCardBtn.style('border', 'none');
   drawCardBtn.mousePressed(() => drawACard(defaultDeck));
 
   // Trigger Win
   winBtn = createButton('Simulate Win');
   winBtn.style('font-family', 'Concert One')
   winBtn.position((width) * (6 / 8), (height) * (1 / 32));
+  winBtn.style('background-color', '#ffffff');
+  winBtn.style('color', 'black');
+  winBtn.style('padding', '10px 20px');
+  winBtn.style('font-size', '16px');
+  winBtn.style('border-radius', '8px');
+  winBtn.style('border', 'none');
   winBtn.mousePressed(triggerWin);
 
   // Trigger Lose
   loseBtn = createButton('Simulate Lose');
   loseBtn.style('font-family', 'Concert One')
-  loseBtn.position((width) * (6 / 8), (height) * (2 / 32));
+  loseBtn.position((width) * (6 / 8), (height) * (3 / 32));
+  loseBtn.style('background-color', '#ffffff');
+  loseBtn.style('color', 'black');
+  loseBtn.style('padding', '10px 20px');
+  loseBtn.style('font-size', '16px');
+  loseBtn.style('border-radius', '8px'); // for rounded corners
+  loseBtn.style('border', 'none');
   loseBtn.mousePressed(triggerLose);
 
   menuButtons.push(gameSelect);
@@ -72,6 +105,7 @@ async function setup() {
   menuButtons.push(winBtn);
   menuButtons.push(loseBtn);
 }
+
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -110,20 +144,14 @@ async function loadAssets() {
 }
 
 async function draw() {
-  background(0, 200, 100);
+  background(1, 50, 32);
 
   if (engine) {
     engine.draw();
   } else {
-    discard.draw(
-      width * (1 / 2) - defaultCardWidth * 4 / 3, (height) * (1 / 8)
-    )
-    defaultDeck.draw(
-      width * (1 / 2) + defaultCardWidth / 3, (height) * (1 / 8)
-    )
-    testHand.draw(
-      width * (1 / 2) - testHand.maxWidth / 2, (height) * (1 / 3)
-    );
+    discard.draw((width) * (3 / 8), (height) * (2 / 8))
+    defaultDeck.draw((width) * (4 / 8), (height) * (2 / 8))
+    testHand.draw((width) * (3 / 8), (height) * (7 / 16));
   }
 
   // Update dragging card position
@@ -280,3 +308,6 @@ function showMenuButtons() {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+
+
