@@ -181,19 +181,35 @@ class Card {
       image(img, x + this.width / 2, y + this.height / 2, drawWidth, drawHeight);
       //noTint();
 
+      
       if (this.rank !== 'Joker') {
+        // Unfortuantely, they all need to be handled 
+        // separately due to their different placements
+        if (this.rank === 'King')
+          text(this.rank[0], x + 1.2 * defaultCornerIndent, y + defaultCornerIndent);
+        if (this.rank === 'Queen')
+          text(this.rank[0], x + 1   * defaultCornerIndent, y + defaultCornerIndent);
+        if (this.rank === 'Jack')
+          text(this.rank[0], x + 1.9 * defaultCornerIndent, y + defaultCornerIndent);
+
         imageMode(CORNER);
-        image(this.suitImage, x + defaultCornerIndent, y + defaultCornerIndent, this.width / 4, this.width / 4);
+        image(this.suitImage, x + defaultCornerIndent/2, y + 5.5*defaultCornerIndent, this.width / 4, this.width / 4);
       }
       noTint();
     } else {
-      // For non-face/numeric cards only print first char
-      // unless it's 10 (A, 1, 2, 3, ..., 9)
-      text(
-        (this.rank !== '10') ? this.rank[0] : this.rank,
-        x + defaultCornerIndent,
-        y + defaultCornerIndent
-      );
+      // Ace and 10 handling requires specific placement due to 
+      // Ace's fancy corner image and 10 being multidigit
+      if (this.rank === 'Ace')
+        text('A', x + 1.6*defaultCornerIndent, y + defaultCornerIndent);
+      else if (this.rank === '10')
+        text('10', x + defaultCornerIndent, y + defaultCornerIndent);
+      else
+        text(this.rank[0], x + 1.7*defaultCornerIndent, y + defaultCornerIndent);
+
+      imageMode(CORNER);
+      tint(suitColor);
+      image(this.suitImage, x + defaultCornerIndent/2, y + 5.5*defaultCornerIndent, this.width / 4, this.width / 4);
+      noTint();
     }
 
     // Draw large suit symbol in center, larger for aces who have details
@@ -214,8 +230,8 @@ class Card {
         image(img, x + this.width / 2, y + this.height / 2, drawWidth, drawHeight);
       } else {
         let img = this.suitImage;
-        let maxWidth = this.width / 1.5;
-        let maxHeight = this.height / 1.5;
+        let maxWidth = this.width / 2;
+        let maxHeight = this.height / 2;
         let aspect = img.width / img.height;
         let drawWidth = maxWidth;
         let drawHeight = maxWidth / aspect;
@@ -238,20 +254,27 @@ class Card {
     // Draw rank and suit in bottom right (rotated)
     textAlign(LEFT, TOP); // Because after rotation, (0,0) is effectively top-left of the rotated object
 
-    translate(x + this.width - defaultCornerIndent, y + this.height - defaultCornerIndent);
+    translate(x + this.width, y + this.height);
     rotate(PI);
-
+    tint(suitColor);
     if (this.rank !== 'Joker') {
-      if (this.rankImage) {
-        imageMode(CORNER); // CORNER works fine here with proper alignment
-        tint(suitColor);
-        image(this.suitImage, 0, 0, this.width / 4, this.width / 4);
-        noTint();
-      } else {
-        text(
-          (this.rank !== '10') ? this.rank[0] : this.rank, 0, 0
-        );
-      }
+      // Unfortuantely, they all need to be handled 
+      // separately due to their different placements
+      if      (this.rank === 'King')
+        text(this.rank[0], 1.2 * defaultCornerIndent, defaultCornerIndent);
+      else if (this.rank === 'Queen')
+        text(this.rank[0],       defaultCornerIndent, defaultCornerIndent);
+      else if (this.rank === 'Jack')
+        text(this.rank[0], 1.9 * defaultCornerIndent, defaultCornerIndent);
+      else if (this.rank === 'Ace')
+        text('A',          1.6 * defaultCornerIndent, defaultCornerIndent);
+      else if (this.rank === '10')
+        text('10',               defaultCornerIndent, defaultCornerIndent);
+      else
+        text(this.rank[0], 1.7 * defaultCornerIndent, defaultCornerIndent);
+
+      imageMode(CORNER);
+      image(this.suitImage, defaultCornerIndent/2, 5.5*defaultCornerIndent, this.width / 4, this.width / 4);
     }
     pop();
   }
