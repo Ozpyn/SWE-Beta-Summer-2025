@@ -1,7 +1,7 @@
 let warDeck;
 let warPlayerPile, warComputerPile;
 let warGameState = 'start';
-let resultText = "";
+let warText = "";
 let playerCard, computerCard;
 let autoPlay = false;
 let inWar = false;
@@ -32,7 +32,7 @@ class War extends Game {
         }
 
         warGameState = 'playerTurn';
-        resultText = "It's your turn to draw a card!";
+        warText = "It's your turn to draw a card!";
         console.log("Game setup complete. It's the player's turn.");
     }
 
@@ -53,7 +53,7 @@ class War extends Game {
         warPlayerHand.draw((width) * (1 / 4), (height) * (13 / 32));
 
         textSize(18);
-        text(resultText, width / 2 - 100, height - 40);
+        text(warText, width / 2 - 100, height - 40);
 
         pop();
     }
@@ -69,7 +69,7 @@ class War extends Game {
         autoPlay = false;
         inWar = false;
         warGameState = 'stopped';
-        resultText = "Game stopped.";
+        warText = "Game stopped.";
 
         if (warDeck) warDeck.clear();
         if (warPlayerPile) warPlayerPile.clear();
@@ -135,13 +135,13 @@ async function resolveRound() {
     const computerValue = getWarValue(computerCard);
 
     if (playerValue > computerValue) {
-        resultText = "You win the round!";
+        warText = "You win the round!";
         collectCards(warPlayerPile);
     } else if (playerValue < computerValue) {
-        resultText = "Computer wins the round!";
+        warText = "Computer wins the round!";
         collectCards(warComputerPile);
     } else {
-        resultText = "War!";
+        warText = "War!";
         await handleWar();
     }
 
@@ -191,10 +191,10 @@ async function handleWar() {
 function checkForGameOver() {
     if (warPlayerPile.size() === 0) {
         warGameState = 'gameOver';
-        resultText = "Computer wins the game!";
+        warText = "Computer wins the game!";
     } else if (warComputerPile.size() === 0) {
         warGameState = 'gameOver';
-        resultText = "You win the game!";
+        warText = "You win the game!";
     } else {
         warGameState = 'playerTurn';
         if (autoPlay && !inWar) {
