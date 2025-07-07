@@ -142,45 +142,43 @@ function mousePressed() {
   if (engine) {
     engine.mousePressed();
   } else {
-    if (!showWin && !showLose) {
-      // Check if mouse is over any draw-enabled deck
-      for (let deck of allDecks) {
-        if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
-          const card = deck.drawCard();
-          if (card !== -1) {
-            card.x = mouseX - card.width / 2;
-            card.y = mouseY - card.height / 2;
-            draggingCard = card;
-            draggingCard.startDrag();
-            draggableCards.push(draggingCard);
-            return;
-          }
-        }
-      }
-
-      // Check if mouse is over a card in a hand
-      for (let hand of allHands) {
-        const cards = hand.getCards();
-        for (let i = cards.length - 1; i >= 0; i--) {
-          const card = cards[i];
-          if (card.isMouseOver()) {
-            hand.removeCard(card);
-            card.startDrag();
-            draggingCard = card;
-            draggableCards.push(card);
-            return;
-          }
-        }
-      }
-
-      // Otherwise check for a dragged card
-      for (let i = draggableCards.length - 1; i >= 0; i--) {
-        if (draggableCards[i].isMouseOver()) {
-          draggingCard = draggableCards[i];
+    // Check if mouse is over any draw-enabled deck
+    for (let deck of allDecks) {
+      if (deck.canBeDrawnFrom && deck.isMouseOver(mouseX, mouseY)) {
+        const card = deck.drawCard();
+        if (card !== -1) {
+          card.x = mouseX - card.width / 2;
+          card.y = mouseY - card.height / 2;
+          draggingCard = card;
           draggingCard.startDrag();
-          draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
-          break;
+          draggableCards.push(draggingCard);
+          return;
         }
+      }
+    }
+
+    // Check if mouse is over a card in a hand
+    for (let hand of allHands) {
+      const cards = hand.getCards();
+      for (let i = cards.length - 1; i >= 0; i--) {
+        const card = cards[i];
+        if (card.isMouseOver()) {
+          hand.removeCard(card);
+          card.startDrag();
+          draggingCard = card;
+          draggableCards.push(card);
+          return;
+        }
+      }
+    }
+
+    // Otherwise check for a dragged card
+    for (let i = draggableCards.length - 1; i >= 0; i--) {
+      if (draggableCards[i].isMouseOver()) {
+        draggingCard = draggableCards[i];
+        draggingCard.startDrag();
+        draggableCards.push(draggableCards.splice(i, 1)[0]); // bring to front
+        break;
       }
     }
   }
