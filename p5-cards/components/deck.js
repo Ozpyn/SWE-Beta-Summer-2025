@@ -101,13 +101,13 @@ class Deck {
       topCard.calculateDimensions();
 
       // Shadow to show deck size
-      let shadowOffset = pileSize / 10;
+      let shadowOffset = (pileSize / 10) * (defaultCardWidth / 40);
       let shadowColor = color(0, 0, 0);
       push();
       fill(shadowColor);
       noStroke();
-      rect(x + shadowOffset, y + shadowOffset, topCard.width, topCard.height, 5);
-      rect(x + (shadowOffset / 2), y + (shadowOffset / 2), topCard.width, topCard.height, 5);
+      rect(x + shadowOffset, y + shadowOffset, topCard.width, topCard.height, defaultCornerRadius);
+      rect(x + (shadowOffset / 2), y + (shadowOffset / 2), topCard.width, topCard.height, defaultCornerRadius);
       pop();
       if (this.faceUp) {
         topCard.drawFront(x, y);
@@ -119,8 +119,8 @@ class Deck {
       push();
       noFill();
       stroke(color('#505C45'));
-      strokeWeight(2);
-      rect(x + 10, y + 10, defaultCardWidth * 0.8, defaultCardHeight * 0.8, 5);
+      strokeWeight(defaultCardWidth / 40);
+      rect(x + 10, y + 10, defaultCardWidth * 0.8, defaultCardHeight * 0.8, defaultCornerRadius);
       if (this.sizeLimit) {
         push();
         strokeWeight(0.5);

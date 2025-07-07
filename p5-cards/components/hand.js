@@ -4,9 +4,7 @@ class Hand {
     this.cards = [];
     this.x = 0;
     this.y = 0;
-    this.maxWidth = defaultCardWidth * 5; // Maximum horizontal width the hand should occupy
-    this.cardWidth = defaultCardWidth;
-    this.cardHeight = defaultCardHeight;
+    this.calculateDimensions();
   }
 
   draw(x, y) {
@@ -30,8 +28,9 @@ class Hand {
 
     stroke(180);
     stroke(color('#505C45'));
+    strokeWeight(defaultCardWidth / 40);
     noFill();
-    rect(x, y, this.maxWidth, this.cardHeight, 10);
+    rect(x, y, this.maxWidth, this.cardHeight, defaultCornerRadius);
 
     push();
     fill(120);

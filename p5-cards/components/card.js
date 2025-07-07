@@ -2,13 +2,12 @@ let cardScale = window.innerWidth / 20; // must not be less than 30 for proper r
 
 let defaultCardWidth = 2 * cardScale;
 let defaultCardHeight = 3 * cardScale;
+let defaultCornerRadius = defaultCardWidth / 8
 
 class Card {
   constructor(suit, rank, x, y) {
     this.suit = suit;
     this.rank = rank;
-    this.width = defaultCardWidth;
-    this.height = defaultCardHeight;
     this.x = x;
     this.y = y;
     this.faceUp = false;
@@ -38,6 +37,7 @@ class Card {
     this.width = defaultCardWidth;
     this.height = defaultCardHeight;
     cardScale = defaultCardWidth / 2;
+    defaultCornerRadius = defaultCardWidth / 8;
   }
 
   async setImages() {
@@ -88,9 +88,9 @@ class Card {
   draw(x = this.x, y = this.y) {
     this.calculateDimensions();
     if (this.faceUp) {
-      this.drawFront()
+      this.drawFront(x, y)
     } else {
-      this.drawBack()
+      this.drawBack(x, y)
     }
   }
 
@@ -98,9 +98,9 @@ class Card {
     push();
     fill(250, 200, 0);
     stroke(0);
-    rect(x, y, this.width, this.height, 5);
+    rect(x, y, this.width, this.height, defaultCornerRadius);
     fill(0);
-    textSize(20);
+    textSize(this.width / 4);
 
     if (spade && heart && diamond && club) {
       imageMode(CENTER);
@@ -148,7 +148,7 @@ class Card {
     // Draw card background
     fill(255);
     stroke(0);
-    rect(x, y, this.width, this.height, 5);
+    rect(x, y, this.width, this.height, defaultCornerRadius);
     // Determine suit color
     const suitColor = (this.suit === 'Heart' || this.suit === 'Diamond' || this.suit === 'Red')
       ? color(255, 0, 0)    // red
@@ -157,7 +157,7 @@ class Card {
     // Draw rank and suit in top left
     fill(suitColor);
     textFont(BaronNeue);
-    textSize(defaultCardWidth / 4);
+    textSize(this.width / 4);
 
     textAlign(LEFT, TOP);
 
@@ -165,12 +165,23 @@ class Card {
       // For face cards, use the rank image
       imageMode(CENTER);
       tint(suitColor); // Apply suit color to the rank image
-      image(this.rankImage, x + this.width / 2, y + this.height / 2, 40, 40);
+      // Draw the rank image centered, preserving its aspect ratio
+      let img = this.rankImage;
+      let maxWidth = this.width / 1.5;
+      let maxHeight = this.height / 1.5;
+      let aspect = img.width / img.height;
+      let drawWidth = maxWidth;
+      let drawHeight = maxWidth / aspect;
+      if (drawHeight > maxHeight) {
+        drawHeight = maxHeight;
+        drawWidth = maxHeight * aspect;
+      }
+      image(img, x + this.width / 2, y + this.height / 2, drawWidth, drawHeight);
       //noTint();
 
       if (this.rank !== 'Joker') {
         imageMode(CORNER);
-        image(this.suitImage, x + 2, y + 2, 20, 20);
+        image(this.suitImage, x + 2, y + 2, this.width / 4, this.width / 4);
       }
       noTint();
     } else {
@@ -188,9 +199,29 @@ class Card {
       imageMode(CENTER);
       tint(suitColor); // Apply suit color to the suit image
       if (this.rank === 'Ace') {
-        image(this.suitImage, x + this.width / 2, y + this.height / 2, 40, 40);
+        let img = this.suitImage;
+        let maxWidth = this.width / 1.5;
+        let maxHeight = this.height / 1.5;
+        let aspect = img.width / img.height;
+        let drawWidth = maxWidth;
+        let drawHeight = maxWidth / aspect;
+        if (drawHeight > maxHeight) {
+          drawHeight = maxHeight;
+          drawWidth = maxHeight * aspect;
+        }
+        image(img, x + this.width / 2, y + this.height / 2, drawWidth, drawHeight);
       } else {
-        image(this.suitImage, x + this.width / 2, y + this.height / 2, 25, 25);
+        let img = this.suitImage;
+        let maxWidth = this.width / 1.5;
+        let maxHeight = this.height / 1.5;
+        let aspect = img.width / img.height;
+        let drawWidth = maxWidth;
+        let drawHeight = maxWidth / aspect;
+        if (drawHeight > maxHeight) {
+          drawHeight = maxHeight;
+          drawWidth = maxHeight * aspect;
+        }
+        image(img, x + this.width / 2, y + this.height / 2, drawWidth, drawHeight);
       }
       noTint();
     } else {
@@ -212,7 +243,7 @@ class Card {
       if (this.rankImage) {
         imageMode(CORNER); // CORNER works fine here with proper alignment
         tint(suitColor);
-        image(this.suitImage, 0, 0, 20, 20);
+        image(this.suitImage, 0, 0, this.width / 4, this.width / 4);
         noTint();
       } else {
         text(
