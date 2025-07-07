@@ -115,18 +115,9 @@ class BlackJack extends Game {
     createButtons() {
         if (!hitButton) {
             hitButton = createButton('+ Hit');
+            hitButton.addClass('button-standard');
+            hitButton.addClass('green-modify');
             hitButton.position(width / 3 - 100, height * (5 / 8));
-            hitButton.style('background-color', '#28a745');
-            hitButton.style('color', 'white');
-            hitButton.style('border', 'none');
-            hitButton.style('border-radius', '10px');
-            hitButton.style('padding', '12px 24px');
-            hitButton.style('font-size', '18px');
-            hitButton.style('font-family', 'Concert One');
-            hitButton.style('box-shadow', '0 4px 6px rgba(0,0,0,0.2)');
-            hitButton.style('cursor', 'pointer');
-            //             hitButton = createButton('Hit');
-
             hitButton.mousePressed(() => {
                 if (blackjackGameState === 'playerTurn') {
                     blackjackPlayerHand.addCard(blackjackDeck.drawCard());
@@ -142,18 +133,10 @@ class BlackJack extends Game {
         }
 
         if (!standButton) {
-            // standButton = createButton('Stand');
             standButton = createButton('✋ Stand');
+            standButton.addClass('button-standard');
+            standButton.addClass('green-modify');
             standButton.position(width * 2 / 3, height * (5 / 8));
-            standButton.style('background-color', '#28a745');
-            standButton.style('color', 'white');
-            standButton.style('border', 'none');
-            standButton.style('border-radius', '10px');
-            standButton.style('padding', '12px 24px');
-            standButton.style('font-size', '18px');
-            standButton.style('font-family', 'Concert One');
-            standButton.style('box-shadow', '0 4px 6px rgba(0,0,0,0.2)');
-            standButton.style('cursor', 'pointer');
             standButton.mousePressed(() => {
                 if (blackjackGameState === 'playerTurn') {
                     blackjackGameState = 'dealerTurn';
@@ -165,17 +148,9 @@ class BlackJack extends Game {
 
         if (!playAgainButton) {
             playAgainButton = createButton('🔄️Play Again');
+            playAgainButton.addClass('button-standard');
+            playAgainButton.addClass('green-modify');
             playAgainButton.position(width * 2 / 3, height * (5 / 8));
-            playAgainButton.style('background-color', '#28a745');
-            playAgainButton.style('color', 'white');
-            playAgainButton.style('border', 'none');
-            playAgainButton.style('border-radius', '10px');
-            playAgainButton.style('padding', '12px 24px');
-            playAgainButton.style('font-size', '18px');
-            playAgainButton.style('font-family', 'Concert One');
-            playAgainButton.style('box-shadow', '0 4px 6px rgba(0,0,0,0.2)');
-            playAgainButton.style('cursor', 'pointer');
-            playAgainButton.style('font-family', 'Concert One');
             playAgainButton.mousePressed(() => {
                 rtnBtn.remove();
                 this.setup(); // restart the game

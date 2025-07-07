@@ -150,6 +150,7 @@ class Card {
     // Draw card background
     fill(255);
     stroke(0);
+    strokeWeight(0);
     rect(x, y, this.width, this.height, defaultCornerRadius);
     // Determine suit color
     const suitColor = (this.suit === 'Heart' || this.suit === 'Diamond' || this.suit === 'Red')

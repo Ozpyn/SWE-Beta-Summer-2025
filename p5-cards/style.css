@@ -2,6 +2,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  background: rgb(1, 50, 32);
 }
 
 canvas {
@@ -12,4 +13,40 @@ canvas {
   font-family: "Concert One", sans-serif;
   font-weight: 400;
   font-style: normal;
+}
+
+.button-standard {
+  background-color: #ffffff;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-family: "Concert One", sans-serif;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.button-inverted {
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-family: "Concert One", sans-serif;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* Button variant for dark background */
+.button-dark {
+  background-color: #000000;
+  color: white;
+}
+
+/* Button variant for green background (Blackjack) */
+.green-modify {
+  background-color: #28a745;
+  color: white;
 }

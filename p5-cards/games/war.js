@@ -6,6 +6,7 @@ let playerCard, computerCard;
 let autoPlay = false;
 let inWar = false;
 let resolvingRound = false;
+let warDelay = 1;
 
 let warPlayerHand, warComputerHand;
 
@@ -100,17 +101,8 @@ class War extends Game {
 
 function createWarButtons() {
     drawButton = createButton('Draw');
+    drawButton.addClass('button-standard');
     drawButton.position((width) * (1 / 4), (height) * (9 / 32));
-    drawButton.style('background-color', '#ffffff');
-    drawButton.style('color', 'black');
-    drawButton.style('border', 'none');
-    drawButton.style('border-radius', '10px');
-    drawButton.style('padding', '12px 24px');
-    drawButton.style('font-size', '18px');
-    drawButton.style('font-family', 'Concert One');
-    drawButton.style('box-shadow', '0 4px 6px rgba(0,0,0,0.2)');
-    drawButton.style('cursor', 'pointer');
-    drawButton.style('font-family', 'Concert One');
     drawButton.mousePressed(() => {
         if (warGameState === 'playerTurn' && !resolvingRound && !stopRequested && !autoPlay) {
             // Both players draw a card and reveal it
@@ -120,18 +112,9 @@ function createWarButtons() {
         }
     });
 
-    const autoButton = createButton('Auto Play');
+    autoButton = createButton('Auto Play');
+    autoButton.addClass('button-standard');
     autoButton.position((width) * (2 / 4), (height) * (9 / 32));
-    autoButton.style('background-color', '#ffffff');
-    autoButton.style('color', 'black');
-    autoButton.style('border', 'none');
-    autoButton.style('border-radius', '10px');
-    autoButton.style('padding', '12px 24px');
-    autoButton.style('font-size', '18px');
-    autoButton.style('font-family', 'Concert One');
-    autoButton.style('box-shadow', '0 4px 6px rgba(0,0,0,0.2)');
-    autoButton.style('cursor', 'pointer');
-    autoButton.style('font-family', 'Concert One');
     autoButton.mousePressed(() => {
         if (!autoPlay && warGameState !== 'gameOver') {
             autoPlay = true;
@@ -139,7 +122,6 @@ function createWarButtons() {
         }
     });
     gameBtns.push(drawButton, autoButton);
-
 }
 
 async function resolveRound() {
@@ -163,7 +145,7 @@ async function resolveRound() {
         await handleWar();
     }
 
-    await sleep(500);
+    await sleep(warDelay);
     if (stopRequested) return;
 
     warPlayerHand.clear();
@@ -188,7 +170,7 @@ function collectCards(winnerPile) {
 async function handleWar() {
     inWar = true;
     for (let i = 0; i < 3; i++) {
-        await sleep(500)
+        await sleep(warDelay)
         if (warPlayerPile.size() > 0) warPlayerHand.addCard(warPlayerPile.drawCard()); // face-down
         if (warComputerPile.size() > 0) warComputerHand.addCard(warComputerPile.drawCard()); // face-down
     }
@@ -200,9 +182,9 @@ async function handleWar() {
         warComputerHand.addCard(warComputerPile.drawCard().flip()); // face-up
     }
 
-    await sleep(500);
+    await sleep(warDelay);
     resolveRound(); // Recursively resolve the next top card
-    await sleep(500);
+    await sleep(warDelay);
     inWar = false;
 }
 
@@ -218,7 +200,7 @@ function checkForGameOver() {
         if (autoPlay && !inWar) {
             setTimeout(() => {
                 autoPlayStep();
-            }, 600);
+            }, warDelay * 1.1);
         }
     }
 }
