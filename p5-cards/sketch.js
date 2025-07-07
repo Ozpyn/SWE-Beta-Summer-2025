@@ -26,15 +26,8 @@ async function setup() {
 
   gameSelect = createSelect();
   gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
+  gameSelect.addClass('button-standard');
   gameSelect.option('Choose a game');
-  // startButton.position((width) * (5 / 16), (height) * (1 / 32));
-  gameSelect.style('background-color', '#ffffff');
-  gameSelect.style('color', 'black');
-  gameSelect.style('padding', '10px 20px');
-  gameSelect.style('font-size', '16px');
-  gameSelect.style('border-radius', '8px');
-  gameSelect.style('border', 'none');
-  gameSelect.style('font-family', 'Concert One')
 
   for (let option of gameOptions) {
     gameSelect.option(option);
@@ -42,14 +35,8 @@ async function setup() {
 
   // Start button
   startButton = createButton('Start Game');
-  startButton.style('font-family', 'Concert One')
   startButton.position((width) * (3 / 16), (height) * (1 / 32));
-  startButton.style('background-color', '#000000');
-  startButton.style('color', 'white');
-  startButton.style('padding', '10px 20px');
-  startButton.style('font-size', '16px');
-  startButton.style('border-radius', '8px');
-  startButton.style('border', 'none');
+  startButton.addClass('button-inverted');
   startButton.mousePressed(startGame);
 
   // Make a default deck & empty pile
@@ -64,14 +51,8 @@ async function setup() {
 
   // Draw a Card
   drawCardBtn = createButton('Draw a Card');
-  drawCardBtn.style('font-family', 'Concert One')
   drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
-  drawCardBtn.style('background-color', '#ffffff');
-  drawCardBtn.style('color', 'black');
-  drawCardBtn.style('padding', '10px 20px');
-  drawCardBtn.style('font-size', '16px');
-  drawCardBtn.style('border-radius', '8px');
-  drawCardBtn.style('border', 'none');
+  drawCardBtn.addClass('button-standard');
   drawCardBtn.mousePressed(() => drawACard(defaultDeck));
 
   menuButtons.push(gameSelect);
@@ -85,7 +66,7 @@ function windowResized() {
 
   // Reposition UI elements based on new width/height
   gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
-  startButton.position((width) * (5 / 16), (height) * (1 / 32));
+  startButton.position((width) * (3 / 16), (height) * (1 / 32));
   drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
   if (engine) { engine.resized(); }
 }
@@ -115,8 +96,7 @@ async function loadAssets() {
 }
 
 async function draw() {
-  background(1, 50, 32);
-
+  background(getComputedStyle(document.body).backgroundColor);
   if (engine) {
     engine.draw();
   } else {
@@ -125,12 +105,10 @@ async function draw() {
     testHand.draw((width) * (3 / 8), (height) * (7 / 16));
   }
 
-  // Update dragging card position
   if (draggingCard) {
     draggingCard.updateDrag();
   }
 
-  // Draw all cards (bottom to top)
   for (let card of draggableCards) {
     card.draw();
   }
@@ -204,8 +182,6 @@ function mouseReleased() {
         return;
       }
     }
-
-
     for (let deck of allDecks) {
       if (deck.isMouseOver(mouseX, mouseY)) {
         if (deck.addCard(draggingCard)) {
@@ -253,7 +229,6 @@ function drawACard(selectedDeck) {
     if (!discard.addCard(card)) {
       selectedDeck.addCard(card);
     }
-    // alert(card.rank + " of " + card.suit);
   }
   return;
 }
@@ -273,6 +248,3 @@ function showMenuButtons() {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-
-
