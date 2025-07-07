@@ -36,7 +36,7 @@ class Hand {
     fill(120);
     noStroke();
     textAlign(CENTER, CENTER);
-    textSize(12);
+    textSize(this.cardHeight / 6);
     text(`( ${this.name} hand )`, x + this.maxWidth / 2, y + this.cardHeight / 2);
     pop();
 

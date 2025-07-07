@@ -3,6 +3,7 @@ let cardScale = window.innerWidth / 20; // must not be less than 30 for proper r
 let defaultCardWidth = 2 * cardScale;
 let defaultCardHeight = 3 * cardScale;
 let defaultCornerRadius = defaultCardWidth / 8
+let defaultCornerIndent = (defaultCardWidth / 20);
 
 class Card {
   constructor(suit, rank, x, y) {
@@ -38,6 +39,7 @@ class Card {
     this.height = defaultCardHeight;
     cardScale = defaultCardWidth / 2;
     defaultCornerRadius = defaultCardWidth / 8;
+    defaultCornerIndent = (defaultCardWidth / 20);
   }
 
   async setImages() {
@@ -181,7 +183,7 @@ class Card {
 
       if (this.rank !== 'Joker') {
         imageMode(CORNER);
-        image(this.suitImage, x + 2, y + 2, this.width / 4, this.width / 4);
+        image(this.suitImage, x + defaultCornerIndent, y + defaultCornerIndent, this.width / 4, this.width / 4);
       }
       noTint();
     } else {
@@ -189,8 +191,8 @@ class Card {
       // unless it's 10 (A, 1, 2, 3, ..., 9)
       text(
         (this.rank !== '10') ? this.rank[0] : this.rank,
-        x + 2,
-        y + 2
+        x + defaultCornerIndent,
+        y + defaultCornerIndent
       );
     }
 
@@ -236,7 +238,7 @@ class Card {
     // Draw rank and suit in bottom right (rotated)
     textAlign(LEFT, TOP); // Because after rotation, (0,0) is effectively top-left of the rotated object
 
-    translate(x + this.width - 2, y + this.height - 2);
+    translate(x + this.width - defaultCornerIndent, y + this.height - defaultCornerIndent);
     rotate(PI);
 
     if (this.rank !== 'Joker') {
