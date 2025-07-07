@@ -27,8 +27,8 @@ class Card {
 
   calculateDimensions() {
     let verticalLimit = window.innerHeight / 8
-    let horizontalLimit = window.innerWidth / 20;
-    if (horizontalLimit * 1.5 > verticalLimit) {
+    let horizontalLimit = window.innerWidth / 12;
+    if (horizontalLimit * 1.5 < verticalLimit) {
       defaultCardWidth = horizontalLimit;
       defaultCardHeight = horizontalLimit * 1.5;
     } else {
