@@ -8,7 +8,7 @@ _class: invert
 # CardFrenzy  
 ### A Modular Browser-Based Card Game Engine
 
-**Gabriel Mingle** • **Avi Rathod** • **Sivaji Alla**
+**Gabriel Mingle** • **Avi Rathod** • **Sivaji Alla** • **Imtiaz Shaik**
 
 ---
 <!-- footer: CardFrenzy -->
