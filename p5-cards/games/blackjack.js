@@ -146,6 +146,7 @@ class BlackJack extends Game {
             playAgainButton = createButton('Play Again');
             playAgainButton.style('font-family', 'Concert One');
             playAgainButton.mousePressed(() => {
+                rtnBtn.remove();
                 this.setup(); // restart the game
             });
             gameBtns.push(playAgainButton);
