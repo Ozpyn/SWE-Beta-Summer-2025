@@ -101,6 +101,15 @@ class War extends Game {
 function createWarButtons() {
     drawButton = createButton('Draw');
     drawButton.position((width) * (1 / 4), (height) * (9 / 32));
+    drawButton.style('background-color', '#ffffff');
+    drawButton.style('color', 'black');
+    drawButton.style('border', 'none');
+    drawButton.style('border-radius', '10px');
+    drawButton.style('padding', '12px 24px');
+    drawButton.style('font-size', '18px');
+    drawButton.style('font-family', 'Concert One');
+    drawButton.style('box-shadow', '0 4px 6px rgba(0,0,0,0.2)');
+    drawButton.style('cursor', 'pointer');
     drawButton.style('font-family', 'Concert One');
     drawButton.mousePressed(() => {
         if (warGameState === 'playerTurn' && !resolvingRound && !stopRequested && !autoPlay) {
@@ -113,6 +122,15 @@ function createWarButtons() {
 
     const autoButton = createButton('Auto Play');
     autoButton.position((width) * (2 / 4), (height) * (9 / 32));
+    autoButton.style('background-color', '#ffffff');
+    autoButton.style('color', 'black');
+    autoButton.style('border', 'none');
+    autoButton.style('border-radius', '10px');
+    autoButton.style('padding', '12px 24px');
+    autoButton.style('font-size', '18px');
+    autoButton.style('font-family', 'Concert One');
+    autoButton.style('box-shadow', '0 4px 6px rgba(0,0,0,0.2)');
+    autoButton.style('cursor', 'pointer');
     autoButton.style('font-family', 'Concert One');
     autoButton.mousePressed(() => {
         if (!autoPlay && warGameState !== 'gameOver') {
