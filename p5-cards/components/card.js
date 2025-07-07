@@ -1,4 +1,4 @@
-let cardScale = 1; // scale factor for card dimensions
+let cardScale = 1.2; // scale factor for card dimensions
 let cardRatio = 1.5; // width / height ratio for cards
 
 let defaultCardWidth = 0;
@@ -178,7 +178,7 @@ class Card {
         drawHeight = maxHeight;
         drawWidth = maxHeight * aspect;
       }
-      image(img, x + this.width / 2, y + this.height / 2, drawWidth, drawHeight);
+      image(img, x + this.width / 2, y + this.height / 2, 0.8 * drawWidth, 0.8 * drawHeight);
       //noTint();
 
       
@@ -200,7 +200,7 @@ class Card {
       // Ace and 10 handling requires specific placement due to 
       // Ace's fancy corner image and 10 being multidigit
       if (this.rank === 'Ace')
-        text('A', x + 1.6*defaultCornerIndent, y + defaultCornerIndent);
+        text('A', x + 1.6 * defaultCornerIndent, y + defaultCornerIndent);
       else if (this.rank === '10')
         text('10', x + defaultCornerIndent, y + defaultCornerIndent);
       else
