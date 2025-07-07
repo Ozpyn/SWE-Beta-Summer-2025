@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Card Game Player Setup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #2e2e2e;
+      color: white;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100px;
+      height: 140px;
+      border: 2px solid white;
+      border-radius: 10px;
+      background: #fff;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      margin: 10px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .player {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Card Game Setup</h1>
+
+  <div class="card-container" id="cards">
+    <div class="card">
+      <div>🂡</div>
+      <div style="align-self: center;">A</div>
+      <div>♠</div>
+    </div>
+    <div class="card">
+      <div>🂱</div>
+      <div style="align-self: center;">K</div>
+      <div>♥</div>
+    </div>
+  </div>
+
+  <div id="players"></div>
+
+  <script>
+    // Player class
+    class Player {
+      constructor(name, position) {
+        this.name = name;
+        this.position = position;
+        this.hand = [];
+        this.score = 0;
+        this.turn = false; // Used for mutex-style locking
+      }
+
+      drawCard(card) {
+        if (this.turn) {
+          this.hand.push(card);
+        } else {
+          console.warn(`${this.name} cannot draw a card - not their turn!`);
+        }
+      }
+
+      toggleTurn(state) {
+        this.turn = state;
+      }
+
+      toHTML() {
+        return `
+          <div class="player">
+            <strong>${this.name}</strong><br>
+            Position: ${this.position} <br>
+            Score: ${this.score} <br>
+            Hand: ${this.hand.join(', ') || 'Empty'} <br>
+            Turn: ${this.turn ? '✅' : '❌'}
+          </div>
+        `;
+      }
+    }
+
+    // Sample players
+    const players = [
+      new Player('Alice', 1),
+      new Player('Bob', 2)
+    ];
+
+    // Set first player's turn
+    players[0].toggleTurn(true);
+
+    // Display players
+    const playerDiv = document.getElementById('players');
+    players.forEach(p => {
+      playerDiv.innerHTML += p.toHTML();
+    });
+  </script>
+
+</body>
+</html>
