@@ -111,10 +111,8 @@ p5-cards/
 </table>
 
 ---
-## Reflection
----
 
-**Engineering Process:**  
+**Reflection: Engineering Process:**  
 - Followed modular design principles for maintainability and extensibility.
 - Used JavaScript and p5.js for interactive graphics and logic.
 - Iterative development: started with core components (Card, Deck, Hand), then added sample games and UI features.
@@ -122,14 +120,14 @@ p5-cards/
 
 ---
 
-**Reasonable Project:**  
+**Reflection: Reasonable Project:**  
 - Scope limited to a static, client-side web app—no backend or server dependencies.
 - Focused on reusability, clear structure, and browser compatibility.
 - Achievable within a semester by a small team.
 
 ---
 
-**Is it Completed?**  
+**Reflection: Is it Completed?**  
 - Core engine and two sample games (Blackjack, War) are fully functional.
 - Modular architecture allows for easy extension.
 - Future work could includs more games, improved notifications, theming, and mobile support.
