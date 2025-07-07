@@ -75,35 +75,9 @@ async function setup() {
   drawCardBtn.style('border', 'none');
   drawCardBtn.mousePressed(() => drawACard(defaultDeck));
 
-  // Trigger Win
-  winBtn = createButton('Simulate Win');
-  winBtn.style('font-family', 'Concert One')
-  winBtn.position((width) * (6 / 8), (height) * (1 / 32));
-  winBtn.style('background-color', '#ffffff');
-  winBtn.style('color', 'black');
-  winBtn.style('padding', '10px 20px');
-  winBtn.style('font-size', '16px');
-  winBtn.style('border-radius', '8px');
-  winBtn.style('border', 'none');
-  winBtn.mousePressed(triggerWin);
-
-  // Trigger Lose
-  loseBtn = createButton('Simulate Lose');
-  loseBtn.style('font-family', 'Concert One')
-  loseBtn.position((width) * (6 / 8), (height) * (3 / 32));
-  loseBtn.style('background-color', '#ffffff');
-  loseBtn.style('color', 'black');
-  loseBtn.style('padding', '10px 20px');
-  loseBtn.style('font-size', '16px');
-  loseBtn.style('border-radius', '8px'); // for rounded corners
-  loseBtn.style('border', 'none');
-  loseBtn.mousePressed(triggerLose);
-
   menuButtons.push(gameSelect);
   menuButtons.push(startButton);
   menuButtons.push(drawCardBtn);
-  menuButtons.push(winBtn);
-  menuButtons.push(loseBtn);
 }
 
 
@@ -114,8 +88,6 @@ function windowResized() {
   gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
   startButton.position((width) * (5 / 16), (height) * (1 / 32));
   drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
-  winBtn.position((width) * (6 / 8), (height) * (1 / 32));
-  loseBtn.position((width) * (6 / 8), (height) * (2 / 32));
   engine.resized()
 }
 
