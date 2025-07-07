@@ -1,9 +1,10 @@
-let cardScale = window.innerWidth / 20; // must not be less than 30 for proper rendering
+let cardScale = 1; // scale factor for card dimensions
+let cardRatio = 1.5; // width / height ratio for cards
 
-let defaultCardWidth = 2 * cardScale;
-let defaultCardHeight = 3 * cardScale;
-let defaultCornerRadius = defaultCardWidth / 8
-let defaultCornerIndent = (defaultCardWidth / 20);
+let defaultCardWidth = 0;
+let defaultCardHeight = 0;
+let defaultCornerRadius = 0;
+let defaultCornerIndent = 0;
 
 class Card {
   constructor(suit, rank, x, y) {
@@ -26,18 +27,17 @@ class Card {
   }
 
   calculateDimensions() {
-    let verticalLimit = window.innerHeight / 8
-    let horizontalLimit = window.innerWidth / 12;
+    let verticalLimit = window.innerHeight / (8 / cardScale);
+    let horizontalLimit = window.innerWidth / ((8 / cardScale) * cardRatio);
     if (horizontalLimit * 1.5 < verticalLimit) {
       defaultCardWidth = horizontalLimit;
-      defaultCardHeight = horizontalLimit * 1.5;
+      defaultCardHeight = horizontalLimit * cardRatio;
     } else {
-      defaultCardWidth = verticalLimit / 1.5;
+      defaultCardWidth = verticalLimit / cardRatio;
       defaultCardHeight = verticalLimit;
     }
     this.width = defaultCardWidth;
     this.height = defaultCardHeight;
-    cardScale = defaultCardWidth / 2;
     defaultCornerRadius = defaultCardWidth / 8;
     defaultCornerIndent = (defaultCardWidth / 20);
   }
@@ -108,27 +108,27 @@ class Card {
       imageMode(CENTER);
       tint(0);
       // No rotation - spade
-      image(spade, x + this.width / 2, y + this.height / 3, cardScale / 2, cardScale / 2);
+      image(spade, x + this.width / 2, y + this.height / 3, defaultCardWidth / 4, defaultCardWidth / 4);
 
       // 180° rotation - heart
       push();
       translate(x + this.width / 2, y + (this.height * 2) / 3);
       rotate(PI); // 180 degrees in radians
-      image(heart, 0, 0, cardScale / 2, cardScale / 2);
+      image(heart, 0, 0, defaultCardWidth / 4, defaultCardWidth / 4);
       pop();
 
       // 90° rotation left (counter-clockwise) - diamond
       push();
       translate(x + this.width / 3, y + this.height / 2);
       rotate(-HALF_PI); // -90 degrees
-      image(diamond, 0, 0, cardScale / 2, (cardScale * 1.2 / 2));
+      image(diamond, 0, 0, defaultCardWidth / 4, (defaultCardWidth / 4 * 1.2));
       pop();
 
       // 90° rotation right (clockwise) - club
       push();
       translate(x + (this.width * 2) / 3, y + this.height / 2);
       rotate(HALF_PI); // 90 degrees
-      image(club, 0, 0, cardScale / 2, cardScale * 1.2 / 2);
+      image(club, 0, 0, defaultCardWidth / 4, (defaultCardWidth / 4 * 1.2));
       pop();
       noTint();
     } else {

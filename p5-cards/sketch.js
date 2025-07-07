@@ -10,7 +10,6 @@ let joker, jack, queen, king;
 let heart, club, spade, diamond;
 let d_club, d_diamond, d_heart, d_spade;
 let BaronNeue;
-let w = 800, h = 600;
 
 // load sounds from blackjack.js
 // function preload() {
