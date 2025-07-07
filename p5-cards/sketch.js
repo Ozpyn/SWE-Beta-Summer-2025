@@ -8,6 +8,8 @@ let menuButtons = [];
 let draggingCard = null;
 let joker, jack, queen, king;
 let heart, club, spade, diamond;
+let d_club, d_diamond, d_heart, d_spade;
+let BaronNeue;
 let w = 800, h = 600;
 
 // load sounds from blackjack.js
@@ -85,8 +87,6 @@ function windowResized() {
 
 async function loadAssets() {
   try {
-    BaronNeue = await loadFont('assets/fonts/baron-neue.Regular.otf');
-
     joker = await loadImage('assets/rank/joker.png');
     jack = await loadImage('assets/rank/jack.png');
     queen = await loadImage('assets/rank/queen.png');
@@ -102,8 +102,10 @@ async function loadAssets() {
     d_heart = await loadImage('assets/suits/heart_detail.png');
     d_spade = await loadImage('assets/suits/spade_detail.png');
 
+    BaronNeue = await loadFont('assets/fonts/baron-neue.regular.otf');
+
   } catch (error) {
-    console.error("Image loading error:", error);
+    console.error("Asset loading error:", error);
   }
 }
 
@@ -114,13 +116,13 @@ async function draw() {
     engine.draw();
   } else {
     discard.draw(
-      width * (1/2) - defaultCardWidth*4/3, (height) * (1 / 8)
+      width * (1 / 2) - defaultCardWidth * 4 / 3, (height) * (1 / 8)
     )
     defaultDeck.draw(
-      width * (1/2) + defaultCardWidth/3, (height) * (1 / 8)
+      width * (1 / 2) + defaultCardWidth / 3, (height) * (1 / 8)
     )
     testHand.draw(
-      width * (1/2) - testHand.maxWidth/2, (height) * (1/3)
+      width * (1 / 2) - testHand.maxWidth / 2, (height) * (1 / 3)
     );
   }
 

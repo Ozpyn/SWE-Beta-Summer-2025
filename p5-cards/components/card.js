@@ -2,7 +2,7 @@
 
 const cardScale = 40; // must not be less than 30 for proper rendering
 
-const defaultCardWidth  = 2 * cardScale;
+const defaultCardWidth = 2 * cardScale;
 const defaultCardHeight = 3 * cardScale;
 
 class Card {
@@ -91,7 +91,7 @@ class Card {
       imageMode(CENTER);
       tint(0);
       // No rotation - spade
-      image(spade, x + this.width / 2, y + this.height / 3, cardScale/2, cardScale/2);
+      image(spade, x + this.width / 2, y + this.height / 3, cardScale / 2, cardScale / 2);
 
       // 180° rotation - heart
       push();
@@ -135,15 +135,15 @@ class Card {
     stroke(0);
     rect(x, y, this.width, this.height, 5);
     // Determine suit color
-    const suitColor = (this.suit === 'Heart' || this.suit === 'Diamond')
-    ? color(255, 0, 0)    // red
-    : color(0, 0, 0);     // black
-    
+    const suitColor = (this.suit === 'Heart' || this.suit === 'Diamond' || this.suit === 'Red')
+      ? color(255, 0, 0)    // red
+      : color(0, 0, 0);     // black
+
     // Draw rank and suit in top left
     fill(suitColor);
-    textFont(BaronNeue); 
-    textSize(defaultCardWidth/4);
-    
+    textFont(BaronNeue);
+    textSize(defaultCardWidth / 4);
+
     textAlign(LEFT, TOP);
 
     if (this.rankImage) {
@@ -152,7 +152,7 @@ class Card {
       tint(suitColor); // Apply suit color to the rank image
       image(this.rankImage, x + this.width / 2, y + this.height / 2, 40, 40);
       //noTint();
-      
+
       if (this.rank !== 'Joker') {
         imageMode(CORNER);
         image(this.suitImage, x + 2, y + 2, 20, 20);
@@ -167,7 +167,7 @@ class Card {
         y + 2
       );
     }
-    
+
     // Draw large suit symbol in center, larger for aces who have details
     if (this.suitImage && !this.rankImage) {
       imageMode(CENTER);
@@ -201,7 +201,7 @@ class Card {
         noTint();
       } else {
         text(
-        (this.rank !== '10') ? this.rank[0] : this.rank, 0, 0
+          (this.rank !== '10') ? this.rank[0] : this.rank, 0, 0
         );
       }
     }
