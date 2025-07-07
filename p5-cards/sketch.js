@@ -135,10 +135,6 @@ async function draw() {
   for (let card of draggableCards) {
     card.draw();
   }
-
-  // These should always appear on top, so they must always be last to be drawn
-  drawWinOverlay();
-  drawLoseOverlay();
 }
 
 // Card Dragging Helper functions
