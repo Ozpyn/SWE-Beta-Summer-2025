@@ -1,4 +1,4 @@
-let cardScale = 1.2; // scale factor for card dimensions
+let cardScale = 1; // scale factor for card dimensions
 let cardRatio = 1.5; // width / height ratio for cards
 
 let defaultCardWidth = 0;
@@ -178,7 +178,7 @@ class Card {
         drawHeight = maxHeight;
         drawWidth = maxHeight * aspect;
       }
-      image(img, x + this.width / 2, y + this.height / 2, 0.8 * drawWidth, 0.8 * drawHeight);
+      image(img, x + this.width / 2, y + this.height / 2, 0.9 * drawWidth, 0.9 * drawHeight);
       //noTint();
 
       
