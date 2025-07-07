@@ -1,15 +1,18 @@
 ---
 marp: true
-theme: uncover
+theme: gaia
 _class: invert
----
-
-# CardFrenzy: Card Game Engine
-
-Gabriel Mingle, Avi Rathod, Sivaji Alla, 
 
 ---
 
+# CardFrenzy  
+### A Modular Browser-Based Card Game Engine
+
+**Gabriel Mingle** • **Avi Rathod** • **Sivaji Alla**
+
+---
+<!-- footer: CardFrenzy -->
+<!-- paginate: true -->
 ## Overview
 
 **CardFrenzy** is a modular, browser-based card game engine built with JavaScript and [p5.js](https://p5js.org/).  
@@ -77,33 +80,35 @@ p5-cards/
   - Scripts for running tests in Chrome and Firefox using Selenium.
 
 ---
-## Asset Showcase:
-**Ranks:**
+## Asset Showcase
 
-<p align="left">
-  <img src="p5-cards/assets/rank/jack.png" alt="Jack" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/rank/joker.png" alt="Joker" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/rank/king.png" alt="King" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/rank/queen.png" alt="Queen" width="80" height="80" style="margin-right: 8px;" />
-</p>
-
-**Low LOD Suits:**
-
-<p align="left">
-  <img src="p5-cards/assets/suits/club.png" alt="Club" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/suits/diamond.png" alt="Diamond" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/suits/heart.png" alt="Heart" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/suits/spade.png" alt="Spade" width="80" height="80" style="margin-right: 8px;" />
-</p>
-
-**High LOD Suits:**
-
-<p align="left">
-  <img src="p5-cards/assets/suits/club_detail.png" alt="Detailed Club" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/suits/diamond_detail.png" alt="Detailed Diamond" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/suits/heart_detail.png" alt="Detailed Heart" width="80" height="80" style="margin-right: 8px;" />
-  <img src="p5-cards/assets/suits/spade_detail.png" alt="Detailed Spade" width="80" height="80" style="margin-right: 8px;" />
-</p>
+<table width="100%">
+  <tr>
+    <th align="center">Ranks</th>
+    <th align="center">Low LOD Suits</th>
+    <th align="center">High LOD Suits</th>
+  </tr>
+  <tr>
+    <td align="center" width="30%">
+      <img src="p5-cards/assets/rank/jack.png" width="60" /><br/>
+      <img src="p5-cards/assets/rank/joker.png" width="60" /><br/>
+      <img src="p5-cards/assets/rank/king.png" width="60" /><br/>
+      <img src="p5-cards/assets/rank/queen.png" width="60" />
+    </td>
+    <td align="center" width="30%">
+      <img src="p5-cards/assets/suits/club.png" width="60" /><br/>
+      <img src="p5-cards/assets/suits/diamond.png" width="60" /><br/>
+      <img src="p5-cards/assets/suits/heart.png" width="60" /><br/>
+      <img src="p5-cards/assets/suits/spade.png" width="60" />
+    </td>
+    <td align="center" width="30%">
+      <img src="p5-cards/assets/suits/club_detail.png" width="60" /><br/>
+      <img src="p5-cards/assets/suits/diamond_detail.png" width="60" /><br/>
+      <img src="p5-cards/assets/suits/heart_detail.png" width="60" /><br/>
+      <img src="p5-cards/assets/suits/spade_detail.png" width="60" />
+    </td>
+  </tr>
+</table>
 
 ---
 ## Reflection
@@ -134,3 +139,13 @@ p5-cards/
 
 CardFrenzy is a robust, modular platform for building and playing card games in the browser.  
 Its architecture makes it easy to add new games, customize assets, and ensure code quality through automated testing.
+
+---
+## Attributions
+
+Thanks I Am Vector for the low level of detail suits: here[https://iamvector.com/all-icons/card-game-rules]
+
+Thanks amid999 for the high level of detail suits: here[https://www.freepik.com/author/amid999]
+
+Thanks ICONS8 for the Ranks: License[https://icons8.com/license]
+images[https://icons8.com/icons/set/deck]
