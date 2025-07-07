@@ -98,6 +98,7 @@ class Deck {
     let pileSize = this.cards.length - 1
     if (this.cards[pileSize]) {
       let topCard = this.getTop();
+      topCard.calculateDimensions();
 
       // Shadow to show deck size
       let shadowOffset = pileSize / 10;
@@ -119,7 +120,7 @@ class Deck {
       noFill();
       stroke(color('#505C45'));
       strokeWeight(2);
-      rect(x + 10, y + 10, defaultCardWidth*0.8, defaultCardHeight*0.8, 5);
+      rect(x + 10, y + 10, defaultCardWidth * 0.8, defaultCardHeight * 0.8, 5);
       if (this.sizeLimit) {
         push();
         strokeWeight(0.5);

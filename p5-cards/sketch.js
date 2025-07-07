@@ -88,7 +88,7 @@ function windowResized() {
   gameSelect.position((width) * (1 / 16), (height) * (1 / 32));
   startButton.position((width) * (5 / 16), (height) * (1 / 32));
   drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
-  engine.resized()
+  if (engine) { engine.resized(); }
 }
 
 async function loadAssets() {

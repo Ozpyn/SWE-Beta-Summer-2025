@@ -4,13 +4,14 @@ class Hand {
     this.cards = [];
     this.x = 0;
     this.y = 0;
-    this.maxWidth = 300; // Maximum horizontal width the hand should occupy
+    this.maxWidth = defaultCardWidth * 5; // Maximum horizontal width the hand should occupy
     this.cardWidth = defaultCardWidth;
     this.cardHeight = defaultCardHeight;
   }
 
   draw(x, y) {
     push();
+    this.calculateDimensions();
     this.x = x;
     this.y = y;
     const cards = this.getCards();
@@ -49,6 +50,11 @@ class Hand {
     pop();
   }
 
+  calculateDimensions() {
+    this.cardWidth = defaultCardWidth;
+    this.cardHeight = defaultCardHeight;
+    this.maxWidth = defaultCardWidth * 5; // Maximum width for the hand
+  }
 
   addCard(card) {
     this.cards.push(card);

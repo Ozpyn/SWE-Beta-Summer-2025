@@ -1,9 +1,7 @@
-//----Try to only modify cardScale when changing size----//
+let cardScale = window.innerWidth / 20; // must not be less than 30 for proper rendering
 
-const cardScale = 40; // must not be less than 30 for proper rendering
-
-const defaultCardWidth = 2 * cardScale;
-const defaultCardHeight = 3 * cardScale;
+let defaultCardWidth = 2 * cardScale;
+let defaultCardHeight = 3 * cardScale;
 
 class Card {
   constructor(suit, rank, x, y) {
@@ -24,6 +22,22 @@ class Card {
     this.suitImage;
     this.rankImage;
     this.setImages();
+    this.calculateDimensions();
+  }
+
+  calculateDimensions() {
+    let verticalLimit = window.innerHeight / 8
+    let horizontalLimit = window.innerWidth / 20;
+    if (horizontalLimit * 1.5 > verticalLimit) {
+      defaultCardWidth = horizontalLimit;
+      defaultCardHeight = horizontalLimit * 1.5;
+    } else {
+      defaultCardWidth = verticalLimit / 1.5;
+      defaultCardHeight = verticalLimit;
+    }
+    this.width = defaultCardWidth;
+    this.height = defaultCardHeight;
+    cardScale = defaultCardWidth / 2;
   }
 
   async setImages() {
@@ -72,6 +86,7 @@ class Card {
   }
 
   draw(x = this.x, y = this.y) {
+    this.calculateDimensions();
     if (this.faceUp) {
       this.drawFront()
     } else {
