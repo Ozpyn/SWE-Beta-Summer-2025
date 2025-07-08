@@ -38,9 +38,9 @@ class BlackJack extends Game {
     dealCards() {
         // Deal cards
         for (let i = 0; i < 2; i++) {
-            this.replenishDeck();
+            replenishPile(blackjackDeck, blackjackDiscard);
             blackjackPlayerHand.addCard(blackjackDeck.drawCard().flip());
-            this.replenishDeck();
+            replenishPile(blackjackDeck, blackjackDiscard);
             let dealerCard = blackjackDeck.drawCard();
             if (i !== 0) dealerCard.flip();
             blackjackDealerHand.addCard(dealerCard);
@@ -54,17 +54,6 @@ class BlackJack extends Game {
             this.showPlayAgain();
         } else {
             blackjackGameState = 'playerTurn';
-        }
-    }
-
-    replenishDeck() {
-        if (blackjackDeck.size() === 0) {
-            while (blackjackDiscard.size() > 0) {
-                let tempcard = blackjackDiscard.drawCard();
-                tempcard.faceUp = false;
-                blackjackDeck.addCard(tempcard);
-            }
-            blackjackDeck.shuffle();
         }
     }
 
@@ -151,7 +140,7 @@ class BlackJack extends Game {
             hitButton.position(width / 3 - 100, height * (5 / 8));
             hitButton.mousePressed(() => {
                 if (blackjackGameState === 'playerTurn') {
-                    this.replenishDeck();
+                    replenishPile(blackjackDeck, blackjackDiscard);
                     blackjackPlayerHand.addCard(blackjackDeck.drawCard().flip());
                     if (getBlackJackValue(blackjackPlayerHand) > 21) {
                         resultText = "Bust! You lose.";
@@ -206,7 +195,7 @@ async function dealerPlay() {
     await sleep(1000);
 
     while (getBlackJackValue(blackjackDealerHand) < 17) {
-        this.replenishDeck();
+        replenishPile(blackjackDeck, blackjackDiscard);
         blackjackDealerHand.addCard(blackjackDeck.drawCard().flip());
         await sleep(1000);
     }

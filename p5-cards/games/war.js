@@ -220,16 +220,6 @@ async function resolveRound() {
     resolvingRound = false;
 }
 
-function replenishPile(pile, discard) {
-    if (pile.size() <= 1 && discard.size() > 0) {
-        discard.shuffle();
-        while (discard.size() > 0) {
-            pile.addCard(discard.drawCard());
-        }
-        console.log(`${pile.id} was replenished from discard pile.`);
-    }
-}
-
 function collectCards(winnerPile) {
     // Winner gets all cards from both hands in random order
     const collected = [...warPlayerHand.cards, ...warComputerHand.cards];
@@ -246,6 +236,21 @@ function collectCards(winnerPile) {
 async function handleWar() {
     inWar = true;
     updateWarButtons();
+
+    let playerTotal = warPlayerPile.size() + warPlayerDiscard.size();
+    let computerTotal = warComputerPile.size() + warComputerDiscard.size();
+
+    if (playerTotal < 1) {
+        warGameState = 'gameOver';
+        warText = "You don't have enough cards to continue the war. Computer wins the game!";
+        inWar = false;
+        return;
+    } else if (computerTotal < 1) {
+        warGameState = 'gameOver';
+        warText = "Computer doesn't have enough cards to continue the war. You win the game!";
+        inWar = false;
+        return;
+    }
 
     for (let i = 0; i < 3; i++) {
         replenishPile(warPlayerPile, warPlayerDiscard);
