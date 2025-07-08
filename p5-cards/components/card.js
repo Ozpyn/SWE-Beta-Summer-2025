@@ -255,7 +255,7 @@ class Card {
         }
 
         // Draw all pip positions
-        let INSET_RATIO = 0.25; // 10% inset for pip positions
+        let INSET_RATIO = 0.25;
         for (let [xRatio, yRatio] of pipPositions) {
           let insetX = this.width * INSET_RATIO;
           let insetY = this.height * (INSET_RATIO / 2);
@@ -293,16 +293,14 @@ class Card {
     fill(suitColor);
     noStroke();
     tint(suitColor);
-    let rankChar = this.rank === '10' ? '10' : this.rank[0];
+    let rankChar = this.rank === 'Joker' ? '߷' : this.rank === '10' ? '10' : this.rank[0];
     textFont(BaronNeue);
     textSize(this.width / 4);
     textAlign(LEFT, TOP);
     let charWidth = textWidth(rankChar);
     let textX = defaultCornerIndent / 3 + ((this.width / 4 - charWidth) / 2);
     let textY = defaultCornerIndent / 5;
-    if ((this.rank !== 'Joker')) {
-      text(rankChar, textX, textY);
-    }
+    text(rankChar, textX, textY);
     if (this.suitImage) {
       imageMode(CORNER);
       image(

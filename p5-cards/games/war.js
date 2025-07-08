@@ -29,25 +29,31 @@ class War extends Game {
         allDecks = [warDeck, warPlayerPile, warComputerPile, warPlayerDiscard, warComputerDiscard];
         allHands = [warPlayerHand, warComputerHand];
 
-        // Deal half of the deck to each player
-        while (warDeck.size() > 0) {
-            warPlayerPile.addCard(warDeck.drawCard());
-            warComputerPile.addCard(warDeck.drawCard());
-        }
+        this.split(warDeck, warPlayerPile, warComputerPile);
 
         warGameState = 'playerTurn';
         warText = "It's your turn to draw a card!";
         console.log("Game setup complete. It's the player's turn.");
+        updateWarButtons();
+    }
+
+    split(source, target1, target2) {
+        while (source.size() > 0) {
+            target1.addCard(source.drawCard());
+            target2.addCard(source.drawCard());
+        }
+        target1.shuffle();
+        target2.shuffle();
     }
 
     draw() {
         super.draw();
         push();
         fill(255);
-        textSize(24);
+        textSize(defaultCardHeight / 6);
         text("WAR!", (width) / 2, (height) * (1 / 32));
 
-        textSize(16);
+        textSize(defaultCardHeight / 8);
         text("Computer's Hand", (width) * (1 / 4), (height) * (1 / 8));
         warComputerPile.draw((width) * (1 / 8), (height) * (5 / 32));
         warComputerHand.draw((width) * (1 / 4), (height) * (5 / 32));
@@ -58,15 +64,49 @@ class War extends Game {
         warPlayerHand.draw((width) * (1 / 4), (height) * (13 / 32));
         warPlayerDiscard.draw((width) * (3 / 4), (height) * (13 / 32));
 
-        textSize(18);
-        text(warText, width / 2 - 100, height - 40);
-
+        textSize(defaultCardHeight / 8);
+        textAlign(CENTER, TOP);
+        text(warText, width / 2, height * 7 / 8);
         pop();
+    }
+
+    restart() {
+        if (warDeck.size() === 0) {
+            while (warPlayerDiscard.size() > 0) {
+                let tempcard = warPlayerDiscard.drawCard();
+                tempcard.faceUp = false;
+                warDeck.addCard(tempcard);
+            }
+            while (warComputerDiscard.size() > 0) {
+                let tempcard = warComputerDiscard.drawCard();
+                tempcard.faceUp = false;
+                warDeck.addCard(tempcard);
+            }
+            while (warPlayerPile.size() > 0) {
+                let tempcard = warPlayerPile.drawCard();
+                tempcard.faceUp = false;
+                warDeck.addCard(tempcard);
+            }
+            while (warComputerPile.size() > 0) {
+                let tempcard = warComputerPile.drawCard();
+                tempcard.faceUp = false;
+                warDeck.addCard(tempcard);
+            }
+            warDeck.shuffle();
+        }
+        this.split(warDeck, warPlayerPile, warComputerPile);
+        warGameState = 'playerTurn';
+        warText = "It's your turn to draw a card!";
+        autoPlay = false;
+        inWar = false;
+        resolvingRound = false;
+        stopRequested = false;
+        updateWarButtons();
     }
 
     mousePressed() {
         if (warGameState === 'gameOver') {
-            this.setup();
+            this.restart();
         }
     }
 
@@ -74,6 +114,7 @@ class War extends Game {
         super.stop();
         autoPlay = false;
         inWar = false;
+        updateWarButtons();
         warGameState = 'stopped';
         warText = "Game stopped.";
 
@@ -112,36 +153,47 @@ function createWarButtons() {
     drawButton = createButton('Draw');
     drawButton.addClass('button-standard');
     drawButton.position((width) * (1 / 4), (height) * (9 / 32));
-    drawButton.mousePressed(() => {
+    drawButton.mousePressed(async () => {
         if (warGameState === 'playerTurn' && !resolvingRound && !stopRequested && !autoPlay) {
-            // Both players draw a card and reveal it
-            warDelay = 500;
-            resolveRound();
+            warDelay = 300;
+            await resolveRound();
         }
     });
 
     autoButton = createButton('Auto Play');
     autoButton.addClass('button-standard');
     autoButton.position((width) * (2 / 4), (height) * (9 / 32));
-    autoButton.mousePressed(() => {
-        warDelay = 0.5;
+    autoButton.mousePressed(async () => {
+        warDelay = 0;
         if (!autoPlay && warGameState !== 'gameOver') {
             autoPlay = true;
-            autoPlayStep(); // Kick it off
+            await autoPlayStep(); // Kick it off
         }
     });
     gameBtns.push(drawButton, autoButton);
 }
 
+function updateWarButtons() {
+    const disable = autoPlay || inWar || resolvingRound || stopRequested;
+    drawButton.attribute(disable ? 'disabled' : null, disable);
+    autoButton.attribute(disable ? 'disabled' : null, disable);
+}
+
 async function resolveRound() {
+    if (stopRequested) return;
+    resolvingRound = true;
+
+    updateWarButtons();
+
     replenishPile(warPlayerPile, warPlayerDiscard);
     replenishPile(warComputerPile, warComputerDiscard);
 
     warPlayerHand.addCard(warPlayerPile.drawCard().flip());
     warComputerHand.addCard(warComputerPile.drawCard().flip());
 
-    if (stopRequested) return;
-    resolvingRound = true;
+    await sleep(warDelay);
+
+
 
     const playerCard = warPlayerHand.cards[warPlayerHand.cards.length - 1];
     const computerCard = warComputerHand.cards[warComputerHand.cards.length - 1];
@@ -164,12 +216,12 @@ async function resolveRound() {
 
     if (stopRequested) return;
 
-    checkForGameOver();
+    await checkForGameOver();
     resolvingRound = false;
 }
 
 function replenishPile(pile, discard) {
-    if (pile.size() === 0 && discard.size() > 0) {
+    if (pile.size() <= 1 && discard.size() > 0) {
         discard.shuffle();
         while (discard.size() > 0) {
             pile.addCard(discard.drawCard());
@@ -177,7 +229,6 @@ function replenishPile(pile, discard) {
         console.log(`${pile.id} was replenished from discard pile.`);
     }
 }
-
 
 function collectCards(winnerPile) {
     // Winner gets all cards from both hands in random order
@@ -194,20 +245,27 @@ function collectCards(winnerPile) {
 
 async function handleWar() {
     inWar = true;
+    updateWarButtons();
+
     for (let i = 0; i < 3; i++) {
-        await sleep(warDelay / 2);
         replenishPile(warPlayerPile, warPlayerDiscard);
         replenishPile(warComputerPile, warComputerDiscard);
-        if (warPlayerPile.size() > 0) warPlayerHand.addCard(warPlayerPile.drawCard()); // face-down
-        if (warComputerPile.size() > 0) warComputerHand.addCard(warComputerPile.drawCard()); // face-down
-        await sleep(warDelay / 2);
+
+        const playerHasCards = warPlayerPile.size() > 1;
+        const computerHasCards = warComputerPile.size() > 1;
+
+        if (!playerHasCards || !computerHasCards) break;
+
+        if (playerHasCards) warPlayerHand.addCard(warPlayerPile.drawCard()); // face-down
+        if (computerHasCards) warComputerHand.addCard(warComputerPile.drawCard()); // face-down
+
+        await sleep(warDelay);
     }
-    resolveRound(); // Recursively resolve the next top card
-    await sleep(warDelay);
+    await resolveRound(); // Resolves top face-up card; all cards played so far will be scored
     inWar = false;
 }
 
-function checkForGameOver() {
+async function checkForGameOver() {
     if (warPlayerPile.size() === 0 && warPlayerDiscard.size() === 0) {
         warGameState = 'gameOver';
         warText = "Computer wins the game!";
@@ -217,9 +275,7 @@ function checkForGameOver() {
     } else {
         warGameState = 'playerTurn';
         if (autoPlay && !inWar) {
-            setTimeout(() => {
-                autoPlayStep();
-            }, warDelay * 1.1);
+            await autoPlayStep();
         }
     }
 }
