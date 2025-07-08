@@ -237,20 +237,7 @@ async function handleWar() {
     inWar = true;
     updateWarButtons();
 
-    let playerTotal = warPlayerPile.size() + warPlayerDiscard.size();
-    let computerTotal = warComputerPile.size() + warComputerDiscard.size();
-
-    if (playerTotal < 1) {
-        warGameState = 'gameOver';
-        warText = "You don't have enough cards to continue the war. Computer wins the game!";
-        inWar = false;
-        return;
-    } else if (computerTotal < 1) {
-        warGameState = 'gameOver';
-        warText = "Computer doesn't have enough cards to continue the war. You win the game!";
-        inWar = false;
-        return;
-    }
+    await checkForGameOver(true);
 
     for (let i = 0; i < 3; i++) {
         replenishPile(warPlayerPile, warPlayerDiscard);
@@ -270,20 +257,25 @@ async function handleWar() {
     inWar = false;
 }
 
-async function checkForGameOver() {
+async function checkForGameOver(warContext = false) {
     if (warPlayerPile.size() === 0 && warPlayerDiscard.size() === 0) {
         warGameState = 'gameOver';
-        warText = "Computer wins the game!";
+        warText = warContext
+            ? "You don't have enough cards to continue the war. Computer wins the game!"
+            : "Computer wins the game!";
     } else if (warComputerPile.size() === 0 && warComputerDiscard.size() === 0) {
         warGameState = 'gameOver';
-        warText = "You win the game!";
-    } else {
+        warText = warContext
+            ? "Computer doesn't have enough cards to continue the war. You win the game!"
+            : "You win the game!";
+    } else if (!warContext) {
         warGameState = 'playerTurn';
         if (autoPlay && !inWar) {
             await autoPlayStep();
         }
     }
 }
+
 
 async function autoPlayStep() {
     if (warGameState === 'playerTurn') {
