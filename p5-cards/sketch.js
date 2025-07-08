@@ -53,7 +53,7 @@ async function setup() {
   drawCardBtn = createButton('Draw a Card');
   drawCardBtn.position((width) * (4 / 8), (height) * (1 / 32));
   drawCardBtn.addClass('button-standard');
-  drawCardBtn.mousePressed(() => drawACard(defaultDeck));
+  drawCardBtn.mousePressed(() => drawACard(defaultDeck, discard));
 
   menuButtons.push(gameSelect);
   menuButtons.push(startButton);
@@ -223,11 +223,11 @@ function startGame() {
 }
 
 
-function drawACard(selectedDeck) {
-  let card = selectedDeck.drawCard();
-  if (card && (card != -1)) {
-    if (!discard.addCard(card)) {
-      selectedDeck.addCard(card);
+function drawACard(d1, d2) {
+  let c = d1.drawCard();
+  if (c && (c != -1)) {
+    if (!d2.addCard(c)) {
+      d1.addCard(c);
     }
   }
   return;

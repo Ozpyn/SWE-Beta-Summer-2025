@@ -64,6 +64,7 @@ class Hand {
     if (index !== -1) {
       this.cards.splice(index, 1);
     }
+    return card;
   }
 
   clear() {

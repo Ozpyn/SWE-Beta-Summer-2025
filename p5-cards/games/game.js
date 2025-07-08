@@ -27,3 +27,13 @@ function createReturnButton() {
         rtnBtn.hide();
     });
 }
+
+function replenishPile(pile, discard) {
+    if (pile.size() <= 1 && discard.size() > 0) {
+        discard.shuffle();
+        while (discard.size() > 0) {
+            pile.addCard(discard.drawCard());
+        }
+        console.log(`${pile.id} was replenished from discard pile.`);
+    }
+}

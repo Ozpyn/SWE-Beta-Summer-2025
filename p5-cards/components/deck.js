@@ -61,23 +61,17 @@ class Deck {
 
   addCard(newCard) {
     if (this.sizeLimit !== null && this.cards.length >= this.sizeLimit) {
-      console.log(`Cannot add ${newCard.rank} of ${newCard.suit}: deck has reached its size limit (${this.sizeLimit})`);
       return false;
     }
-
     this.cards.push(newCard);
-    console.log(`Added ${newCard.rank} of ${newCard.suit} to the ${this.name}`);
     return true;
   }
 
   addBack(newCard) {
     if (this.sizeLimit !== null && this.cards.length >= this.sizeLimit) {
-      console.log(`Cannot add ${newCard.rank} of ${newCard.suit}: deck has reached its size limit (${this.sizeLimit})`);
       return false;
     }
-
     this.cards.unshift(newCard); // Adds to the beginning of the array
-    console.log(`Added ${newCard.rank} of ${newCard.suit} to the bottom of the ${this.name}`);
     return true;
   }
 
