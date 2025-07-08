@@ -150,7 +150,6 @@ class Card {
     // Draw card background
     fill(255);
     stroke(0);
-    strokeWeight(0);
     rect(x, y, this.width, this.height, defaultCornerRadius);
     // Determine suit color
     const suitColor = (this.suit === 'Heart' || this.suit === 'Diamond' || this.suit === 'Red')
@@ -158,6 +157,7 @@ class Card {
       : color(0, 0, 0);     // black
 
     // Draw rank and suit in top left
+    strokeWeight(0);
     fill(suitColor);
     textFont(BaronNeue);
     textSize(this.width / 4);
@@ -182,19 +182,19 @@ class Card {
       image(img, x + this.width / 2, y + this.height / 2, 0.9 * drawWidth, 0.9 * drawHeight);
       //noTint();
 
-      
+
       if (this.rank !== 'Joker') {
         // Unfortuantely, they all need to be handled 
         // separately due to their different placements
         if (this.rank === 'King')
           text(this.rank[0], x + 1.2 * defaultCornerIndent, y + defaultCornerIndent);
         if (this.rank === 'Queen')
-          text(this.rank[0], x + 1   * defaultCornerIndent, y + defaultCornerIndent);
+          text(this.rank[0], x + 1 * defaultCornerIndent, y + defaultCornerIndent);
         if (this.rank === 'Jack')
           text(this.rank[0], x + 1.9 * defaultCornerIndent, y + defaultCornerIndent);
 
         imageMode(CORNER);
-        image(this.suitImage, x + defaultCornerIndent/2, y + 5.5*defaultCornerIndent, this.width / 4, this.width / 4);
+        image(this.suitImage, x + defaultCornerIndent / 2, y + 5.5 * defaultCornerIndent, this.width / 4, this.width / 4);
       }
       noTint();
     } else {
@@ -205,11 +205,11 @@ class Card {
       else if (this.rank === '10')
         text('10', x + defaultCornerIndent, y + defaultCornerIndent);
       else
-        text(this.rank[0], x + 1.7*defaultCornerIndent, y + defaultCornerIndent);
+        text(this.rank[0], x + 1.7 * defaultCornerIndent, y + defaultCornerIndent);
 
       imageMode(CORNER);
       tint(suitColor);
-      image(this.suitImage, x + defaultCornerIndent/2, y + 5.5*defaultCornerIndent, this.width / 4, this.width / 4);
+      image(this.suitImage, x + defaultCornerIndent / 2, y + 5.5 * defaultCornerIndent, this.width / 4, this.width / 4);
       noTint();
     }
 
@@ -261,21 +261,21 @@ class Card {
     if (this.rank !== 'Joker') {
       // Unfortuantely, they all need to be handled 
       // separately due to their different placements
-      if      (this.rank === 'King')
+      if (this.rank === 'King')
         text(this.rank[0], 1.2 * defaultCornerIndent, defaultCornerIndent);
       else if (this.rank === 'Queen')
-        text(this.rank[0],       defaultCornerIndent, defaultCornerIndent);
+        text(this.rank[0], defaultCornerIndent, defaultCornerIndent);
       else if (this.rank === 'Jack')
         text(this.rank[0], 1.9 * defaultCornerIndent, defaultCornerIndent);
       else if (this.rank === 'Ace')
-        text('A',          1.6 * defaultCornerIndent, defaultCornerIndent);
+        text('A', 1.6 * defaultCornerIndent, defaultCornerIndent);
       else if (this.rank === '10')
-        text('10',               defaultCornerIndent, defaultCornerIndent);
+        text('10', defaultCornerIndent, defaultCornerIndent);
       else
         text(this.rank[0], 1.7 * defaultCornerIndent, defaultCornerIndent);
 
       imageMode(CORNER);
-      image(this.suitImage, defaultCornerIndent/2, 5.5*defaultCornerIndent, this.width / 4, this.width / 4);
+      image(this.suitImage, defaultCornerIndent / 2, 5.5 * defaultCornerIndent, this.width / 4, this.width / 4);
     }
     pop();
   }
