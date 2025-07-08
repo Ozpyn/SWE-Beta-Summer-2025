@@ -293,20 +293,24 @@ class Card {
     fill(suitColor);
     noStroke();
     tint(suitColor);
-    let rankChar = this.rank === 'Joker' ? '$' : this.rank === '10' ? '10' : this.rank[0];
+    let rankChar = this.rank === 'Joker' ? '✬' : this.rank === '10' ? '10' : this.rank[0];
     textFont(BaronNeue);
     textSize(this.width / 4);
     textAlign(LEFT, TOP);
     let charWidth = textWidth(rankChar);
-    let textX = defaultCornerIndent / 3 + ((this.width / 4 - charWidth) / 2);
-    let textY = defaultCornerIndent / 5;
-    text(rankChar, textX, textY);
+    let textX = defaultCornerIndent / 3 + ((this.width / 3.5 - charWidth) / 2);
+    let textY = defaultCornerIndent / 2;
+    text(
+      rankChar, 
+      rankChar === '10' ? textX * 1.8 : textX, // Adjust position for '10' to center it better
+      textY
+    );
     if (this.suitImage) {
       imageMode(CORNER);
       image(
         this.suitImage,
         defaultCornerIndent / 2,
-        5.5 * defaultCornerIndent,
+        5 * defaultCornerIndent,
         this.width / 4,
         this.width / 4
       );
