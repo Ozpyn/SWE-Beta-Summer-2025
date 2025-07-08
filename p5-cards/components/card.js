@@ -293,7 +293,7 @@ class Card {
     fill(suitColor);
     noStroke();
     tint(suitColor);
-    let rankChar = this.rank === 'Joker' ? '߷' : this.rank === '10' ? '10' : this.rank[0];
+    let rankChar = this.rank === 'Joker' ? '$' : this.rank === '10' ? '10' : this.rank[0];
     textFont(BaronNeue);
     textSize(this.width / 4);
     textAlign(LEFT, TOP);

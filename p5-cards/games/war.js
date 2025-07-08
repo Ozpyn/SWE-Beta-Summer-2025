@@ -276,7 +276,6 @@ async function checkForGameOver(warContext = false) {
     }
 }
 
-
 async function autoPlayStep() {
     if (warGameState === 'playerTurn') {
         await resolveRound();
