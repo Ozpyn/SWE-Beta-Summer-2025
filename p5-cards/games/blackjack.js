@@ -1,4 +1,4 @@
-let blackjackDeck;
+let blackjackDeck, blackjackDiscard;
 let blackjackPlayerHand, blackjackDealerHand;
 let blackjackGameState = 'start';
 let resultText = "";
@@ -21,8 +21,10 @@ class BlackJack extends Game {
         playAgainButton.position(width / 2 - 50, height * 12 / 16);
 
         // Create deck and hands
-        blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: true });
+        blackjackDeck = new Deck({ id: "blackjackDeck", canBeDrawnFrom: false, facesVisible: false });
         blackjackDeck.shuffle();
+
+        blackjackDiscard = new Deck({ id: "blackjackDiscard", canBeDrawnFrom: false, facesVisible: true, startEmpty: true });
 
         blackjackPlayerHand = new Hand("Player");
         blackjackDealerHand = new Hand("Dealer");
@@ -30,15 +32,19 @@ class BlackJack extends Game {
         allDecks = [blackjackDeck];
         allHands = [blackjackPlayerHand, blackjackDealerHand];
 
+        this.dealCards();
+    }
+
+    dealCards() {
         // Deal cards
         for (let i = 0; i < 2; i++) {
-            blackjackPlayerHand.addCard(blackjackDeck.drawCard());
+            this.replenishDeck();
+            blackjackPlayerHand.addCard(blackjackDeck.drawCard().flip());
+            this.replenishDeck();
             let dealerCard = blackjackDeck.drawCard();
-            if (i === 0) dealerCard.faceUp = false;
+            if (i !== 0) dealerCard.flip();
             blackjackDealerHand.addCard(dealerCard);
         }
-
-        blackjackGameState = 'playerTurn';
 
         // Instant blackjack after game start
         if (getBlackJackValue(blackjackPlayerHand) === 21) {
@@ -46,6 +52,19 @@ class BlackJack extends Game {
             blackjackGameState = 'gameOver';
             resultText = "Blackjack! You win!";
             this.showPlayAgain();
+        } else {
+            blackjackGameState = 'playerTurn';
+        }
+    }
+
+    replenishDeck() {
+        if (blackjackDeck.size() === 0) {
+            while (blackjackDiscard.size() > 0) {
+                let tempcard = blackjackDiscard.drawCard();
+                tempcard.faceUp = false;
+                blackjackDeck.addCard(tempcard);
+            }
+            blackjackDeck.shuffle();
         }
     }
 
@@ -64,6 +83,9 @@ class BlackJack extends Game {
         text("Player", width / 3, height * 15 / 32);
         blackjackPlayerHand.draw(width / 3, height / 2);
 
+        blackjackDeck.draw(width / 5, height * (2 / 7));
+        blackjackDiscard.draw(width * (4 / 5), height * (2 / 7));
+
         if (blackjackGameState === 'gameOver' && resultText) {
             textSize(20);
             fill(255, 255, 0);
@@ -79,10 +101,12 @@ class BlackJack extends Game {
         blackjackGameState = 'stopped';
 
         blackjackDeck?.clear();
+        blackjackDiscard?.clear();
         blackjackPlayerHand?.clear();
         blackjackDealerHand?.clear();
 
         blackjackDeck = null;
+        blackjackDiscard = null;
         blackjackPlayerHand = null;
         blackjackDealerHand = null;
 
@@ -112,6 +136,13 @@ class BlackJack extends Game {
         playAgainButton.show();
     }
 
+    hidePlayAgain() {
+        console.log("Hiding Play Again button");
+        hitButton.show();
+        standButton.show();
+        playAgainButton.hide();
+    }
+
     createButtons() {
         if (!hitButton) {
             hitButton = createButton('+ Hit');
@@ -120,7 +151,8 @@ class BlackJack extends Game {
             hitButton.position(width / 3 - 100, height * (5 / 8));
             hitButton.mousePressed(() => {
                 if (blackjackGameState === 'playerTurn') {
-                    blackjackPlayerHand.addCard(blackjackDeck.drawCard());
+                    this.replenishDeck();
+                    blackjackPlayerHand.addCard(blackjackDeck.drawCard().flip());
                     if (getBlackJackValue(blackjackPlayerHand) > 21) {
                         resultText = "Bust! You lose.";
                         blackjackDealerHand.reveal();
@@ -152,8 +184,17 @@ class BlackJack extends Game {
             playAgainButton.addClass('green-modify');
             playAgainButton.position(width * 2 / 3, height * (5 / 8));
             playAgainButton.mousePressed(() => {
-                rtnBtn.remove();
-                this.setup(); // restart the game
+                while (blackjackDealerHand.getCount() > 0) {
+                    blackjackDiscard.addCard(blackjackDealerHand.removeCard(blackjackDealerHand.cards[0]));
+                }
+                while (blackjackPlayerHand.getCount() > 0) {
+                    blackjackDiscard.addCard(blackjackPlayerHand.removeCard(blackjackPlayerHand.cards[0]));
+                }
+                console.log("Hands Cleared")
+                // Reset game state
+                resultText = "";
+                this.hidePlayAgain();
+                this.dealCards();
             });
             gameBtns.push(playAgainButton);
         }
@@ -165,7 +206,8 @@ async function dealerPlay() {
     await sleep(1000);
 
     while (getBlackJackValue(blackjackDealerHand) < 17) {
-        blackjackDealerHand.addCard(blackjackDeck.drawCard());
+        this.replenishDeck();
+        blackjackDealerHand.addCard(blackjackDeck.drawCard().flip());
         await sleep(1000);
     }
 
