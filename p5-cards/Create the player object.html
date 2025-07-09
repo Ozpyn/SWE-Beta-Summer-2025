@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Card Game Player Setup</title>
+  <title>Flexible Card Game Setup</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -30,11 +30,6 @@
       flex-wrap: wrap;
     }
 
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-
     .player {
       margin-top: 20px;
       padding: 10px;
@@ -46,7 +41,7 @@
 </head>
 <body>
 
-  <h1>Card Game Setup</h1>
+  <h1>Card Game Setup (Flexible Player Structure)</h1>
 
   <div class="card-container" id="cards">
     <div class="card">
@@ -64,54 +59,52 @@
   <div id="players"></div>
 
   <script>
-    // Player class
+    // Flexible Player class
     class Player {
-      constructor(name, position) {
-        this.name = name;
-        this.position = position;
-        this.hand = [];
-        this.score = 0;
-        this.turn = false; // Used for mutex-style locking
-      }
-
-      drawCard(card) {
-        if (this.turn) {
-          this.hand.push(card);
-        } else {
-          console.warn(`${this.name} cannot draw a card - not their turn!`);
-        }
-      }
-
-      toggleTurn(state) {
-        this.turn = state;
+      constructor(config = {}) {
+        Object.assign(this, config);
       }
 
       toHTML() {
         return `
           <div class="player">
-            <strong>${this.name}</strong><br>
-            Position: ${this.position} <br>
-            Score: ${this.score} <br>
-            Hand: ${this.hand.join(', ') || 'Empty'} <br>
-            Turn: ${this.turn ? '✅' : '❌'}
+            <strong>${this.name || "Unnamed Player"}</strong><br>
+            ${Object.entries(this)
+              .filter(([key, _]) => typeof this[key] !== 'function' && key !== 'name')
+              .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+              .join('<br>')}
           </div>
         `;
       }
     }
 
-    // Sample players
+    // Example: Create players with different fields for different game types
     const players = [
-      new Player('Alice', 1),
-      new Player('Bob', 2)
+      new Player({
+        name: "Alice",
+        position: 1,
+        score: 0,
+        hand: ["A♠", "10♥"],
+        turn: true
+      }),
+      new Player({
+        name: "Bob",
+        position: 2,
+        team: "Red",
+        isDealer: true
+      }),
+      new Player({
+        name: "Charlie",
+        position: 3,
+        rank: "Captain",
+        energy: 95
+      })
     ];
 
-    // Set first player's turn
-    players[0].toggleTurn(true);
-
-    // Display players
+    // Render players
     const playerDiv = document.getElementById('players');
-    players.forEach(p => {
-      playerDiv.innerHTML += p.toHTML();
+    players.forEach(player => {
+      playerDiv.innerHTML += player.toHTML();
     });
   </script>
 
