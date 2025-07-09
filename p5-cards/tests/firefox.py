@@ -48,7 +48,7 @@ firefox_options = Options()
 firefox_options.add_argument("--headless")
 
 # Initialize driver
-service = Service(GeckoDriverManager().install())
+service = Service(GeckoDriverManager(version="v0.36.0").install())
 driver = webdriver.Firefox(service=service, options=firefox_options)
 
 try:
