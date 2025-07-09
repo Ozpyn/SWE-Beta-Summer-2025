@@ -23,7 +23,10 @@ jobs:
         sudo install -d -m 0755 /etc/apt/keyrings
 
         sudo apt-get update
-        sudo apt-get install -y \
+        sudo DEBIAN_FRONTEND=noninteractive \
+          APT_CONFIG=/dev/null \
+          APT_NO_MANDATABASE=1 \
+          apt-get install -y --no-install-recommends \
           xdg-utils \
           wget \
           python3 \
@@ -39,7 +42,10 @@ jobs:
         Pin-Priority: 1000
         ' | sudo tee /etc/apt/preferences.d/mozilla
 
-        sudo apt-get update && sudo apt-get install firefox
+        sudo apt-get update && \
+        sudo DEBIAN_FRONTEND=noninteractive \
+          APT_NO_MANDATABASE=1 \
+          apt-get install -y --no-install-recommends firefox
 
     - name: Install Python dependencies
       run: |
@@ -67,7 +73,10 @@ jobs:
     - name: Install system dependencies (including Chrome)
       run: |
         sudo apt-get update
-        sudo apt-get install -y \
+        sudo DEBIAN_FRONTEND=noninteractive \
+          APT_CONFIG=/dev/null \
+          APT_NO_MANDATABASE=1 \
+          apt-get install -y --no-install-recommends \
           xdg-utils \
           wget \
           gnupg \
@@ -79,8 +88,11 @@ jobs:
         wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
         echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | \
           sudo tee /etc/apt/sources.list.d/google-chrome.list
+
         sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
+        sudo DEBIAN_FRONTEND=noninteractive \
+          APT_NO_MANDATABASE=1 \
+          apt-get install -y --no-install-recommends google-chrome-stable
 
     - name: Install Python dependencies
       run: |
