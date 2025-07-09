@@ -263,7 +263,7 @@ async function checkForGameOver(warContext = false) {
         warText = warContext
             ? "You don't have enough cards to continue the war. Computer wins the game!"
             : "Computer wins the game!";
-        warText += "Click anywhere to restart.";
+        warText += "\tClick anywhere to restart.";
     } else if (warComputerPile.size() === 0 && warComputerDiscard.size() === 0) {
         warGameState = 'gameOver';
         warText = warContext

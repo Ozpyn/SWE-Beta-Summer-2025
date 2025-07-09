@@ -107,11 +107,14 @@ p5-cards/
 ## Asset Showcase
 
 <style>
-img.color-adjust {
-  filter: brightness(0);
-}
-</style>
+  img.color-adjust {
+    filter: brightness(0%);
+  }
 
+  img.color-adjust-red {
+    filter: brightness(30%) sepia(100%) hue-rotate(310deg) saturate(700%) brightness(90%);
+  }
+</style>
 
 <table width="100%">
   <tr>
@@ -121,25 +124,26 @@ img.color-adjust {
   </tr>
   <tr>
     <td align="center" width="30%">
-      <img src="p5-cards/assets/rank/jack.png" width="60" class="color-adjust"/><br/>
-      <img src="p5-cards/assets/rank/joker.png" width="60" class="color-adjust"/><br/>
       <img src="p5-cards/assets/rank/king.png" width="60" class="color-adjust"/><br/>
-      <img src="p5-cards/assets/rank/queen.png" width="60" class="color-adjust"/>
+      <img src="p5-cards/assets/rank/queen.png" width="60" class="color-adjust"/><br/>
+      <img src="p5-cards/assets/rank/jack.png" width="60" class="color-adjust"/><br/>
+      <img src="p5-cards/assets/rank/joker.png" width="60" class="color-adjust"/>
     </td>
     <td align="center" width="30%">
       <img src="p5-cards/assets/suits/club.png" width="60" class="color-adjust"/><br/>
-      <img src="p5-cards/assets/suits/diamond.png" width="60" class="color-adjust"/><br/>
-      <img src="p5-cards/assets/suits/heart.png" width="60" class="color-adjust"/><br/>
+      <img src="p5-cards/assets/suits/diamond.png" width="60" class="color-adjust-red"/><br/>
+      <img src="p5-cards/assets/suits/heart.png" width="60" class="color-adjust-red"/><br/>
       <img src="p5-cards/assets/suits/spade.png" width="60" class="color-adjust"/>
     </td>
     <td align="center" width="30%">
       <img src="p5-cards/assets/suits/club_detail.png" width="60" class="color-adjust"/><br/>
-      <img src="p5-cards/assets/suits/diamond_detail.png" width="60" class="color-adjust"/><br/>
-      <img src="p5-cards/assets/suits/heart_detail.png" width="60" class="color-adjust"/><br/>
+      <img src="p5-cards/assets/suits/diamond_detail.png" width="60" class="color-adjust-red"/><br/>
+      <img src="p5-cards/assets/suits/heart_detail.png" width="60" class="color-adjust-red"/><br/>
       <img src="p5-cards/assets/suits/spade_detail.png" width="60" class="color-adjust"/>
     </td>
   </tr>
 </table>
+
 
 ---
 
