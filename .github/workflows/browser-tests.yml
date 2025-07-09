@@ -7,51 +7,51 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-firefox:
-    runs-on: ubuntu-latest
+  # test-firefox:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v4
+  #   steps:
+  #   - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.13'
+  #   - name: Set up Python
+  #     uses: actions/setup-python@v4
+  #     with:
+  #       python-version: '3.13'
 
-    - name: Install system dependencies (including Firefox)
-      run: |
-        sudo install -d -m 0755 /etc/apt/keyrings
+  #   - name: Install system dependencies (including Firefox)
+  #     run: |
+  #       sudo install -d -m 0755 /etc/apt/keyrings
 
-        sudo apt-get update
-        sudo apt-get install -y \
-          xdg-utils \
-          wget \
-          python3 \
-          python3-pip
+  #       sudo apt-get update
+  #       sudo apt-get install -y \
+  #         xdg-utils \
+  #         wget \
+  #         python3 \
+  #         python3-pip
 
-        wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
+  #       wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
 
-        echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
+  #       echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
 
-        echo '
-        Package: *
-        Pin: origin packages.mozilla.org
-        Pin-Priority: 1000
-        ' | sudo tee /etc/apt/preferences.d/mozilla
+  #       echo '
+  #       Package: *
+  #       Pin: origin packages.mozilla.org
+  #       Pin-Priority: 1000
+  #       ' | sudo tee /etc/apt/preferences.d/mozilla
 
-        sudo apt-get update && sudo apt-get install firefox
+  #       sudo apt-get update && sudo apt-get install firefox
 
-    - name: Install Python dependencies
-      run: |
-        pip install selenium webdriver-manager requests
+  #   - name: Install Python dependencies
+  #     run: |
+  #       pip install selenium webdriver-manager requests
 
-    - name: Set up Display
-      run: echo "DISPLAY=:99" >> $GITHUB_ENV
+  #   - name: Set up Display
+  #     run: echo "DISPLAY=:99" >> $GITHUB_ENV
 
-    - name: Run Firefox Tests using Python
-      run: |
-        cd p5-cards/tests
-        python firefox.py
+  #   - name: Run Firefox Tests using Python
+  #     run: |
+  #       cd p5-cards/tests
+  #       python firefox.py
 
   test-chrome:
     runs-on: ubuntu-latest

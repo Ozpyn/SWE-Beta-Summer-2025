@@ -27,7 +27,7 @@ _class: invert
 - Reflection
 - Summary
 - Attributions
-- Demonstration
+- Demonstration (Testing & App)
 ```
 
 ---
