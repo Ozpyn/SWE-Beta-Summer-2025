@@ -28,8 +28,6 @@ jobs:
           APT_NO_MANDATABASE=1 \
           apt-get install -y --no-install-recommends \
           xdg-utils \
-          wget \
-          python3 \
           python3-pip
 
         wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
@@ -78,10 +76,8 @@ jobs:
           APT_NO_MANDATABASE=1 \
           apt-get install -y --no-install-recommends \
           xdg-utils \
-          wget \
           gnupg \
           unzip \
-          python3 \
           python3-pip
 
         # Add Google's signing key and install Chrome
