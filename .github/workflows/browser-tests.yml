@@ -49,7 +49,7 @@ jobs:
         sudo apt-get update && \
         sudo DEBIAN_FRONTEND=noninteractive \
           APT_NO_MANDATABASE=1 \
-          apt-get install -y --no-install-recommends firefox firefox-geckodriver
+          apt-get install -y --no-install-recommends firefox
 
     - name: Set up Display
       run: echo "DISPLAY=:99" >> $GITHUB_ENV
