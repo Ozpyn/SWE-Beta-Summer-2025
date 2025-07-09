@@ -14,6 +14,9 @@ import threading
 import http.server
 import socketserver
 from webdriver_manager.firefox import GeckoDriverManager
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 token = os.getenv('GH_TOKEN')
 if not token:
