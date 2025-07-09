@@ -59,7 +59,7 @@ class Hand {
     this.cards.push(card);
   }
 
-  removeCard(card) {
+  removeCard(card = this.cards[0]) {
     const index = this.cards.indexOf(card);
     if (index !== -1) {
       this.cards.splice(index, 1);

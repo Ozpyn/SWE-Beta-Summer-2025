@@ -92,6 +92,16 @@ class War extends Game {
                 tempcard.faceUp = false;
                 warDeck.addCard(tempcard);
             }
+            while (warPlayerHand.getCount() > 0) {
+                let tempcard = warPlayerHand.removeCard();
+                tempcard.faceUp = false;
+                warDeck.addCard(tempcard);
+            }
+            while (warComputerHand.getCount() > 0) {
+                let tempcard = warComputerHand.removeCard();
+                tempcard.faceUp = false;
+                warDeck.addCard(tempcard);
+            }
             warDeck.shuffle();
         }
         this.split(warDeck, warPlayerPile, warComputerPile);
