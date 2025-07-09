@@ -11,8 +11,28 @@ _class: invert
 **Avi Rathod** • **Gabriel Mingle** • **Sivaji Alla** • **Imtiaz Shaik**
 
 ---
-<!-- footer: CardFrenzy -->
+<!-- footer: CardFrenzy : Sivaji -->
 <!-- paginate: true -->
+
+## Presentation Contents
+
+```
+- Overview
+- Project Structure
+- Modularity
+- Sample Games
+- Extending the App
+- Testing
+- Assets
+- Reflection
+- Summary
+- Attributions
+- Demonstration
+```
+
+---
+<!-- footer: CardFrenzy : Avi -->
+
 ## Overview
 
 **CardFrenzy** is a modular, browser-based card game engine built with JavaScript and [p5.js](https://p5js.org/).  
@@ -51,6 +71,8 @@ p5-cards/
   - Assets, styles, and scripts are organized by function.
 
 ---
+<!-- footer: CardFrenzy : Gabriel -->
+
 
 ## Included Sample Games
 
@@ -61,7 +83,7 @@ p5-cards/
 
 ---
 
-## Extending the Engine
+## Extending the App
 
 - **Add New Games**  
   - Create a new file in `games/`, extend the `Game` class, and implement your rules.
@@ -80,6 +102,8 @@ p5-cards/
   - Scripts for running tests in Chrome and Firefox using Selenium.
 
 ---
+<!-- footer: CardFrenzy : Sivaji -->
+
 ## Asset Showcase
 
 <style>
@@ -133,6 +157,8 @@ img.color-adjust {
 - Achievable within a semester by a small team.
 
 ---
+<!-- footer: CardFrenzy : Imtiaz -->
+
 
 **Reflection: Is it Completed?**  
 - Core engine and two sample games (Blackjack, War) are fully functional.
@@ -157,6 +183,8 @@ Special Thanks to:
   - images[https://icons8.com/icons/set/deck]
 
 ---
+<!-- footer: CardFrenzy : Gabriel : Avi -->
+
 ## Demonstration
 - **Live Testing and Deployment**
   - GitHub Workflows
