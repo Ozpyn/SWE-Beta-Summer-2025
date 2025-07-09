@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.13'
+        cache: 'pip'
+        cache-dependency-path: p5-cards/tests/requirements.txt
+
+    - run: pip install -r p5-cards/tests/requirements.txt      
 
     - name: Install system dependencies (including Firefox)
       run: |
@@ -45,10 +49,6 @@ jobs:
           APT_NO_MANDATABASE=1 \
           apt-get install -y --no-install-recommends firefox
 
-    - name: Install Python dependencies
-      run: |
-        pip install selenium webdriver-manager requests
-
     - name: Set up Display
       run: echo "DISPLAY=:99" >> $GITHUB_ENV
 
@@ -67,6 +67,10 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.13'
+        cache: 'pip'
+        cache-dependency-path: p5-cards/tests/requirements.txt
+
+    - run: pip install -r p5-cards/tests/requirements.txt  
 
     - name: Install system dependencies (including Chrome)
       run: |
@@ -89,10 +93,6 @@ jobs:
         sudo DEBIAN_FRONTEND=noninteractive \
           APT_NO_MANDATABASE=1 \
           apt-get install -y --no-install-recommends google-chrome-stable
-
-    - name: Install Python dependencies
-      run: |
-        pip install selenium webdriver-manager requests
 
     - name: Set up Display
       run: echo "DISPLAY=:99" >> $GITHUB_ENV
