@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flexible Card Game Setup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #2e2e2e;
+      color: white;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100px;
+      height: 140px;
+      border: 2px solid white;
+      border-radius: 10px;
+      background: #fff;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      margin: 10px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .player {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Card Game Setup (Flexible Player Structure)</h1>
+
+  <div class="card-container" id="cards">
+    <div class="card">
+      <div>🂡</div>
+      <div style="align-self: center;">A</div>
+      <div>♠</div>
+    </div>
+    <div class="card">
+      <div>🂱</div>
+      <div style="align-self: center;">K</div>
+      <div>♥</div>
+    </div>
+  </div>
+
+  <div id="players"></div>
+
+  <script>
+    // Flexible Player class
+    class Player {
+      constructor(config = {}) {
+        Object.assign(this, config);
+      }
+
+      toHTML() {
+        return `
+          <div class="player">
+            <strong>${this.name || "Unnamed Player"}</strong><br>
+            ${Object.entries(this)
+              .filter(([key, _]) => typeof this[key] !== 'function' && key !== 'name')
+              .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+              .join('<br>')}
+          </div>
+        `;
+      }
+    }
+
+    // Example: Create players with different fields for different game types
+    const players = [
+      new Player({
+        name: "Alice",
+        position: 1,
+        score: 0,
+        hand: ["A♠", "10♥"],
+        turn: true
+      }),
+      new Player({
+        name: "Bob",
+        position: 2,
+        team: "Red",
+        isDealer: true
+      }),
+      new Player({
+        name: "Charlie",
+        position: 3,
+        rank: "Captain",
+        energy: 95
+      })
+    ];
+
+    // Render players
+    const playerDiv = document.getElementById('players');
+    players.forEach(player => {
+      playerDiv.innerHTML += player.toHTML();
+    });
+  </script>
+
+</body>
+</html>
