@@ -15,6 +15,11 @@ import http.server
 import socketserver
 from webdriver_manager.firefox import GeckoDriverManager
 
+token = os.getenv('GH_TOKEN')
+if not token:
+    raise RuntimeError("Missing GH_TOKEN environment variable")
+os.environ['GITHUB_TOKEN'] = token
+
 PORT = 0  # Let system choose an available port
 HTML_FILE = "index.html"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -48,7 +53,7 @@ firefox_options = Options()
 firefox_options.add_argument("--headless")
 
 # Initialize driver
-service = Service("/usr/bin/geckodriver")
+service = Service(GeckoDriverManager(version="v0.36.0").install())
 driver = webdriver.Firefox(service=service, options=firefox_options)
 
 try:
